@@ -178,7 +178,7 @@ dependencies: [
 ### Using generated xcframework directly
 
 The following instruction using Xcode 15
-1. Go the [Release Page](https://github.com/hyperledger/identus-apollo/releases) and check the latest version and download the `Apollo.xcframework.zip` file.
+1. Go the [Release Page](https://github.com/hyperledger-identus/apollo/releases) and check the latest version and download the `Apollo.xcframework.zip` file.
 2. Uncompress the downloaded file.
 3. Add the `Apollo.xcframework` to your Xcode project.
 4. When asked select Copy items if needed.

@@ -777,7 +777,7 @@ tasks.withType<DokkaTask>().configureEach {
             )
             sourceLink {
                 localDirectory.set(projectDir.resolve("src"))
-                remoteUrl.set(URL("https://github.com/hyperledger/identus-apollo/tree/main/src"))
+                remoteUrl.set(URL("https://github.com/hyperledger-identus/apollo/tree/main/src"))
                 remoteLineSuffix.set("#L")
             }
             externalDocumentationLink {
@@ -823,7 +823,7 @@ npmPublish {
                 }
                 repository {
                     type.set("git")
-                    url.set("https://github.com/hyperledger/identus-apollo")
+                    url.set("https://github.com/hyperledger-identus/apollo")
                 }
             }
         }
