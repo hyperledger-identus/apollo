@@ -1,3 +1,10 @@
+## [1.4.6-rc.1](https://github.com/hyperledger-identus/apollo/compare/v1.4.5...v1.4.6-rc.1) (2025-03-13)
+
+
+### Bug Fixes
+
+* add rc to the release from the beta branch ([5e666a0](https://github.com/hyperledger-identus/apollo/commit/5e666a0ebf344673d4f09f97f3c54661caa2f8cf))
+
 ## [1.4.5](https://github.com/hyperledger-identus/apollo/compare/v1.4.4...v1.4.5) (2025-01-31)
 
 
