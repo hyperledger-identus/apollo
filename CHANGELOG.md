@@ -1,115 +1,115 @@
-## [1.4.5](https://github.com/hyperledger/identus-apollo/compare/v1.4.4...v1.4.5) (2025-01-31)
+## [1.4.5](https://github.com/hyperledger-identus/apollo/compare/v1.4.4...v1.4.5) (2025-01-31)
 
 
 ### Bug Fixes
 
-* upgrade apollo to 6.6.1 ([#198](https://github.com/hyperledger/identus-apollo/issues/198)) ([9abc11d](https://github.com/hyperledger/identus-apollo/commit/9abc11df066181a787d94f02500c4b7475d00a87))
+* upgrade apollo to 6.6.1 ([#198](https://github.com/hyperledger-identus/apollo/issues/198)) ([9abc11d](https://github.com/hyperledger-identus/apollo/commit/9abc11df066181a787d94f02500c4b7475d00a87))
 
-## [1.4.4](https://github.com/hyperledger/identus-apollo/compare/v1.4.3...v1.4.4) (2024-10-23)
-
-
-### Bug Fixes
-
-* make fixes to ed25519 sign method + improve tests ([#195](https://github.com/hyperledger/identus-apollo/issues/195)) ([354c9bd](https://github.com/hyperledger/identus-apollo/commit/354c9bdd12027a16fe598dfab187153dd465cd23))
-
-## [1.4.3](https://github.com/hyperledger/identus-apollo/compare/v1.4.2...v1.4.3) (2024-08-26)
+## [1.4.4](https://github.com/hyperledger-identus/apollo/compare/v1.4.3...v1.4.4) (2024-10-23)
 
 
 ### Bug Fixes
 
-* upgrade elliptic dependency ([#191](https://github.com/hyperledger/identus-apollo/issues/191)) ([9ecdbdd](https://github.com/hyperledger/identus-apollo/commit/9ecdbdd9b942ffbdb837c1ffc42ddb793b178461))
+* make fixes to ed25519 sign method + improve tests ([#195](https://github.com/hyperledger-identus/apollo/issues/195)) ([354c9bd](https://github.com/hyperledger-identus/apollo/commit/354c9bdd12027a16fe598dfab187153dd465cd23))
 
-## [1.4.2](https://github.com/hyperledger/identus-apollo/compare/v1.4.1...v1.4.2) (2024-08-07)
-
-
-### Bug Fixes
-
-* publish to OSSHR repository ([#188](https://github.com/hyperledger/identus-apollo/issues/188)) ([8f98b5a](https://github.com/hyperledger/identus-apollo/commit/8f98b5ae7d106ac7a977f3676492c7c2ee0e73e9))
-
-## [1.4.1](https://github.com/hyperledger/identus-apollo/compare/v1.4.0...v1.4.1) (2024-08-05)
+## [1.4.3](https://github.com/hyperledger-identus/apollo/compare/v1.4.2...v1.4.3) (2024-08-26)
 
 
 ### Bug Fixes
 
-* change oss publishing url according to the documentation ([#187](https://github.com/hyperledger/identus-apollo/issues/187)) ([f1dea5b](https://github.com/hyperledger/identus-apollo/commit/f1dea5bc1c19e5eaa0d4aba560dd8c46ee4962e6))
+* upgrade elliptic dependency ([#191](https://github.com/hyperledger-identus/apollo/issues/191)) ([9ecdbdd](https://github.com/hyperledger-identus/apollo/commit/9ecdbdd9b942ffbdb837c1ffc42ddb793b178461))
 
-# [1.4.0](https://github.com/hyperledger/identus-apollo/compare/v1.3.24...v1.4.0) (2024-08-02)
+## [1.4.2](https://github.com/hyperledger-identus/apollo/compare/v1.4.1...v1.4.2) (2024-08-07)
+
+
+### Bug Fixes
+
+* publish to OSSHR repository ([#188](https://github.com/hyperledger-identus/apollo/issues/188)) ([8f98b5a](https://github.com/hyperledger-identus/apollo/commit/8f98b5ae7d106ac7a977f3676492c7c2ee0e73e9))
+
+## [1.4.1](https://github.com/hyperledger-identus/apollo/compare/v1.4.0...v1.4.1) (2024-08-05)
+
+
+### Bug Fixes
+
+* change oss publishing url according to the documentation ([#187](https://github.com/hyperledger-identus/apollo/issues/187)) ([f1dea5b](https://github.com/hyperledger-identus/apollo/commit/f1dea5bc1c19e5eaa0d4aba560dd8c46ee4962e6))
+
+# [1.4.0](https://github.com/hyperledger-identus/apollo/compare/v1.3.24...v1.4.0) (2024-08-02)
 
 
 ### Features
 
-* almost empty commit to test the release ([#186](https://github.com/hyperledger/identus-apollo/issues/186)) ([89b28a9](https://github.com/hyperledger/identus-apollo/commit/89b28a98e0fa82c5e935138c40024857101bbb4f))
+* almost empty commit to test the release ([#186](https://github.com/hyperledger-identus/apollo/issues/186)) ([89b28a9](https://github.com/hyperledger-identus/apollo/commit/89b28a98e0fa82c5e935138c40024857101bbb4f))
 
-## [1.3.24](https://github.com/hyperledger/identus-apollo/compare/v1.3.23...v1.3.24) (2024-07-19)
-
-
-### Bug Fixes
-
-* apply github env vars ([a5f674a](https://github.com/hyperledger/identus-apollo/commit/a5f674ac365cdabd67abd144894cbbb32fc7ffa2))
-
-## [1.3.21](https://github.com/hyperledger/identus-apollo/compare/v1.3.20...v1.3.21) (2024-07-12)
+## [1.3.24](https://github.com/hyperledger-identus/apollo/compare/v1.3.23...v1.3.24) (2024-07-19)
 
 
 ### Bug Fixes
 
-* force adding ossrh env vars for maven ([24683fc](https://github.com/hyperledger/identus-apollo/commit/24683fc064f6ef27944dac16a7326cb27ca731c8))
+* apply github env vars ([a5f674a](https://github.com/hyperledger-identus/apollo/commit/a5f674ac365cdabd67abd144894cbbb32fc7ffa2))
 
-## [1.3.20](https://github.com/hyperledger/identus-apollo/compare/v1.3.19...v1.3.20) (2024-07-12)
-
-
-### Bug Fixes
-
-* revert import action version ([c4bd736](https://github.com/hyperledger/identus-apollo/commit/c4bd7367c8c51c3266f298ef1c23cb99e05c296d))
-* Update to node20 actions ([#184](https://github.com/hyperledger/identus-apollo/issues/184)) ([0e38317](https://github.com/hyperledger/identus-apollo/commit/0e38317f22c239df10a87797895303f1f18019b1))
-
-## [1.3.19](https://github.com/hyperledger/identus-apollo/compare/v1.3.18...v1.3.19) (2024-07-12)
+## [1.3.21](https://github.com/hyperledger-identus/apollo/compare/v1.3.20...v1.3.21) (2024-07-12)
 
 
 ### Bug Fixes
 
-* improve env vars for ci pipeline in hl ([9170629](https://github.com/hyperledger/identus-apollo/commit/91706297c20ffc6e9709add1a7da4cf4bd5474ad))
+* force adding ossrh env vars for maven ([24683fc](https://github.com/hyperledger-identus/apollo/commit/24683fc064f6ef27944dac16a7326cb27ca731c8))
 
-## [1.3.18](https://github.com/hyperledger/identus-apollo/compare/v1.3.17...v1.3.18) (2024-07-11)
-
-
-### Bug Fixes
-
-* ossrh env variables on CI ([d324f12](https://github.com/hyperledger/identus-apollo/commit/d324f123ce82c708da778cd7f8b6e5219288057b))
-
-## [1.3.17](https://github.com/hyperledger/identus-apollo/compare/v1.3.16...v1.3.17) (2024-07-11)
+## [1.3.20](https://github.com/hyperledger-identus/apollo/compare/v1.3.19...v1.3.20) (2024-07-12)
 
 
 ### Bug Fixes
 
-* sonatype configuration ([5c13b1d](https://github.com/hyperledger/identus-apollo/commit/5c13b1dc5456583d25f76a21119f1e11a437a6f5))
+* revert import action version ([c4bd736](https://github.com/hyperledger-identus/apollo/commit/c4bd7367c8c51c3266f298ef1c23cb99e05c296d))
+* Update to node20 actions ([#184](https://github.com/hyperledger-identus/apollo/issues/184)) ([0e38317](https://github.com/hyperledger-identus/apollo/commit/0e38317f22c239df10a87797895303f1f18019b1))
 
-## [1.3.16](https://github.com/hyperledger/identus-apollo/compare/v1.3.15...v1.3.16) (2024-07-11)
-
-
-### Bug Fixes
-
-* correct some typos in android build for apollo ([d8a0b0a](https://github.com/hyperledger/identus-apollo/commit/d8a0b0a2f8486b27468481e9790a606369d88a05))
-
-## [1.3.15](https://github.com/hyperledger/identus-apollo/compare/v1.3.14...v1.3.15) (2024-07-11)
+## [1.3.19](https://github.com/hyperledger-identus/apollo/compare/v1.3.18...v1.3.19) (2024-07-12)
 
 
 ### Bug Fixes
 
-* add correct signing keys for maven package in HL ([d560f5a](https://github.com/hyperledger/identus-apollo/commit/d560f5a548a13e7882681b826db86e967c553b90))
+* improve env vars for ci pipeline in hl ([9170629](https://github.com/hyperledger-identus/apollo/commit/91706297c20ffc6e9709add1a7da4cf4bd5474ad))
 
-## [1.3.14](https://github.com/hyperledger/identus-apollo/compare/v1.3.13...v1.3.14) (2024-07-11)
-
-
-### Bug Fixes
-
-* set right sonatype authentication ([5183580](https://github.com/hyperledger/identus-apollo/commit/518358093ce69044b6855f2ab8cc9e3c17c7e6b3))
-
-## [1.3.13](https://github.com/hyperledger/identus-apollo/compare/v1.3.12...v1.3.13) (2024-07-11)
+## [1.3.18](https://github.com/hyperledger-identus/apollo/compare/v1.3.17...v1.3.18) (2024-07-11)
 
 
 ### Bug Fixes
 
-* checkout also must use identus_ci token ([870b321](https://github.com/hyperledger/identus-apollo/commit/870b321bb9125d1f8878060f9c1fac65dc68b7c5))
+* ossrh env variables on CI ([d324f12](https://github.com/hyperledger-identus/apollo/commit/d324f123ce82c708da778cd7f8b6e5219288057b))
+
+## [1.3.17](https://github.com/hyperledger-identus/apollo/compare/v1.3.16...v1.3.17) (2024-07-11)
+
+
+### Bug Fixes
+
+* sonatype configuration ([5c13b1d](https://github.com/hyperledger-identus/apollo/commit/5c13b1dc5456583d25f76a21119f1e11a437a6f5))
+
+## [1.3.16](https://github.com/hyperledger-identus/apollo/compare/v1.3.15...v1.3.16) (2024-07-11)
+
+
+### Bug Fixes
+
+* correct some typos in android build for apollo ([d8a0b0a](https://github.com/hyperledger-identus/apollo/commit/d8a0b0a2f8486b27468481e9790a606369d88a05))
+
+## [1.3.15](https://github.com/hyperledger-identus/apollo/compare/v1.3.14...v1.3.15) (2024-07-11)
+
+
+### Bug Fixes
+
+* add correct signing keys for maven package in HL ([d560f5a](https://github.com/hyperledger-identus/apollo/commit/d560f5a548a13e7882681b826db86e967c553b90))
+
+## [1.3.14](https://github.com/hyperledger-identus/apollo/compare/v1.3.13...v1.3.14) (2024-07-11)
+
+
+### Bug Fixes
+
+* set right sonatype authentication ([5183580](https://github.com/hyperledger-identus/apollo/commit/518358093ce69044b6855f2ab8cc9e3c17c7e6b3))
+
+## [1.3.13](https://github.com/hyperledger-identus/apollo/compare/v1.3.12...v1.3.13) (2024-07-11)
+
+
+### Bug Fixes
+
+* checkout also must use identus_ci token ([870b321](https://github.com/hyperledger-identus/apollo/commit/870b321bb9125d1f8878060f9c1fac65dc68b7c5))
 
 ## [1.3.5](https://github.com/input-output-hk/atala-prism-apollo/compare/v1.3.4...v1.3.5) (2024-06-10)
 
