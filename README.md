@@ -103,6 +103,11 @@ $ export ANDROID_HOME='/Users/{{YOUR USER}}/Library/Android/sdk
 
 ### Building the project
 
+Install Rust packages:
+```bash
+$ ./scripts/install-rust-packages.sh
+```
+
 You should be able to import and build the project in IntelliJ IDEA now. 
 
 #### Troubleshooting

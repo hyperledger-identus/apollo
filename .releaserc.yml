@@ -3,7 +3,7 @@ branches:
   - name: "release/*"
     prerelease: "snapshot"
   - name: "beta"
-    prerelease: "rc"
+    prerelease: true
 
 plugins:
   - "@semantic-release/commit-analyzer"
