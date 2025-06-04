@@ -1,4 +1,5 @@
-/* ktlint-disable */
+@file:Suppress("ktlint")
+
 package fr.acinq.secp256k1
 
 import kotlinx.cinterop.*
@@ -77,7 +78,7 @@ public object Secp256k1Native : Secp256k1 {
     }
 
     public override fun signatureNormalize(sig: ByteArray): Pair<ByteArray, Boolean> {
-        require(sig.size >= 64){ "invalid signature ${Hex.encode(sig)}" }
+        require(sig.size >= 64) { "invalid signature ${Hex.encode(sig)}" }
         memScoped {
             val nSig = allocSignature(sig)
             val isHighS = secp256k1_ecdsa_signature_normalize(ctx, nSig.ptr, nSig.ptr)
@@ -138,7 +139,7 @@ public object Secp256k1Native : Secp256k1 {
             val multiplied = privkey.copyOf()
             val natMul = toNat(multiplied)
             val natTweak = toNat(tweak)
-            secp256k1_ec_privkey_tweak_mul(ctx, natMul, natTweak).requireSuccess("secp256k1_ec_privkey_tweak_mul() failed")
+            secp256k1_ec_seckey_tweak_mul(ctx, natMul, natTweak).requireSuccess("secp256k1_ec_privkey_tweak_mul() failed")
             return multiplied
         }
     }

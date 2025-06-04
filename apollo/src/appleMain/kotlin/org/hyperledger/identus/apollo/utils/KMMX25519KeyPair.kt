@@ -19,7 +19,7 @@ actual class KMMX25519KeyPair actual constructor(
          *
          * @return The generated key pair, consisting of a private key and its corresponding public key.
          */
-        public override fun generateKeyPair(): KMMX25519KeyPair {
+        public actual override fun generateKeyPair(): KMMX25519KeyPair {
             val privateKey = KMMX25519PrivateKey()
             return KMMX25519KeyPair(privateKey, privateKey.publicKey())
         }

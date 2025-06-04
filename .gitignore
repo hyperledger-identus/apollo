@@ -15,3 +15,4 @@ Pods/
 *yarn.lock
 JSLibs/iohk-crypto/node_modules
 node_modules/
+/.kotlin

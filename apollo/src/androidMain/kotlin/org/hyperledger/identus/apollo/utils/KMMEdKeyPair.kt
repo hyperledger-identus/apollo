@@ -24,7 +24,7 @@ actual class KMMEdKeyPair actual constructor(
          *
          * @return A [KMMEdKeyPair] instance representing the generated key pair.
          */
-        override fun generateKeyPair(): KMMEdKeyPair {
+        actual override fun generateKeyPair(): KMMEdKeyPair {
             val generator = Ed25519KeyPairGenerator()
             generator.init(Ed25519KeyGenerationParameters(SecureRandom()))
             val pair = generator.generateKeyPair()

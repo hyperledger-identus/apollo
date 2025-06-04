@@ -9,7 +9,6 @@ import kotlin.js.JsExport
 @ExperimentalJsExport
 @JsExport
 interface Ed25519KeyPairGeneration {
-
     /**
      * Generates an Ed25519 key pair.
      *

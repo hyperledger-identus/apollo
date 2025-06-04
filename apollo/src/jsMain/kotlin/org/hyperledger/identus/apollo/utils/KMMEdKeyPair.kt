@@ -43,7 +43,7 @@ actual class KMMEdKeyPair actual constructor(
          *
          * @return The generated key pair.
          */
-        override fun generateKeyPair(): KMMEdKeyPair {
+        actual override fun generateKeyPair(): KMMEdKeyPair {
             val ed25519 = eddsa("ed25519")
             val rnd = rand(32)
             val secret = Buffer.from(rnd)

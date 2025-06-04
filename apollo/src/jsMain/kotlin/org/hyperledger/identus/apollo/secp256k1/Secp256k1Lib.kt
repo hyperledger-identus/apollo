@@ -52,21 +52,23 @@ actual class Secp256k1Lib actual constructor() {
      */
     actual fun sign(privateKey: ByteArray, data: ByteArray): ByteArray {
         val sha = SHA256().digest(data)
-        val signature = secp256k1.sign(
-            sha.asUint8Array(),
-            privateKey.asUint8Array(),
-            {}
-        )
+        val signature =
+            secp256k1.sign(
+                sha.asUint8Array(),
+                privateKey.asUint8Array(),
+                {}
+            )
         return signature.toDERRawBytes().asByteArray()
     }
 
     private fun normalise(signatureBytes: ByteArray): SignatureType {
         val jsSignatureByteArray = signatureBytes.asUint8Array()
-        val signature = try {
-            secp256k1.Signature.fromDER(jsSignatureByteArray)
-        } catch (e: dynamic) {
-            secp256k1.Signature.fromCompact(jsSignatureByteArray)
-        }
+        val signature =
+            try {
+                secp256k1.Signature.fromDER(jsSignatureByteArray)
+            } catch (e: dynamic) {
+                secp256k1.Signature.fromCompact(jsSignatureByteArray)
+            }
         return if (signature.hasHighS()) {
             signature.normalizeS()
         } else {

@@ -2,7 +2,7 @@ val publishedMavenId: String = "org.hyperledger.identus.apollo"
 
 plugins {
     id("org.jetbrains.dokka") version "1.9.20"
-    id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
+    id("org.jlleitschuh.gradle.ktlint") version "12.3.0"
     id("maven-publish")
     id("org.jetbrains.kotlinx.kover") version "0.7.5"
     id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
@@ -17,7 +17,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.23")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.20")
         classpath("org.jetbrains.dokka:dokka-base:1.9.20")
     }
 }
@@ -162,8 +162,10 @@ subprojects {
             }
             exclude {
                 it.file.toString().contains("external")
+                it.file.toString().contains("generated")
             }
             exclude { projectDir.toURI().relativize(it.file.toURI()).path.contains("/external/") }
+            exclude { projectDir.toURI().relativize(it.file.toURI()).path.contains("/generated/") }
         }
     }
 }

@@ -1,6 +1,7 @@
 package org.hyperledger.identus.apollo.base64
 
 // Base64Standard
+
 /**
  * Encode a [String] to Base64 [String] standard encoding
  * RFC 4648 Section 4
@@ -22,7 +23,6 @@ val String.base64Decoded: String
 val String.base64DecodedBytes: ByteArray
     get() = Base64.decode(this, Encoding.Standard)
 
-// Standard with Padding
 /**
  * Encode a [String] to Base64 [String] standard encoding
  * RFC 4648 Section 4
@@ -44,7 +44,6 @@ val String.base64PadDecoded: String
 val String.base64PadDecodedBytes: ByteArray
     get() = Base64.decode(this, Encoding.StandardPad)
 
-// Base64URL
 /**
  * Encode a [String] to Base64 URL-safe encoded [String].
  * RFC 4648 Section 5
@@ -67,7 +66,6 @@ val String.base64UrlDecoded: String
 val String.base64UrlDecodedBytes: ByteArray
     get() = Base64.decode(this, Encoding.UrlSafe)
 
-// Base64URL with padding
 /**
  * Encode a [String] to Base64 URL-safe encoded [String].
  * RFC 4648 Section 5

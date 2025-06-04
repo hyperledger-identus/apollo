@@ -51,7 +51,7 @@ actual class SecureRandom actual constructor(
      * @param size The number of random bytes to generate.
      * @return A byte array containing the generated random bytes.
      */
-    override fun nextBytes(size: Int): ByteArray {
+    actual override fun nextBytes(size: Int): ByteArray {
         val bytes = ByteArray(size)
         jvmSecureRandom.nextBytes(bytes)
         return bytes
@@ -94,7 +94,7 @@ actual class SecureRandom actual constructor(
          * @param numBytes The length of the seed in bytes.
          * @return The generated seed as a ByteArray.
          */
-        override fun generateSeed(numBytes: Int): ByteArray {
+        actual override fun generateSeed(numBytes: Int): ByteArray {
             return jvmSecureRandom.generateSeed(numBytes)
         }
     }

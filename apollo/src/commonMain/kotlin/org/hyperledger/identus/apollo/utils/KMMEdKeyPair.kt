@@ -10,7 +10,9 @@ expect class KMMEdKeyPair(privateKey: KMMEdPrivateKey, publicKey: KMMEdPublicKey
     val publicKey: KMMEdPublicKey
 
     @OptIn(ExperimentalJsExport::class)
-    companion object : Ed25519KeyPairGeneration
+    companion object : Ed25519KeyPairGeneration {
+        override fun generateKeyPair(): KMMEdKeyPair
+    }
 
     /**
      * Method to sign a provided message

@@ -20,7 +20,7 @@ actual class Secp256k1Lib {
         val pubKey = Secp256k1Native.pubkeyCreate(privateKey)
         if (Secp256k1Helper.validatePublicKey(pubKey)) {
             if (compressed) {
-                return Secp256k1Native.pubKeyCompress(pubKey)
+                return Secp256k1.pubKeyCompress(pubKey)
             }
             return pubKey
         } else {
@@ -69,14 +69,14 @@ actual class Secp256k1Lib {
         data: ByteArray
     ): Boolean {
         val sha = SHA256().digest(data)
-        if (Secp256k1.verify(signature, sha, publicKey)) {
+        if (Secp256k1Native.verify(signature, sha, publicKey)) {
             return true
         }
-        val normalisedSignature = Secp256k1.signatureNormalize(signature).first
-        if (Secp256k1.verify(normalisedSignature, sha, publicKey)) {
+        val normalisedSignature = Secp256k1Native.signatureNormalize(signature).first
+        if (Secp256k1Native.verify(normalisedSignature, sha, publicKey)) {
             return true
         }
-        return Secp256k1.verify(transcodeSignatureToBitcoin(normalisedSignature), sha, publicKey)
+        return Secp256k1Native.verify(transcodeSignatureToBitcoin(normalisedSignature), sha, publicKey)
     }
 
     /**

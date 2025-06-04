@@ -29,13 +29,14 @@ val global: dynamic by lazy {
  * @return `true` if the code is running in a Node.js environment, `false` otherwise.
  */
 val isNode: Boolean by lazy {
-    val runtime: String? = try {
-        // May not be available, but should be preferred
-        // method of determining runtime environment.
-        js("(globalThis.process.release.name)") as String
-    } catch (_: Throwable) {
-        null
-    }
+    val runtime: String? =
+        try {
+            // May not be available, but should be preferred
+            // method of determining runtime environment.
+            js("(globalThis.process.release.name)") as String
+        } catch (_: Throwable) {
+            null
+        }
 
     when (runtime) {
         null -> {

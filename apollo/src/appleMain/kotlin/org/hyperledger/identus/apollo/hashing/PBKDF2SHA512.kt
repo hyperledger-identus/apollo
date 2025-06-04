@@ -37,17 +37,18 @@ actual object PBKDF2SHA512 {
         derivedKey.usePinned { derivedKeyPin ->
             salt.usePinned { saltPin ->
 
-                val result = CCKeyDerivationPBKDF(
-                    algorithm = kCCPBKDF2,
-                    password = p,
-                    passwordLen = p.length.convert(),
-                    salt = if (saltPin.get().isNotEmpty()) saltPin.addressOf(0) else null,
-                    saltLen = saltPin.get().size.convert(),
-                    prf = kCCPRFHmacAlgSHA512,
-                    rounds = rounds,
-                    derivedKey = derivedKeyPin.addressOf(0),
-                    derivedKeyLen = derivedKeyPin.get().size.convert()
-                )
+                val result =
+                    CCKeyDerivationPBKDF(
+                        algorithm = kCCPBKDF2,
+                        password = p,
+                        passwordLen = p.length.convert(),
+                        salt = if (saltPin.get().isNotEmpty()) saltPin.addressOf(0) else null,
+                        saltLen = saltPin.get().size.convert(),
+                        prf = kCCPRFHmacAlgSHA512,
+                        rounds = rounds,
+                        derivedKey = derivedKeyPin.addressOf(0),
+                        derivedKeyLen = derivedKeyPin.get().size.convert()
+                    )
 
                 if (result != 0) {
                     throw Error("Key derivation failed with error: $result")

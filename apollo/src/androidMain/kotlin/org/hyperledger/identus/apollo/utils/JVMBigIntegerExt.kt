@@ -19,12 +19,13 @@ fun BigInteger.toUnsignedByteArray(): ByteArray {
  * @throws IllegalStateException if the original `BigInteger` has an illegal sign.
  */
 fun BigInteger.toKotlinBigInteger(): com.ionspin.kotlin.bignum.integer.BigInteger {
-    val sign = when (this.signum()) {
-        -1 -> Sign.NEGATIVE
-        0 -> Sign.ZERO
-        1 -> Sign.POSITIVE
-        else -> throw IllegalStateException("Illegal BigInteger sign")
-    }
+    val sign =
+        when (this.signum()) {
+            -1 -> Sign.NEGATIVE
+            0 -> Sign.ZERO
+            1 -> Sign.POSITIVE
+            else -> throw IllegalStateException("Illegal BigInteger sign")
+        }
     return com.ionspin.kotlin.bignum.integer.BigInteger.fromByteArray(this.toUnsignedByteArray(), sign)
 }
 

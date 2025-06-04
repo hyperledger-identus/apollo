@@ -19,7 +19,7 @@ actual class KMMEdKeyPair actual constructor(
          *
          * @return A [KMMEdKeyPair] instance representing the generated public and private keys.
          */
-        public override fun generateKeyPair(): KMMEdKeyPair {
+        public actual override fun generateKeyPair(): KMMEdKeyPair {
             val privateKey = KMMEdPrivateKey()
             return KMMEdKeyPair(privateKey, privateKey.publicKey())
         }

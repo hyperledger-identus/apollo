@@ -42,8 +42,9 @@ class Secp256k1LibTests {
         val privKeyBase64 = "N_JFgvYaReyRXwassz5FHg33A4I6dczzdXrjdHGksmg"
         val message = "Test"
 
-        val signature = Secp256k1Lib()
-            .sign(privKeyBase64.base64UrlDecodedBytes, message.encodeToByteArray())
+        val signature =
+            Secp256k1Lib()
+                .sign(privKeyBase64.base64UrlDecodedBytes, message.encodeToByteArray())
         assertEquals(
             "MEUCIQCFeGlhJrH-9R70X4JzrurWs52SwuxCnJ8ky6riFwMOrwIgT7zlLo7URMHW5tiMgG73IOw2Dm3XyLl1iqW1-t5NFWQ",
             signature.base64UrlEncoded

@@ -5,8 +5,7 @@ import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 
-class PBKD2F_Tests {
-
+class PBKD2FTests {
     @Test
     fun test_random_mnemonic_PBKDF2SHA512_withPW() {
         val key = "random seed mnemonic words"

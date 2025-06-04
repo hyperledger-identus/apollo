@@ -20,7 +20,7 @@ actual class KMMX25519KeyPair actual constructor(
          *
          * @return The generated key pair as a [KMMX25519KeyPair] object.
          */
-        override fun generateKeyPair(): KMMX25519KeyPair {
+        actual override fun generateKeyPair(): KMMX25519KeyPair {
             val keyPair = stableLibGenerateKeyPair()
 
             return KMMX25519KeyPair(

@@ -21,12 +21,13 @@ import platform.posix.memcpy
  * @return The converted NSData object.
  */
 @OptIn(ExperimentalForeignApi::class, BetaInteropApi::class)
-fun ByteArray.toNSData(): NSData = memScoped {
-    NSData.create(
-        bytes = allocArrayOf(this@toNSData),
-        length = this@toNSData.size.convert<NSUInteger>()
-    )
-}
+fun ByteArray.toNSData(): NSData =
+    memScoped {
+        NSData.create(
+            bytes = allocArrayOf(this@toNSData),
+            length = this@toNSData.size.convert<NSUInteger>()
+        )
+    }
 
 /**
  * Converts an NSData object to a ByteArray.
@@ -34,13 +35,14 @@ fun ByteArray.toNSData(): NSData = memScoped {
  * @return The ByteArray representation of the NSData object.
  */
 @OptIn(ExperimentalForeignApi::class)
-fun NSData.toByteArray(): ByteArray = ByteArray(this@toByteArray.length.toInt()).apply {
-    if (this@toByteArray.length > 0U) {
-        usePinned {
-            memcpy(it.addressOf(0), this@toByteArray.bytes, this@toByteArray.length)
+fun NSData.toByteArray(): ByteArray =
+    ByteArray(this@toByteArray.length.toInt()).apply {
+        if (this@toByteArray.length > 0U) {
+            usePinned {
+                memcpy(it.addressOf(0), this@toByteArray.bytes, this@toByteArray.length)
+            }
         }
     }
-}
 
 /**
  * Converts an integer to an NSNumber object.
@@ -48,9 +50,10 @@ fun NSData.toByteArray(): ByteArray = ByteArray(this@toByteArray.length.toInt())
  * @return The converted NSNumber object.
  */
 @OptIn(ExperimentalForeignApi::class)
-fun Int.toNSNumber(): NSNumber = memScoped {
-    return NSNumber.numberWithInt(this@toNSNumber)
-}
+fun Int.toNSNumber(): NSNumber =
+    memScoped {
+        return NSNumber.numberWithInt(this@toNSNumber)
+    }
 
 /**
  * Converts an NSNumber to a Kotlin Int.
@@ -67,9 +70,10 @@ fun NSNumber.toKotlinInt(): Int {
  * @return The converted NSString object.
  */
 @OptIn(ExperimentalForeignApi::class, BetaInteropApi::class)
-fun String.toNSString(): NSString = memScoped {
-    return NSString.create(string = this@toNSString)
-}
+fun String.toNSString(): NSString =
+    memScoped {
+        return NSString.create(string = this@toNSString)
+    }
 
 /**
  * Converts an NSString to a Kotlin String.

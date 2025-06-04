@@ -5,7 +5,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class Secp256k1LibTestJS {
-
     @Test
     fun testCreateApolloSignatureAndVerify() {
         val mnemonics = Mnemonic.Companion.createRandomMnemonics()

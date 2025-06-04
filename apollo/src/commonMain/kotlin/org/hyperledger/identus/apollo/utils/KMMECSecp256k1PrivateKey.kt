@@ -32,8 +32,9 @@ interface KMMECSecp256k1PrivateKeyCommonStaticInterface {
         privateKeyData: ByteArray,
         derivationPrivateKeyData: ByteArray
     ): KMMECSecp256k1PrivateKey {
-        val derivedKey = org.hyperledger.identus.apollo.secp256k1.Secp256k1Lib()
-            .derivePrivateKey(privateKeyData, derivationPrivateKeyData)
+        val derivedKey =
+            org.hyperledger.identus.apollo.secp256k1.Secp256k1Lib()
+                .derivePrivateKey(privateKeyData, derivationPrivateKeyData)
         return derivedKey?.let { KMMECSecp256k1PrivateKey(derivedKey) }
             ?: run { throw ECPrivateKeyDecodingException("Error while tweaking") }
     }

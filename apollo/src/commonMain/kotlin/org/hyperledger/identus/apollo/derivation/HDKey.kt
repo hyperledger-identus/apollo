@@ -21,7 +21,9 @@ class BigIntegerWrapper {
     }
 
     @JsName("initFromLong")
-    constructor(@Suppress("NON_EXPORTABLE_TYPE") long: Long) {
+    constructor(
+        @Suppress("NON_EXPORTABLE_TYPE") long: Long
+    ) {
         value = BigInteger(long)
     }
 
@@ -41,7 +43,9 @@ class BigIntegerWrapper {
     }
 
     @JsName("initFromBigInteger")
-    constructor(@Suppress("NON_EXPORTABLE_TYPE") bigInteger: BigInteger) {
+    constructor(
+        @Suppress("NON_EXPORTABLE_TYPE") bigInteger: BigInteger
+    ) {
         value = bigInteger
     }
 

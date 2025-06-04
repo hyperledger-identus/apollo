@@ -20,9 +20,70 @@ class Base64Tests {
         assertEquals("Hello, world!", "SGVsbG8sIHdvcmxkIQ==".base64PadDecoded)
         assertContentEquals(
             byteArrayOf(
-                -94, 124, -26, -112, -72, -84, 16, 11, 67, -45, 107, 38, -99, 79, 62, -49, 83, 26, -85, -70, -122, 53,
-                67, 42, -94, -87, 61, -74, 66, 0, 80, -125, -17, -11, -125, 63, 109, -15, 56, -95, -33, 18, 110, 47,
-                47, -20, -72, -34, 53, -69, 49, -45, 54, 53, -21, 43, 9, -84, -125, 72, -61, 76, 31, -46
+                -94,
+                124,
+                -26,
+                -112,
+                -72,
+                -84,
+                16,
+                11,
+                67,
+                -45,
+                107,
+                38,
+                -99,
+                79,
+                62,
+                -49,
+                83,
+                26,
+                -85,
+                -70,
+                -122,
+                53,
+                67,
+                42,
+                -94,
+                -87,
+                61,
+                -74,
+                66,
+                0,
+                80,
+                -125,
+                -17,
+                -11,
+                -125,
+                63,
+                109,
+                -15,
+                56,
+                -95,
+                -33,
+                18,
+                110,
+                47,
+                47,
+                -20,
+                -72,
+                -34,
+                53,
+                -69,
+                49,
+                -45,
+                54,
+                53,
+                -21,
+                43,
+                9,
+                -84,
+                -125,
+                72,
+                -61,
+                76,
+                31,
+                -46
             ),
             "onzmkLisEAtD02smnU8+z1Maq7qGNUMqoqk9tkIAUIPv9YM/bfE4od8Sbi8v7LjeNbsx0zY16ysJrINIw0wf0g==".base64PadDecodedBytes
         )
@@ -31,15 +92,15 @@ class Base64Tests {
     @Test
     fun byteArray_base64Encoded() {
         assertEquals(
-            "xvrp9DBWlei2mG0ov9MN+A==", // value1
+            "xvrp9DBWlei2mG0ov9MN+A==",
             byteArrayOf(-58, -6, -23, -12, 48, 86, -107, -24, -74, -104, 109, 40, -65, -45, 13, -8).base64PadEncoded
         )
         assertEquals(
-            "IkYJxF8nIQD9RY7Yk6r26A==", // value222
+            "IkYJxF8nIQD9RY7Yk6r26A==",
             byteArrayOf(34, 70, 9, -60, 95, 39, 33, 0, -3, 69, -114, -40, -109, -86, -10, -24).base64PadEncoded
         )
         assertEquals(
-            "U0GeVBi2dNcdL2IO0nJo5Q==", // value555
+            "U0GeVBi2dNcdL2IO0nJo5Q==",
             byteArrayOf(83, 65, -98, 84, 24, -74, 116, -41, 29, 47, 98, 14, -46, 114, 104, -27).base64PadEncoded
         )
     }
@@ -83,15 +144,75 @@ class Base64Tests {
         )
     }
 
-    // Base64Url
     @Test
     fun byteArray_base64UrlDecoded() {
         assertEquals("Hello, world!", "SGVsbG8sIHdvcmxkIQ==".base64UrlPadDecoded)
         assertContentEquals(
             byteArrayOf(
-                -94, 124, -26, -112, -72, -84, 16, 11, 67, -45, 107, 38, -99, 79, 62, -49, 83, 26, -85, -70, -122, 53,
-                67, 42, -94, -87, 61, -74, 66, 0, 80, -125, -17, -11, -125, 63, 109, -15, 56, -95, -33, 18, 110, 47,
-                47, -20, -72, -34, 53, -69, 49, -45, 54, 53, -21, 43, 9, -84, -125, 72, -61, 76, 31, -46
+                -94,
+                124,
+                -26,
+                -112,
+                -72,
+                -84,
+                16,
+                11,
+                67,
+                -45,
+                107,
+                38,
+                -99,
+                79,
+                62,
+                -49,
+                83,
+                26,
+                -85,
+                -70,
+                -122,
+                53,
+                67,
+                42,
+                -94,
+                -87,
+                61,
+                -74,
+                66,
+                0,
+                80,
+                -125,
+                -17,
+                -11,
+                -125,
+                63,
+                109,
+                -15,
+                56,
+                -95,
+                -33,
+                18,
+                110,
+                47,
+                47,
+                -20,
+                -72,
+                -34,
+                53,
+                -69,
+                49,
+                -45,
+                54,
+                53,
+                -21,
+                43,
+                9,
+                -84,
+                -125,
+                72,
+                -61,
+                76,
+                31,
+                -46
             ),
             "onzmkLisEAtD02smnU8-z1Maq7qGNUMqoqk9tkIAUIPv9YM_bfE4od8Sbi8v7LjeNbsx0zY16ysJrINIw0wf0g==".base64UrlPadDecodedBytes
         )
@@ -100,15 +221,15 @@ class Base64Tests {
     @Test
     fun byteArray_base64UrlEncoded() {
         assertEquals(
-            "xvrp9DBWlei2mG0ov9MN-A", // value1
+            "xvrp9DBWlei2mG0ov9MN-A",
             byteArrayOf(-58, -6, -23, -12, 48, 86, -107, -24, -74, -104, 109, 40, -65, -45, 13, -8).base64UrlEncoded
         )
         assertEquals(
-            "IkYJxF8nIQD9RY7Yk6r26A", // value222
+            "IkYJxF8nIQD9RY7Yk6r26A",
             byteArrayOf(34, 70, 9, -60, 95, 39, 33, 0, -3, 69, -114, -40, -109, -86, -10, -24).base64UrlEncoded
         )
         assertEquals(
-            "U0GeVBi2dNcdL2IO0nJo5Q", // value555
+            "U0GeVBi2dNcdL2IO0nJo5Q",
             byteArrayOf(83, 65, -98, 84, 24, -74, 116, -41, 29, 47, 98, 14, -46, 114, 104, -27).base64UrlEncoded
         )
     }
