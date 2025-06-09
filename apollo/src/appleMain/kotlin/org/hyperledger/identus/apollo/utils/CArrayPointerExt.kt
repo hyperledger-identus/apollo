@@ -15,9 +15,10 @@ import kotlinx.cinterop.set
  * @return The converted UByteArray.
  */
 @OptIn(ExperimentalUnsignedTypes::class, ExperimentalForeignApi::class)
-fun CArrayPointer<UByteVar>.toUByteArray(length: Int): UByteArray = UByteArray(length) {
-    this[it]
-}
+fun CArrayPointer<UByteVar>.toUByteArray(length: Int): UByteArray =
+    UByteArray(length) {
+        this[it]
+    }
 
 /**
  * Converts a UByteArray to a CArrayPointer.

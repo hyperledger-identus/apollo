@@ -4,7 +4,6 @@ package org.hyperledger.identus.apollo.utils
  * Definition of the KMMEdPublicKey functionality
  */
 public expect class KMMEdPublicKey {
-
     /**
      * Method to verify a signature against the original message
      *

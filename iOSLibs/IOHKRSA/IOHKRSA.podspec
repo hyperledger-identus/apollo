@@ -29,11 +29,11 @@ Pod::Spec.new do |s|
     s.cocoapods_version = '>= 1.10.0'
     # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
     
-    s.ios.deployment_target = '13.0'
-    s.osx.deployment_target  = '12.0'
-    s.tvos.deployment_target = '13.0'
+    s.ios.deployment_target = '15.6'
+    s.osx.deployment_target  = '13.5'
+    s.tvos.deployment_target = '15.6'
     s.watchos.deployment_target = '8.0'
-    
+
     s.source_files = 'IOHKRSA/**/*.swift'
     
     # s.resource_bundles = {

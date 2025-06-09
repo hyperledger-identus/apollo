@@ -1,8 +1,6 @@
-/* ktlint-disable */
+@file:Suppress("ktlint")
 
 package fr.acinq.secp256k1
-
-// ktlint-disable filename
 public object Hex {
     private val hexCode = arrayOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f')
 

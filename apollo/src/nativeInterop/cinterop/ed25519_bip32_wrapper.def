@@ -1,1 +1,1 @@
-staticLibraries = libed25519_bip32_wrapper.a
+staticLibraries = libuniffi_ed25519_bip32_wrapper.a

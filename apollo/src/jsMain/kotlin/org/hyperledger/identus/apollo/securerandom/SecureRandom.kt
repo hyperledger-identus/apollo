@@ -11,14 +11,13 @@ import org.hyperledger.identus.apollo.utils.isNode
 actual class SecureRandom actual constructor(
     actual val seed: ByteArray
 ) : org.hyperledger.identus.apollo.securerandom.SecureRandomInterface {
-
     /**
      * Generates a specified number of secure random bytes.
      *
      * @param size The number of random bytes to generate.
      * @return A byte array containing the generated random bytes.
      */
-    override fun nextBytes(size: Int): ByteArray {
+    actual override fun nextBytes(size: Int): ByteArray {
         val arr = Uint8Array(size)
         return if (isNode) {
             _require("crypto").getRandomValues(arr)
@@ -34,7 +33,7 @@ actual class SecureRandom actual constructor(
          * @param numBytes The length of the seed in bytes.
          * @return The generated seed as a ByteArray.
          */
-        override fun generateSeed(numBytes: Int): ByteArray {
+        actual override fun generateSeed(numBytes: Int): ByteArray {
             val arr = Uint8Array(numBytes)
             return if (isNode) {
                 _require("crypto").getRandomValues(arr)

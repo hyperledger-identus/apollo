@@ -35,20 +35,22 @@ val ByteArray.base64Decoded: String
  * RFC 4648 Section 4
  */
 val ByteArray.base64PadEncoded: String
-    get() = org.hyperledger.identus.apollo.base64.Base64.encodeToString(
-        this,
-        org.hyperledger.identus.apollo.base64.Encoding.StandardPad
-    )
+    get() =
+        org.hyperledger.identus.apollo.base64.Base64.encodeToString(
+            this,
+            org.hyperledger.identus.apollo.base64.Encoding.StandardPad
+        )
 
 /**
  * Decode a [ByteArray] Base64 standard encoded to [String]
  * RFC 4648 Section 4
  */
 val ByteArray.base64PadDecoded: String
-    get() = org.hyperledger.identus.apollo.base64.Base64.decode(
-        this.decodeToString(),
-        org.hyperledger.identus.apollo.base64.Encoding.StandardPad
-    ).decodeToString()
+    get() =
+        org.hyperledger.identus.apollo.base64.Base64.decode(
+            this.decodeToString(),
+            org.hyperledger.identus.apollo.base64.Encoding.StandardPad
+        ).decodeToString()
 
 // Base64URL
 
@@ -57,20 +59,22 @@ val ByteArray.base64PadDecoded: String
  * RFC 4648 Section 5
  */
 val ByteArray.base64UrlDecoded: String
-    get() = org.hyperledger.identus.apollo.base64.Base64.decode(
-        this.decodeToString(),
-        org.hyperledger.identus.apollo.base64.Encoding.UrlSafe
-    ).decodeToString()
+    get() =
+        org.hyperledger.identus.apollo.base64.Base64.decode(
+            this.decodeToString(),
+            org.hyperledger.identus.apollo.base64.Encoding.UrlSafe
+        ).decodeToString()
 
 /**
  * Encode a [ByteArray] to Base64 URL-safe encoded [String].
  * RFC 4648 Section 5
  */
 val ByteArray.base64UrlEncoded: String
-    get() = org.hyperledger.identus.apollo.base64.Base64.encodeToString(
-        this,
-        org.hyperledger.identus.apollo.base64.Encoding.UrlSafe
-    )
+    get() =
+        org.hyperledger.identus.apollo.base64.Base64.encodeToString(
+            this,
+            org.hyperledger.identus.apollo.base64.Encoding.UrlSafe
+        )
 
 // Base64URL with padding
 
@@ -79,17 +83,19 @@ val ByteArray.base64UrlEncoded: String
  * RFC 4648 Section 5
  */
 val ByteArray.base64UrlPadDecoded: String
-    get() = org.hyperledger.identus.apollo.base64.Base64.encodeToString(
-        this,
-        org.hyperledger.identus.apollo.base64.Encoding.UrlSafePad
-    )
+    get() =
+        org.hyperledger.identus.apollo.base64.Base64.encodeToString(
+            this,
+            org.hyperledger.identus.apollo.base64.Encoding.UrlSafePad
+        )
 
 /**
  * Encode a [ByteArray] to Base64 URL-safe encoded [String].
  * RFC 4648 Section 5
  */
 val ByteArray.base64UrlPadEncoded: String
-    get() = org.hyperledger.identus.apollo.base64.Base64.encodeToString(
-        this,
-        org.hyperledger.identus.apollo.base64.Encoding.UrlSafePad
-    )
+    get() =
+        org.hyperledger.identus.apollo.base64.Base64.encodeToString(
+            this,
+            org.hyperledger.identus.apollo.base64.Encoding.UrlSafePad
+        )

@@ -42,11 +42,15 @@ data class HDKeyOptions(
         if (privateKey != null) {
             if (other.privateKey == null) return false
             if (!privateKey.contentEquals(other.privateKey)) return false
-        } else if (other.privateKey != null) return false
+        } else if (other.privateKey != null) {
+            return false
+        }
         if (publicKey != null) {
             if (other.publicKey == null) return false
             if (!publicKey.contentEquals(other.publicKey)) return false
-        } else if (other.publicKey != null) return false
+        } else if (other.publicKey != null) {
+            return false
+        }
 
         return true
     }

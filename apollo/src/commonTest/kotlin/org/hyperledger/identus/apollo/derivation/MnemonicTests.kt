@@ -6,32 +6,33 @@ import kotlin.test.fail
 class MnemonicTests {
     @Test
     fun testCreatingSeedWithEmptyPassphrase() {
-        val words = listOf(
-            "bicycle",
-            "monster",
-            "swap",
-            "cave",
-            "bulk",
-            "fossil",
-            "nominee",
-            "crisp",
-            "tail",
-            "parent",
-            "fossil",
-            "eyebrow",
-            "fold",
-            "manage",
-            "custom",
-            "burst",
-            "flight",
-            "lawn",
-            "survey",
-            "snake",
-            "brown",
-            "bridge",
-            "hard",
-            "perfect"
-        )
+        val words =
+            listOf(
+                "bicycle",
+                "monster",
+                "swap",
+                "cave",
+                "bulk",
+                "fossil",
+                "nominee",
+                "crisp",
+                "tail",
+                "parent",
+                "fossil",
+                "eyebrow",
+                "fold",
+                "manage",
+                "custom",
+                "burst",
+                "flight",
+                "lawn",
+                "survey",
+                "snake",
+                "brown",
+                "bridge",
+                "hard",
+                "perfect"
+            )
         val passphrase = ""
 
         assertDoesNotThrow {

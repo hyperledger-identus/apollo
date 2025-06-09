@@ -10,5 +10,7 @@ expect class KMMX25519KeyPair(privateKey: KMMX25519PrivateKey, publicKey: KMMX25
     val privateKey: KMMX25519PrivateKey
     val publicKey: KMMX25519PublicKey
 
-    companion object : X25519KeyPairGeneration
+    companion object : X25519KeyPairGeneration {
+        override fun generateKeyPair(): KMMX25519KeyPair
+    }
 }

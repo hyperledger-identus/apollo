@@ -16,7 +16,10 @@ class EdHDKeyTest {
             val key = EdHDKey(privateKey, chainCode)
             val derived = key.derive("m/1'")
 
-            assertEquals(derived.privateKey.toHexString(), "4057eb6cab9000e3b6fe7e556341da1ca2f5dde0b689a7b58cb93f1902dfa15a5a10732ff348051c6e0865c62931d4a73fa8050b8ff543b43fc0000a7e2c5700")
+            assertEquals(
+                derived.privateKey.toHexString(),
+                "4057eb6cab9000e3b6fe7e556341da1ca2f5dde0b689a7b58cb93f1902dfa15a5a10732ff348051c6e0865c62931d4a73fa8050b8ff543b43fc0000a7e2c5700"
+            )
             assertEquals(derived.chainCode.toHexString(), "9a170f689c8b9b3502ee846f457ab3dd1b017cfb2cd68865c7f24dbabcbc2256")
         }
     }

@@ -9,12 +9,13 @@ val buildSecp256k1Host by tasks.creating(Exec::class) {
     group = "build native"
     buildSecp256k1.dependsOn(this)
 
-    val target = when {
-        currentOs.isLinux -> "linux"
-        currentOs.isMacOsX -> "darwin"
-        currentOs.isWindows -> "mingw"
-        else -> error("Unsupported OS $currentOs")
-    }
+    val target =
+        when {
+            currentOs.isLinux -> "linux"
+            currentOs.isMacOsX -> "darwin"
+            currentOs.isWindows -> "mingw"
+            else -> error("Unsupported OS $currentOs")
+        }
 
     inputs.files(projectDir.resolve("build.sh"))
     outputs.dir(projectDir.resolve("build/$target"))

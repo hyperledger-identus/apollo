@@ -47,7 +47,6 @@ libraries.forEach { library ->
             when (sdk) {
                 "iphoneos" -> {
                     outputs.files(
-
                         fileTree(projectDir.resolve("$library/build/Release-iphoneos/"))
                     )
                 }

@@ -19,9 +19,16 @@ val taskGroup = "build ed25519-bip32"
 val ed25519bip32Dir = rootDir.resolve("rust-ed25519-bip32")
 val generatedDir = project.layout.buildDirectory.asFile.get().resolve("generated")
 val generatedResourcesDir = project.layout.buildDirectory.asFile.get().resolve("generatedResources")
+val generatedJvmLibsDirs =
+    listOf(
+        generatedResourcesDir.resolve("jvm/main/darwin-x86-64"),
+        generatedResourcesDir.resolve("jvm/main/darwin-aarch64"),
+        generatedResourcesDir.resolve("jvm/main/linux-x86-64"),
+        generatedResourcesDir.resolve("jvm/main/linux-aarch64")
+    )
 val ed25519bip32BinariesDir = ed25519bip32Dir.resolve("wrapper").resolve("target")
-val ANDROID_SDK = System.getenv("ANDROID_HOME")
-val NDK = System.getenv("ANDROID_NDK_HOME")
+val androidSdk = System.getenv("ANDROID_HOME")
+val ndk = System.getenv("ANDROID_NDK_HOME")
 
 plugins {
     kotlin("multiplatform")
@@ -93,6 +100,7 @@ fun KotlinNativeTarget.secp256k1CInterop(target: String) {
 fun KotlinNativeTarget.ed25519Bip32CInterop(target: String) {
     compilations.getByName("main") {
         cinterops {
+            @Suppress("ktlint:standard:property-naming")
             val ed25519_bip32_wrapper by creating {
                 val crate = this.name
                 packageName("$crate.cinterop")
@@ -215,11 +223,16 @@ val javadocJar by tasks.registering(Jar::class) {
 /**
  * Copy Generated Kotlin Code
  */
-val copyEd25519Bip32GeneratedTask = createCopyTask(
-    "copyEd25519Bip32Generated",
-    ed25519bip32Dir.resolve("wrapper").resolve("build").resolve("generated"),
-    generatedDir
-)
+val copyEd25519Bip32GeneratedTask =
+    createCopyTask(
+        "copyEd25519Bip32Generated",
+        ed25519bip32Dir.resolve("wrapper").resolve("build").resolve("generated"),
+        generatedDir
+    )
+
+tasks.matching { it.name in listOf("packageDebugAssets", "packageReleaseAssets") }.configureEach {
+    dependsOn(copyEd25519Bip32GeneratedTask)
+}
 
 /**
  * Copy JVM Code to Android folder
@@ -228,35 +241,38 @@ val copyToAndroidSrc by tasks.register<Copy>("copyToAndroidSrc") {
     group = taskGroup
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
     include("*.so", "*.a", "*.d", "*.dylib", "**/*.kt", "*.js", "**/*.h")
-    from(project.layout.buildDirectory.asFile.get().resolve("generated").resolve("jvmMain"))
     into(project.layout.buildDirectory.asFile.get().resolve("generated").resolve("androidMain"))
     dependsOn(copyEd25519Bip32GeneratedTask)
     mustRunAfter(copyEd25519Bip32GeneratedTask)
 }
 
-val copyEd25519Bip32ForMacOSX8664Task = createCopyTask(
-    "copyEd25519Bip32ForMacOSX86_64",
-    ed25519bip32BinariesDir.resolve("x86_64-apple-darwin").resolve("release"),
-    generatedResourcesDir.resolve("jvm").resolve("main").resolve("darwin-x86-64")
-)
+val copyEd25519Bip32ForMacOSX8664Task =
+    createCopyTask(
+        "copyEd25519Bip32ForMacOSX86_64",
+        ed25519bip32BinariesDir.resolve("x86_64-apple-darwin").resolve("release"),
+        generatedResourcesDir.resolve("jvm").resolve("main").resolve("darwin-x86-64")
+    )
 
-val copyEd25519Bip32ForMacOSArch64Task = createCopyTask(
-    "copyEd25519Bip32ForMacOSArch64",
-    ed25519bip32BinariesDir.resolve("aarch64-apple-darwin").resolve("release"),
-    generatedResourcesDir.resolve("jvm").resolve("main").resolve("darwin-aarch64")
-)
+val copyEd25519Bip32ForMacOSArch64Task =
+    createCopyTask(
+        "copyEd25519Bip32ForMacOSArch64",
+        ed25519bip32BinariesDir.resolve("aarch64-apple-darwin").resolve("release"),
+        generatedResourcesDir.resolve("jvm").resolve("main").resolve("darwin-aarch64")
+    )
 
-val copyEd25519Bip32ForLinuxX8664Task = createCopyTask(
-    "copyEd25519Bip32ForLinuxX86_64",
-    ed25519bip32BinariesDir.resolve("x86_64-unknown-linux-gnu").resolve("release"),
-    generatedResourcesDir.resolve("jvm").resolve("main").resolve("linux-x86-64")
-)
+val copyEd25519Bip32ForLinuxX8664Task =
+    createCopyTask(
+        "copyEd25519Bip32ForLinuxX86_64",
+        ed25519bip32BinariesDir.resolve("x86_64-unknown-linux-gnu").resolve("release"),
+        generatedResourcesDir.resolve("jvm").resolve("main").resolve("linux-x86-64")
+    )
 
-val copyEd25519Bip32ForLinuxArch64Task = createCopyTask(
-    "copyEd25519Bip32ForLinuxArch64",
-    ed25519bip32BinariesDir.resolve("aarch64-unknown-linux-gnu").resolve("release"),
-    generatedResourcesDir.resolve("jvm").resolve("main").resolve("linux-aarch64")
-)
+val copyEd25519Bip32ForLinuxArch64Task =
+    createCopyTask(
+        "copyEd25519Bip32ForLinuxArch64",
+        ed25519bip32BinariesDir.resolve("aarch64-unknown-linux-gnu").resolve("release"),
+        generatedResourcesDir.resolve("jvm").resolve("main").resolve("linux-aarch64")
+    )
 
 /**
  * A task group that responsible for moving generated JVM binaries to correct folder.
@@ -271,29 +287,33 @@ val copyEd25519Bip32ForJVMTargetTask by tasks.register("copyEd25519Bip32ForJVMTa
     )
 }
 
-val copyEd25519Bip32ForAndroidX8664Task = createCopyTask(
-    "copyEd25519Bip32ForAndroidX86_64",
-    ed25519bip32BinariesDir.resolve("x86_64-linux-android").resolve("release"),
-    generatedResourcesDir.resolve("android").resolve("main").resolve("jniLibs").resolve("x86_64")
-)
+val copyEd25519Bip32ForAndroidX8664Task =
+    createCopyTask(
+        "copyEd25519Bip32ForAndroidX86_64",
+        ed25519bip32BinariesDir.resolve("x86_64-linux-android").resolve("release"),
+        generatedResourcesDir.resolve("android").resolve("main").resolve("jniLibs").resolve("x86_64")
+    )
 
-val copyEd25519Bip32ForAndroidArch64Task = createCopyTask(
-    "copyEd25519Bip32ForAndroidArch64",
-    ed25519bip32BinariesDir.resolve("aarch64-linux-android").resolve("release"),
-    generatedResourcesDir.resolve("android").resolve("main").resolve("jniLibs").resolve("arm64-v8a")
-)
+val copyEd25519Bip32ForAndroidArch64Task =
+    createCopyTask(
+        "copyEd25519Bip32ForAndroidArch64",
+        ed25519bip32BinariesDir.resolve("aarch64-linux-android").resolve("release"),
+        generatedResourcesDir.resolve("android").resolve("main").resolve("jniLibs").resolve("arm64-v8a")
+    )
 
-val copyEd25519Bip32ForAndroidI686Task = createCopyTask(
-    "copyEd25519Bip32ForAndroidI686",
-    ed25519bip32BinariesDir.resolve("i686-linux-android").resolve("release"),
-    generatedResourcesDir.resolve("android").resolve("main").resolve("jniLibs").resolve("x86")
-)
+val copyEd25519Bip32ForAndroidI686Task =
+    createCopyTask(
+        "copyEd25519Bip32ForAndroidI686",
+        ed25519bip32BinariesDir.resolve("i686-linux-android").resolve("release"),
+        generatedResourcesDir.resolve("android").resolve("main").resolve("jniLibs").resolve("x86")
+    )
 
-val copyEd25519Bip32ForAndroidArmv7aTask = createCopyTask(
-    "copyEd25519Bip32ForAndroidArmv7a",
-    ed25519bip32BinariesDir.resolve("armv7-linux-androideabi").resolve("release"),
-    generatedResourcesDir.resolve("android").resolve("main").resolve("jniLibs").resolve("armeabi-v7a")
-)
+val copyEd25519Bip32ForAndroidArmv7aTask =
+    createCopyTask(
+        "copyEd25519Bip32ForAndroidArmv7a",
+        ed25519bip32BinariesDir.resolve("armv7-linux-androideabi").resolve("release"),
+        generatedResourcesDir.resolve("android").resolve("main").resolve("jniLibs").resolve("armeabi-v7a")
+    )
 
 /**
  * A task group that responsible for moving generated Android binaries to correct folder.
@@ -312,8 +332,7 @@ val copyEd25519Bip32Wrapper by tasks.register("copyEd25519Bip32") {
     dependsOn(
         copyEd25519Bip32GeneratedTask,
         copyEd25519Bip32ForJVMTargetTask,
-        copyEd25519Bip32ForAndroidTargetTask,
-        copyToAndroidSrc
+        copyEd25519Bip32ForAndroidTargetTask
     )
     mustRunAfter(buildEd25519Bip32Wrapper)
 }
@@ -322,28 +341,31 @@ val buildEd25519Bip32Wrapper by tasks.register<Exec>("buildEd25519Bip32Wrapper")
     group = taskGroup
     workingDir = ed25519bip32Dir.resolve("wrapper")
     val localEnv = this.environment
-    localEnv += mapOf(
-        "ANDROID_HOME" to ANDROID_SDK,
-        "ANDROID_NDK_HOME" to NDK
-    )
+    localEnv +=
+        mapOf(
+            "ANDROID_HOME" to androidSdk,
+            "ANDROID_NDK_HOME" to ndk
+        )
     this.environment = localEnv
     commandLine("./build-kotlin-library.sh")
 }
 
-val copyEd25519Bip32Wasm = createCopyTask(
-    "copyEd25519Bip32GeneratedWasm",
-    ed25519bip32Dir.resolve("wasm").resolve("build"),
-    rootDir.resolve("build").resolve("js").resolve("packages").resolve("Apollo").resolve("kotlin")
-)
+val copyEd25519Bip32Wasm =
+    createCopyTask(
+        "copyEd25519Bip32GeneratedWasm",
+        ed25519bip32Dir.resolve("wasm").resolve("build"),
+        rootDir.resolve("build").resolve("js").resolve("packages").resolve("Apollo").resolve("kotlin")
+    )
 copyEd25519Bip32Wasm.configure {
     mustRunAfter(buildEd25519Bip32Wasm)
 }
 
-val copyEd25519Bip32WasmTest = createCopyTask(
-    "copyEd25519Bip32GeneratedWasmTest",
-    ed25519bip32Dir.resolve("wasm").resolve("build"),
-    rootDir.resolve("build").resolve("js").resolve("packages").resolve("Apollo-test").resolve("kotlin")
-)
+val copyEd25519Bip32WasmTest =
+    createCopyTask(
+        "copyEd25519Bip32GeneratedWasmTest",
+        ed25519bip32Dir.resolve("wasm").resolve("build"),
+        rootDir.resolve("build").resolve("js").resolve("packages").resolve("Apollo-test").resolve("kotlin")
+    )
 copyEd25519Bip32WasmTest.configure {
     mustRunAfter(buildEd25519Bip32Wasm)
 }
@@ -392,12 +414,18 @@ kotlin {
             }
         }
         compilations.all {
-            kotlinOptions {
-                jvmTarget = "17"
+            compilerOptions.configure {
+                jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+                freeCompilerArgs.add("-opt-in=kotlin.ExperimentalStdlibApi")
             }
         }
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()
+            systemProperty(
+                "jna.library.path",
+                generatedJvmLibsDirs.joinToString(File.pathSeparator) { it.absolutePath }
+            )
+            jvmArgs("-Djava.library.path=${generatedJvmLibsDirs.joinToString(File.pathSeparator) { it.absolutePath }}")
         }
     }
     iosArm64 {
@@ -408,16 +436,17 @@ kotlin {
         ed25519Bip32CInterop(name)
 
         // https://youtrack.jetbrains.com/issue/KT-39396
-        compilations["main"].kotlinOptions.freeCompilerArgs += listOf(
-            "-include-binary",
-            secp256k1Dir
-                .resolve("native")
-                .resolve("build")
-                .resolve("ios")
-                .resolve("arm64-iphoneos")
-                .resolve("libsecp256k1.a")
-                .absolutePath
-        )
+        compilations["main"].kotlinOptions.freeCompilerArgs +=
+            listOf(
+                "-include-binary",
+                secp256k1Dir
+                    .resolve("native")
+                    .resolve("build")
+                    .resolve("ios")
+                    .resolve("arm64-iphoneos")
+                    .resolve("libsecp256k1.a")
+                    .absolutePath
+            )
 
         binaries.framework {
             baseName = "ApolloLibrary"
@@ -432,23 +461,24 @@ kotlin {
         ed25519Bip32CInterop(name)
 
         // https://youtrack.jetbrains.com/issue/KT-39396
-        compilations["main"].kotlinOptions.freeCompilerArgs += listOf(
-            "-include-binary",
-            secp256k1Dir
-                .resolve("native")
-                .resolve("build")
-                .resolve("ios")
-                .resolve("x86_x64-iphonesimulator")
-                .resolve("libsecp256k1.a")
-                .absolutePath
-        )
+        compilations["main"].kotlinOptions.freeCompilerArgs +=
+            listOf(
+                "-include-binary",
+                secp256k1Dir
+                    .resolve("native")
+                    .resolve("build")
+                    .resolve("ios")
+                    .resolve("x86_x64-iphonesimulator")
+                    .resolve("libsecp256k1.a")
+                    .absolutePath
+            )
 
         binaries.framework {
             baseName = "ApolloLibrary"
             embedBitcode(BitcodeEmbeddingMode.DISABLE)
             if (os.isMacOsX) {
                 if (System.getenv()
-                    .containsKey("XCODE_VERSION_MAJOR") && System.getenv("XCODE_VERSION_MAJOR") == "1500"
+                        .containsKey("XCODE_VERSION_MAJOR") && System.getenv("XCODE_VERSION_MAJOR") == "1500"
                 ) {
                     linkerOpts += "-ld64"
                 }
@@ -463,16 +493,17 @@ kotlin {
         ed25519Bip32CInterop(name)
 
         // https://youtrack.jetbrains.com/issue/KT-39396
-        compilations["main"].kotlinOptions.freeCompilerArgs += listOf(
-            "-include-binary",
-            secp256k1Dir
-                .resolve("native")
-                .resolve("build")
-                .resolve("ios")
-                .resolve("arm64-iphonesimulator")
-                .resolve("libsecp256k1.a")
-                .absolutePath
-        )
+        compilations["main"].kotlinOptions.freeCompilerArgs +=
+            listOf(
+                "-include-binary",
+                secp256k1Dir
+                    .resolve("native")
+                    .resolve("build")
+                    .resolve("ios")
+                    .resolve("arm64-iphonesimulator")
+                    .resolve("libsecp256k1.a")
+                    .absolutePath
+            )
 
         binaries.framework {
             baseName = "ApolloLibrary"
@@ -487,16 +518,17 @@ kotlin {
         ed25519Bip32CInterop(name)
 
         // https://youtrack.jetbrains.com/issue/KT-39396
-        compilations["main"].kotlinOptions.freeCompilerArgs += listOf(
-            "-include-binary",
-            secp256k1Dir
-                .resolve("native")
-                .resolve("build")
-                .resolve("ios")
-                .resolve("arm64-macosx")
-                .resolve("libsecp256k1.a")
-                .absolutePath
-        )
+        compilations["main"].kotlinOptions.freeCompilerArgs +=
+            listOf(
+                "-include-binary",
+                secp256k1Dir
+                    .resolve("native")
+                    .resolve("build")
+                    .resolve("ios")
+                    .resolve("arm64-macosx")
+                    .resolve("libsecp256k1.a")
+                    .absolutePath
+            )
 
         binaries.framework {
             baseName = "ApolloLibrary"
@@ -563,7 +595,7 @@ kotlin {
         }
         val allButJSMain by creating {
             dependsOn(commonMain)
-            kotlin.srcDir(
+            kotlin.srcDirs(
                 generatedDir
                     .resolve("commonMain")
                     .resolve("kotlin")
@@ -579,19 +611,20 @@ kotlin {
                     .resolve("androidMain")
                     .resolve("kotlin")
             )
-            val generatedResources = project.layout.buildDirectory.asFile.get()
-                .resolve("generatedResources")
-                .resolve("android")
-                .resolve("main")
-                .resolve("jniLibs")
+            val generatedResources =
+                project.layout.buildDirectory.asFile.get()
+                    .resolve("generatedResources")
+                    .resolve("android")
+                    .resolve("main")
+                    .resolve("jniLibs")
             resources.srcDir(generatedResources)
             dependencies {
                 api("fr.acinq.secp256k1:secp256k1-kmp:0.14.0")
                 implementation("fr.acinq.secp256k1:secp256k1-kmp-jni-jvm:0.11.0")
                 implementation("fr.acinq.secp256k1:secp256k1-kmp-jni-android:0.14.0")
                 implementation("com.google.guava:guava:30.1-jre")
-                implementation("org.bouncycastle:bcprov-jdk15on:1.68")
-                implementation("org.bitcoinj:bitcoinj-core:0.16.2")
+                implementation("org.bouncycastle:bcprov-jdk18on:1.80")
+                implementation("org.bitcoinj:bitcoinj-core:0.17")
                 implementation("net.java.dev.jna:jna:5.13.0@aar")
             }
         }
@@ -608,10 +641,11 @@ kotlin {
                     .resolve("jvmMain")
                     .resolve("kotlin")
             )
-            val generatedResources = project.layout.buildDirectory.asFile.get()
-                .resolve("generatedResources")
-                .resolve("jvm")
-                .resolve("main")
+            val generatedResources =
+                project.layout.buildDirectory.asFile.get()
+                    .resolve("generatedResources")
+                    .resolve("jvm")
+                    .resolve("main")
             resources.srcDir(generatedResources)
             dependencies {
                 api("fr.acinq.secp256k1:secp256k1-kmp:0.14.0")
@@ -652,7 +686,11 @@ kotlin {
         }
         val nativeMain by getting {
             dependsOn(allButJSMain)
-            kotlin.srcDir(
+            kotlin.srcDirs(
+                secp256k1Dir
+                    .resolve("src")
+                    .resolve("commonMain")
+                    .resolve("kotlin"),
                 generatedDir
                     .resolve("nativeMain")
                     .resolve("kotlin")
@@ -660,10 +698,6 @@ kotlin {
         }
         val appleMain by getting {
             kotlin.srcDirs(
-                secp256k1Dir
-                    .resolve("src")
-                    .resolve("commonMain")
-                    .resolve("kotlin"),
                 secp256k1Dir
                     .resolve("src")
                     .resolve("nativeMain")
@@ -729,6 +763,15 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
+    kotlin {
+        jvmToolchain(17)
+    }
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
     /**
      * Because Software Components will not be created automatically for Maven publishing from
      * Android Gradle Plugin 8.0. To opt-in to the future behavior, set the Gradle property android.
@@ -749,11 +792,21 @@ ktlint {
         exclude {
             it.file.toString().contains("generated")
         }
-        exclude("**/external/*", "./src/jsMain/kotlin/io/iohk/atala/prism/apollo/utils/external/*")
+        exclude("**/external/*", "./src/jsMain/kotlin/io/iohk/atala/prism/apollo/utils/external/*", "build/*")
         exclude {
             it.file.toString().contains("external")
         }
         exclude { projectDir.toURI().relativize(it.file.toURI()).path.contains("/external/") }
+        exclude { projectDir.toURI().relativize(it.file.toURI()).path.contains("/generated/") }
+    }
+}
+
+tasks.withType<Test>().configureEach {
+    dependsOn(copyEd25519Bip32ForJVMTargetTask)
+    doFirst {
+        val paths = generatedJvmLibsDirs.joinToString(separator = File.pathSeparator) { it.absolutePath }
+        systemProperty("jna.library.path", paths)
+        jvmArgs("-Djava.library.path=$paths")
     }
 }
 
@@ -876,7 +929,7 @@ afterEvaluate {
         dependsOn(cleanEd25519Bip32)
     }
     tasks.withType<KtLintCheckTask> {
-        // dependsOn(buildEd25519Bip32Task)
+        dependsOn(buildEd25519Bip32Task)
     }
     tasks.withType<org.gradle.jvm.tasks.Jar> {
         dependsOn(copyEd25519Bip32GeneratedTask)

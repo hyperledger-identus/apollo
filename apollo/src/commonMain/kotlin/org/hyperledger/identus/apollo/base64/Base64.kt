@@ -6,7 +6,6 @@ import kotlin.math.min
  * Base64 implementation
  */
 internal final object Base64 {
-
     /**
      * Encode ByteArray to Base64 String
      */
@@ -179,11 +178,12 @@ internal final object Base64 {
         @Throws(IllegalArgumentException::class)
         private fun outLength(src: ByteArray, sp: Int, sl: Int): Int {
             var sp = sp
-            val base64 = if (isURL) {
-                fromBase64URL
-            } else {
-                fromBase64
-            }
+            val base64 =
+                if (isURL) {
+                    fromBase64URL
+                } else {
+                    fromBase64
+                }
             var paddings = 0
             var len = sl - sp
             if (len == 0) {
@@ -350,12 +350,13 @@ internal final object Base64 {
         private val doPadding: Boolean
     ) {
         private fun outLength(srclen: Int): Int {
-            var len = if (doPadding) {
-                4 * ((srclen + 2) / 3)
-            } else {
-                val n = srclen % 3
-                4 * (srclen / 3) + if (n == 0) 0 else n + 1
-            }
+            var len =
+                if (doPadding) {
+                    4 * ((srclen + 2) / 3)
+                } else {
+                    val n = srclen % 3
+                    4 * (srclen / 3) + if (n == 0) 0 else n + 1
+                }
             if (linemax > 0) { // line separators
                 len += (len - 1) / linemax * newline!!.size
             }
@@ -467,10 +468,11 @@ internal final object Base64 {
                 var sp0 = sp
                 var dp0 = dp
                 while (sp0 < sl0) {
-                    val bits = src[sp0++].toInt() and 0xff shl 16 or (
-                        src[sp0++].toInt() and 0xff shl 8
+                    val bits =
+                        src[sp0++].toInt() and 0xff shl 16 or (
+                            src[sp0++].toInt() and 0xff shl 8
                         ) or
-                        (src[sp0++].toInt() and 0xff)
+                            (src[sp0++].toInt() and 0xff)
                     dst[dp0++] = base64[bits ushr 18 and 0x3f].code.toByte()
                     dst[dp0++] = base64[bits ushr 12 and 0x3f].code.toByte()
                     dst[dp0++] = base64[bits ushr 6 and 0x3f].code.toByte()
@@ -512,26 +514,146 @@ internal final object Base64 {
              * index values into their "Base64 Alphabet" equivalents as specified
              * in "Table 1: The Base64 Alphabet" of RFC 2045 (and RFC 4648).
              */
-            val toBase64 = charArrayOf(
-                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-                'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-                'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/'
-            )
+            val toBase64 =
+                charArrayOf(
+                    'A',
+                    'B',
+                    'C',
+                    'D',
+                    'E',
+                    'F',
+                    'G',
+                    'H',
+                    'I',
+                    'J',
+                    'K',
+                    'L',
+                    'M',
+                    'N',
+                    'O',
+                    'P',
+                    'Q',
+                    'R',
+                    'S',
+                    'T',
+                    'U',
+                    'V',
+                    'W',
+                    'X',
+                    'Y',
+                    'Z',
+                    'a',
+                    'b',
+                    'c',
+                    'd',
+                    'e',
+                    'f',
+                    'g',
+                    'h',
+                    'i',
+                    'j',
+                    'k',
+                    'l',
+                    'm',
+                    'n',
+                    'o',
+                    'p',
+                    'q',
+                    'r',
+                    's',
+                    't',
+                    'u',
+                    'v',
+                    'w',
+                    'x',
+                    'y',
+                    'z',
+                    '0',
+                    '1',
+                    '2',
+                    '3',
+                    '4',
+                    '5',
+                    '6',
+                    '7',
+                    '8',
+                    '9',
+                    '+',
+                    '/'
+                )
 
             /**
              * It's the lookup table for "URL and Filename safe Base64" as specified
              * in Table 2 of the RFC 4648, with the '+' and '/' changed to '-' and
              * '_'. This table is used when BASE64_URL is specified.
              */
-            val toBase64URL = charArrayOf(
-                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-                'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-                'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '_'
-            )
+            val toBase64URL =
+                charArrayOf(
+                    'A',
+                    'B',
+                    'C',
+                    'D',
+                    'E',
+                    'F',
+                    'G',
+                    'H',
+                    'I',
+                    'J',
+                    'K',
+                    'L',
+                    'M',
+                    'N',
+                    'O',
+                    'P',
+                    'Q',
+                    'R',
+                    'S',
+                    'T',
+                    'U',
+                    'V',
+                    'W',
+                    'X',
+                    'Y',
+                    'Z',
+                    'a',
+                    'b',
+                    'c',
+                    'd',
+                    'e',
+                    'f',
+                    'g',
+                    'h',
+                    'i',
+                    'j',
+                    'k',
+                    'l',
+                    'm',
+                    'n',
+                    'o',
+                    'p',
+                    'q',
+                    'r',
+                    's',
+                    't',
+                    'u',
+                    'v',
+                    'w',
+                    'x',
+                    'y',
+                    'z',
+                    '0',
+                    '1',
+                    '2',
+                    '3',
+                    '4',
+                    '5',
+                    '6',
+                    '7',
+                    '8',
+                    '9',
+                    '-',
+                    '_'
+                )
             private const val MIMELINEMAX = 76
             private val CRLF = byteArrayOf('\r'.code.toByte(), '\n'.code.toByte())
             val RFC4648 = Encoder(false, null, -1, true)
