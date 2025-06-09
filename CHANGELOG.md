@@ -1,3 +1,15 @@
+# [1.5.0](https://github.com/hyperledger-identus/apollo/compare/v1.4.5...v1.5.0) (2025-06-09)
+
+
+### Bug Fixes
+
+* CI secrets and renamed old links to new under the new organization hyperledger identus ([#201](https://github.com/hyperledger-identus/apollo/issues/201)) ([242b47c](https://github.com/hyperledger-identus/apollo/commit/242b47c607afa3acb82fbf765a5d35537bb98258))
+
+
+### Features
+
+* update kotlin version to 2.0.20 ([#203](https://github.com/hyperledger-identus/apollo/issues/203)) ([589bb48](https://github.com/hyperledger-identus/apollo/commit/589bb48a39ee7aabd00cf7d7e70ca5eee04806aa))
+
 ## [1.4.5](https://github.com/hyperledger-identus/apollo/compare/v1.4.4...v1.4.5) (2025-01-31)
 
 
