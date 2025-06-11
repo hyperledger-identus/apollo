@@ -1,7 +1,6 @@
 val publishedMavenId: String = "org.hyperledger.identus.apollo"
 
 plugins {
-    id("org.jetbrains.dokka") version "1.9.20"
     id("org.jlleitschuh.gradle.ktlint") version "12.3.0"
     id("maven-publish")
     id("org.jetbrains.kotlinx.kover") version "0.7.5"
@@ -123,16 +122,17 @@ allprojects {
                     url.set("https://github.com/hyperledger/identus-apollo")
                 }
             }
-
-            signing {
-                useInMemoryPgpKeys(
-                    project.findProperty("signing.signingSecretKey") as String? ?: System.getenv("OSSRH_GPG_SECRET_KEY"),
-                    project.findProperty("signing.signingSecretKeyPassword") as String? ?: System.getenv("OSSRH_GPG_SECRET_KEY_PASSWORD")
-                )
-                sign(this@withType)
-            }
         }
     }
+}
+
+signing {
+    useInMemoryPgpKeys(
+        project.findProperty("signing.signingSecretKey") as String? ?: System.getenv("OSSRH_GPG_SECRET_KEY"),
+        project.findProperty("signing.signingSecretKeyPassword") as String? ?: System.getenv("OSSRH_GPG_SECRET_KEY_PASSWORD")
+    )
+
+    sign(publishing.publications)
 }
 
 subprojects {

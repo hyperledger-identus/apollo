@@ -5,7 +5,6 @@ val currentOs = OperatingSystem.current()
 
 plugins {
     kotlin("multiplatform")
-    id("org.jetbrains.dokka")
 }
 
 fun KotlinNativeTarget.secp256k1CInterop(target: String) {

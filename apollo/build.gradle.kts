@@ -1,6 +1,5 @@
 import dev.petuska.npm.publish.extension.domain.NpmAccess
 import org.gradle.internal.os.OperatingSystem
-import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
@@ -8,8 +7,6 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput.Target
 import org.jetbrains.kotlin.gradle.tasks.CInteropProcess
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jlleitschuh.gradle.ktlint.tasks.KtLintCheckTask
-import java.net.URL
-import java.time.Year
 
 val currentModuleName: String = "Apollo"
 val os: OperatingSystem = OperatingSystem.current()
@@ -34,7 +31,6 @@ plugins {
     kotlin("multiplatform")
     id("io.github.luca992.multiplatform-swiftpackage") version "2.2.2"
     id("com.android.library")
-    id("org.jetbrains.dokka")
     id("dev.petuska.npm.publish") version "3.4.1"
 }
 
@@ -208,16 +204,6 @@ fun createCopyTask(
     include("*.so", "*.a", "*.d", "*.dylib", "**/*.kt", "*.js", "**/*.h")
     from(fromDir)
     into(intoDir)
-}
-
-/**
- * The `javadocJar` variable is used to register a `Jar` task to generate a Javadoc JAR file.
- * The Javadoc JAR file is created with the classifier "javadoc" and it includes the HTML documentation generated
- * by the `dokkaHtml` task.
- */
-val javadocJar by tasks.registering(Jar::class) {
-    archiveClassifier.set("javadoc")
-    from(tasks.dokkaHtml)
 }
 
 /**
@@ -409,7 +395,6 @@ kotlin {
         publishing {
             publications {
                 withType<MavenPublication> {
-                    artifact(javadocJar)
                 }
             }
         }
@@ -810,49 +795,6 @@ tasks.withType<Test>().configureEach {
     }
 }
 
-// Dokka implementation
-tasks.withType<DokkaTask>().configureEach {
-    moduleName.set(currentModuleName)
-    moduleVersion.set(rootProject.version.toString())
-    description = "This is a Kotlin Multiplatform Library for cryptography"
-    pluginConfiguration<org.jetbrains.dokka.base.DokkaBase, org.jetbrains.dokka.base.DokkaBaseConfiguration> {
-        footerMessage = "(c) ${Year.now().value} HyberLedger Copyright"
-    }
-    dokkaSourceSets {
-        configureEach {
-            jdkVersion.set(17)
-            languageVersion.set("1.9.22")
-            apiVersion.set("2.0")
-            includes.from(
-                "docs/Apollo.md",
-                "docs/Base64.md",
-                "docs/SecureRandom.md"
-            )
-            sourceLink {
-                localDirectory.set(projectDir.resolve("src"))
-                remoteUrl.set(URL("https://github.com/hyperledger-identus/apollo/tree/main/src"))
-                remoteLineSuffix.set("#L")
-            }
-            externalDocumentationLink {
-                url.set(URL("https://kotlinlang.org/api/latest/jvm/stdlib/"))
-            }
-            externalDocumentationLink {
-                url.set(URL("https://kotlinlang.org/api/kotlinx.serialization/"))
-            }
-            externalDocumentationLink {
-                url.set(URL("https://api.ktor.io/"))
-            }
-            externalDocumentationLink {
-                url.set(URL("https://kotlinlang.org/api/kotlinx-datetime/"))
-                packageListUrl.set(URL("https://kotlinlang.org/api/kotlinx-datetime/"))
-            }
-            externalDocumentationLink {
-                url.set(URL("https://kotlinlang.org/api/kotlinx.coroutines/"))
-            }
-        }
-    }
-}
-
 npmPublish {
     organization.set("hyperledger")
     version.set(rootProject.version.toString())
@@ -937,6 +879,8 @@ afterEvaluate {
 
     tasks.getByName("androidDebugSourcesJar").dependsOn(copyToAndroidSrc)
     tasks.getByName("androidReleaseSourcesJar").dependsOn(copyToAndroidSrc)
+    tasks.getByName("compileDebugKotlinAndroid").dependsOn(copyToAndroidSrc)
+    tasks.getByName("compileReleaseKotlinAndroid").dependsOn(copyToAndroidSrc)
 
     tasks.getByName("mergeDebugJniLibFolders").dependsOn(buildEd25519Bip32Task)
     tasks.getByName("mergeReleaseJniLibFolders").dependsOn(buildEd25519Bip32Task)
