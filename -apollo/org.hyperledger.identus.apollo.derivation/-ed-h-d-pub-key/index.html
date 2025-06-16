@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>EdHDPubKey</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+                    <a class="library-name--link" href="../../../index.html">
+                            Apollo
+                    </a>
+            </div>
+            <div class="library-version">
+1.5.0            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector common-like" data-active="" data-filter=":apollo:dokkaHtml/commonMain">common</button>
+                <button class="platform-tag platform-selector js-like" data-active="" data-filter=":apollo:dokkaHtml/jsMain">js</button>
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":apollo:dokkaHtml/jvmMain">jvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="Apollo::org.hyperledger.identus.apollo.derivation/EdHDPubKey///PointingToDeclaration//-1606045687">
+  <div class="breadcrumbs"><a href="../../../index.html">Apollo</a><span class="delimiter">/</span><a href="../index.html">org.hyperledger.identus.apollo.derivation</a><span class="delimiter">/</span><span class="current">EdHDPubKey</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Ed</span><wbr></wbr><span>HDPub</span><wbr></wbr><span><span>Key</span></span></h1>
+    <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+      <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":apollo:dokkaHtml/commonMain" data-filterable-set=":apollo:dokkaHtml/commonMain" data-active="" data-toggle=":apollo:dokkaHtml/commonMain">common</button><button class="platform-bookmark" data-filterable-current=":apollo:dokkaHtml/jsMain" data-filterable-set=":apollo:dokkaHtml/jsMain" data-toggle=":apollo:dokkaHtml/jsMain">js</button><button class="platform-bookmark" data-filterable-current=":apollo:dokkaHtml/jvmMain" data-filterable-set=":apollo:dokkaHtml/jvmMain" data-toggle=":apollo:dokkaHtml/jvmMain">jvm</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":apollo:dokkaHtml/commonMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">class </span><a href="index.html">EdHDPubKey</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">publicKey<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a><span class="token punctuation">, </span></span><span class="parameter ">chainCode<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a><span class="token punctuation">, </span></span><span class="parameter ">depth<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter ">index<span class="token operator">: </span><a href="../-big-integer-wrapper/index.html">BigIntegerWrapper</a><span class="token operator"> = </span>BigIntegerWrapper(0)</span></span><span class="token punctuation">)</span><span class="clearfix"><span class="floating-right">(<a href="https://github.com/hyperledger-identus/apollo/tree/main/src/commonMain/kotlin/org/hyperledger/identus/apollo/derivation/EdHDPubKey.kt#L3">source</a>)</span></span></div></div><div class="content sourceset-dependent-content" data-togglable=":apollo:dokkaHtml/jsMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">class </span><a href="index.html">EdHDPubKey</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>publicKey<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>chainCode<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>depth<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>index<span class="token operator">: </span><a href="../-big-integer-wrapper/index.html">BigIntegerWrapper</a></span></span><span class="token punctuation">)</span><span class="clearfix"><span class="floating-right">(<a href="https://github.com/hyperledger-identus/apollo/tree/main/src/jsMain/kotlin/org/hyperledger/identus/apollo/derivation/EdHDPubKey.kt#L11">source</a>)</span></span></div><p class="paragraph">Represents and HDKey with its derive methods</p></div><div class="content sourceset-dependent-content" data-togglable=":apollo:dokkaHtml/jvmMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">class </span><a href="index.html">EdHDPubKey</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>publicKey<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>chainCode<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>depth<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>index<span class="token operator">: </span><a href="../-big-integer-wrapper/index.html">BigIntegerWrapper</a></span></span><span class="token punctuation">)</span><span class="clearfix"><span class="floating-right">(<a href="https://github.com/hyperledger-identus/apollo/tree/main/src/jvmMain/kotlin/org/hyperledger/identus/apollo/derivation/EdHDPubKey.kt#L9">source</a>)</span></span></div><p class="paragraph">Represents and HDKey with its derive methods</p></div>    </div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="795544913%2FConstructors%2F-1606045687" anchor-label="EdHDPubKey" id="795544913%2FConstructors%2F-1606045687" data-filterable-set=":apollo:dokkaHtml/commonMain,:apollo:dokkaHtml/jsMain,:apollo:dokkaHtml/jvmMain"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":apollo:dokkaHtml/commonMain,:apollo:dokkaHtml/jsMain,:apollo:dokkaHtml/jvmMain" data-filterable-set=":apollo:dokkaHtml/commonMain,:apollo:dokkaHtml/jsMain,:apollo:dokkaHtml/jvmMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-ed-h-d-pub-key.html"><span>Ed</span><wbr></wbr><span>HDPub</span><wbr></wbr><span><span>Key</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="795544913%2FConstructors%2F-1606045687"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":apollo:dokkaHtml/commonMain" data-filterable-set=":apollo:dokkaHtml/commonMain" data-active="" data-toggle=":apollo:dokkaHtml/commonMain">common</button><button class="platform-bookmark" data-filterable-current=":apollo:dokkaHtml/jsMain" data-filterable-set=":apollo:dokkaHtml/jsMain" data-toggle=":apollo:dokkaHtml/jsMain">js</button><button class="platform-bookmark" data-filterable-current=":apollo:dokkaHtml/jvmMain" data-filterable-set=":apollo:dokkaHtml/jvmMain" data-toggle=":apollo:dokkaHtml/jvmMain">jvm</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":apollo:dokkaHtml/commonMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">publicKey<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a><span class="token punctuation">, </span></span><span class="parameter ">chainCode<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a><span class="token punctuation">, </span></span><span class="parameter ">depth<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter ">index<span class="token operator">: </span><a href="../-big-integer-wrapper/index.html">BigIntegerWrapper</a><span class="token operator"> = </span>BigIntegerWrapper(0)</span></span><span class="token punctuation">)</span></div></div><div class="content sourceset-dependent-content" data-togglable=":apollo:dokkaHtml/jsMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">publicKey<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a><span class="token punctuation">, </span></span><span class="parameter ">chainCode<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a><span class="token punctuation">, </span></span><span class="parameter ">depth<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">index<span class="token operator">: </span><a href="../-big-integer-wrapper/index.html">BigIntegerWrapper</a></span></span><span class="token punctuation">)</span></div></div><div class="content sourceset-dependent-content" data-togglable=":apollo:dokkaHtml/jvmMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">publicKey<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a><span class="token punctuation">, </span></span><span class="parameter ">chainCode<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a><span class="token punctuation">, </span></span><span class="parameter ">depth<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">index<span class="token operator">: </span><a href="../-big-integer-wrapper/index.html">BigIntegerWrapper</a></span></span><span class="token punctuation">)</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-547420699%2FProperties%2F-1606045687" anchor-label="chainCode" id="-547420699%2FProperties%2F-1606045687" data-filterable-set=":apollo:dokkaHtml/commonMain,:apollo:dokkaHtml/jsMain,:apollo:dokkaHtml/jvmMain"></a>
+          <div class="table-row" data-filterable-current=":apollo:dokkaHtml/commonMain,:apollo:dokkaHtml/jsMain,:apollo:dokkaHtml/jvmMain" data-filterable-set=":apollo:dokkaHtml/commonMain,:apollo:dokkaHtml/jsMain,:apollo:dokkaHtml/jvmMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="chain-code.html"><span>chain</span><wbr></wbr><span><span>Code</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-547420699%2FProperties%2F-1606045687"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":apollo:dokkaHtml/commonMain" data-filterable-set=":apollo:dokkaHtml/commonMain" data-active="" data-toggle=":apollo:dokkaHtml/commonMain">common</button><button class="platform-bookmark" data-filterable-current=":apollo:dokkaHtml/jsMain" data-filterable-set=":apollo:dokkaHtml/jsMain" data-toggle=":apollo:dokkaHtml/jsMain">js</button><button class="platform-bookmark" data-filterable-current=":apollo:dokkaHtml/jvmMain" data-filterable-set=":apollo:dokkaHtml/jvmMain" data-toggle=":apollo:dokkaHtml/jvmMain">jvm</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":apollo:dokkaHtml/commonMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">val </span><a href="chain-code.html">chainCode</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a></div></div><div class="content sourceset-dependent-content" data-togglable=":apollo:dokkaHtml/jsMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">val </span><a href="chain-code.html">chainCode</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a></div></div><div class="content sourceset-dependent-content" data-togglable=":apollo:dokkaHtml/jvmMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">val </span><a href="chain-code.html">chainCode</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-127732720%2FProperties%2F-1606045687" anchor-label="depth" id="-127732720%2FProperties%2F-1606045687" data-filterable-set=":apollo:dokkaHtml/commonMain,:apollo:dokkaHtml/jsMain,:apollo:dokkaHtml/jvmMain"></a>
+          <div class="table-row" data-filterable-current=":apollo:dokkaHtml/commonMain,:apollo:dokkaHtml/jsMain,:apollo:dokkaHtml/jvmMain" data-filterable-set=":apollo:dokkaHtml/commonMain,:apollo:dokkaHtml/jsMain,:apollo:dokkaHtml/jvmMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="depth.html"><span><span>depth</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-127732720%2FProperties%2F-1606045687"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":apollo:dokkaHtml/commonMain" data-filterable-set=":apollo:dokkaHtml/commonMain" data-active="" data-toggle=":apollo:dokkaHtml/commonMain">common</button><button class="platform-bookmark" data-filterable-current=":apollo:dokkaHtml/jsMain" data-filterable-set=":apollo:dokkaHtml/jsMain" data-toggle=":apollo:dokkaHtml/jsMain">js</button><button class="platform-bookmark" data-filterable-current=":apollo:dokkaHtml/jvmMain" data-filterable-set=":apollo:dokkaHtml/jvmMain" data-toggle=":apollo:dokkaHtml/jvmMain">jvm</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":apollo:dokkaHtml/commonMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">val </span><a href="depth.html">depth</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div><div class="content sourceset-dependent-content" data-togglable=":apollo:dokkaHtml/jsMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">val </span><a href="depth.html">depth</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div><div class="content sourceset-dependent-content" data-togglable=":apollo:dokkaHtml/jvmMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">val </span><a href="depth.html">depth</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-409324319%2FProperties%2F-1606045687" anchor-label="index" id="-409324319%2FProperties%2F-1606045687" data-filterable-set=":apollo:dokkaHtml/commonMain,:apollo:dokkaHtml/jsMain,:apollo:dokkaHtml/jvmMain"></a>
+          <div class="table-row" data-filterable-current=":apollo:dokkaHtml/commonMain,:apollo:dokkaHtml/jsMain,:apollo:dokkaHtml/jvmMain" data-filterable-set=":apollo:dokkaHtml/commonMain,:apollo:dokkaHtml/jsMain,:apollo:dokkaHtml/jvmMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="--index--.html"><span><span>index</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-409324319%2FProperties%2F-1606045687"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":apollo:dokkaHtml/commonMain" data-filterable-set=":apollo:dokkaHtml/commonMain" data-active="" data-toggle=":apollo:dokkaHtml/commonMain">common</button><button class="platform-bookmark" data-filterable-current=":apollo:dokkaHtml/jsMain" data-filterable-set=":apollo:dokkaHtml/jsMain" data-toggle=":apollo:dokkaHtml/jsMain">js</button><button class="platform-bookmark" data-filterable-current=":apollo:dokkaHtml/jvmMain" data-filterable-set=":apollo:dokkaHtml/jvmMain" data-toggle=":apollo:dokkaHtml/jvmMain">jvm</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":apollo:dokkaHtml/commonMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">val </span><a href="--index--.html">index</a><span class="token operator">: </span><a href="../-big-integer-wrapper/index.html">BigIntegerWrapper</a></div></div><div class="content sourceset-dependent-content" data-togglable=":apollo:dokkaHtml/jsMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">val </span><a href="--index--.html">index</a><span class="token operator">: </span><a href="../-big-integer-wrapper/index.html">BigIntegerWrapper</a></div></div><div class="content sourceset-dependent-content" data-togglable=":apollo:dokkaHtml/jvmMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">val </span><a href="--index--.html">index</a><span class="token operator">: </span><a href="../-big-integer-wrapper/index.html">BigIntegerWrapper</a></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-866198531%2FProperties%2F-1606045687" anchor-label="publicKey" id="-866198531%2FProperties%2F-1606045687" data-filterable-set=":apollo:dokkaHtml/commonMain,:apollo:dokkaHtml/jsMain,:apollo:dokkaHtml/jvmMain"></a>
+          <div class="table-row" data-filterable-current=":apollo:dokkaHtml/commonMain,:apollo:dokkaHtml/jsMain,:apollo:dokkaHtml/jvmMain" data-filterable-set=":apollo:dokkaHtml/commonMain,:apollo:dokkaHtml/jsMain,:apollo:dokkaHtml/jvmMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="public-key.html"><span>public</span><wbr></wbr><span><span>Key</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-866198531%2FProperties%2F-1606045687"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":apollo:dokkaHtml/commonMain" data-filterable-set=":apollo:dokkaHtml/commonMain" data-active="" data-toggle=":apollo:dokkaHtml/commonMain">common</button><button class="platform-bookmark" data-filterable-current=":apollo:dokkaHtml/jsMain" data-filterable-set=":apollo:dokkaHtml/jsMain" data-toggle=":apollo:dokkaHtml/jsMain">js</button><button class="platform-bookmark" data-filterable-current=":apollo:dokkaHtml/jvmMain" data-filterable-set=":apollo:dokkaHtml/jvmMain" data-toggle=":apollo:dokkaHtml/jvmMain">jvm</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":apollo:dokkaHtml/commonMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">val </span><a href="public-key.html">publicKey</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a></div></div><div class="content sourceset-dependent-content" data-togglable=":apollo:dokkaHtml/jsMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">val </span><a href="public-key.html">publicKey</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a></div></div><div class="content sourceset-dependent-content" data-togglable=":apollo:dokkaHtml/jvmMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">val </span><a href="public-key.html">publicKey</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-1303169660%2FFunctions%2F-1606045687" anchor-label="derive" id="-1303169660%2FFunctions%2F-1606045687" data-filterable-set=":apollo:dokkaHtml/commonMain,:apollo:dokkaHtml/jsMain,:apollo:dokkaHtml/jvmMain"></a>
+          <div class="table-row" data-filterable-current=":apollo:dokkaHtml/commonMain,:apollo:dokkaHtml/jsMain,:apollo:dokkaHtml/jvmMain" data-filterable-set=":apollo:dokkaHtml/commonMain,:apollo:dokkaHtml/jsMain,:apollo:dokkaHtml/jvmMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="derive.html"><span><span>derive</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1303169660%2FFunctions%2F-1606045687"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":apollo:dokkaHtml/commonMain" data-filterable-set=":apollo:dokkaHtml/commonMain" data-active="" data-toggle=":apollo:dokkaHtml/commonMain">common</button><button class="platform-bookmark" data-filterable-current=":apollo:dokkaHtml/jsMain" data-filterable-set=":apollo:dokkaHtml/jsMain" data-toggle=":apollo:dokkaHtml/jsMain">js</button><button class="platform-bookmark" data-filterable-current=":apollo:dokkaHtml/jvmMain" data-filterable-set=":apollo:dokkaHtml/jvmMain" data-toggle=":apollo:dokkaHtml/jvmMain">jvm</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":apollo:dokkaHtml/commonMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">fun </span><a href="derive.html"><span class="token function">derive</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">path<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">EdHDPubKey</a></div><div class="brief "><p class="paragraph">Method to derive an HDKey by a path</p></div></div><div class="content sourceset-dependent-content" data-togglable=":apollo:dokkaHtml/jsMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">fun </span><a href="derive.html"><span class="token function">derive</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">path<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">EdHDPubKey</a></div><div class="brief "><p class="paragraph">Method to derive an HDKey by a path</p></div></div><div class="content sourceset-dependent-content" data-togglable=":apollo:dokkaHtml/jvmMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">fun </span><a href="derive.html"><span class="token function">derive</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">path<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">EdHDPubKey</a></div><div class="brief "><p class="paragraph">Method to derive an HDKey by a path</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1678453590%2FFunctions%2F-1606045687" anchor-label="deriveChild" id="-1678453590%2FFunctions%2F-1606045687" data-filterable-set=":apollo:dokkaHtml/commonMain,:apollo:dokkaHtml/jsMain,:apollo:dokkaHtml/jvmMain"></a>
+          <div class="table-row" data-filterable-current=":apollo:dokkaHtml/commonMain,:apollo:dokkaHtml/jsMain,:apollo:dokkaHtml/jvmMain" data-filterable-set=":apollo:dokkaHtml/commonMain,:apollo:dokkaHtml/jsMain,:apollo:dokkaHtml/jvmMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="derive-child.html"><span>derive</span><wbr></wbr><span><span>Child</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1678453590%2FFunctions%2F-1606045687"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":apollo:dokkaHtml/commonMain" data-filterable-set=":apollo:dokkaHtml/commonMain" data-active="" data-toggle=":apollo:dokkaHtml/commonMain">common</button><button class="platform-bookmark" data-filterable-current=":apollo:dokkaHtml/jsMain" data-filterable-set=":apollo:dokkaHtml/jsMain" data-toggle=":apollo:dokkaHtml/jsMain">js</button><button class="platform-bookmark" data-filterable-current=":apollo:dokkaHtml/jvmMain" data-filterable-set=":apollo:dokkaHtml/jvmMain" data-toggle=":apollo:dokkaHtml/jvmMain">jvm</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":apollo:dokkaHtml/commonMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">fun </span><a href="derive-child.html"><span class="token function">deriveChild</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">wrappedIndex<span class="token operator">: </span><a href="../-big-integer-wrapper/index.html">BigIntegerWrapper</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">EdHDPubKey</a></div><div class="brief "><p class="paragraph">Method to derive an HDKey child by index</p></div></div><div class="content sourceset-dependent-content" data-togglable=":apollo:dokkaHtml/jsMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">fun </span><a href="derive-child.html"><span class="token function">deriveChild</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">wrappedIndex<span class="token operator">: </span><a href="../-big-integer-wrapper/index.html">BigIntegerWrapper</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">EdHDPubKey</a></div><div class="brief "><p class="paragraph">Method to derive an HDKey child by index</p></div></div><div class="content sourceset-dependent-content" data-togglable=":apollo:dokkaHtml/jvmMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">fun </span><a href="derive-child.html"><span class="token function">deriveChild</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">wrappedIndex<span class="token operator">: </span><a href="../-big-integer-wrapper/index.html">BigIntegerWrapper</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">EdHDPubKey</a></div><div class="brief "><p class="paragraph">Method to derive an HDKey child by index</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>(c) 2025 HyberLedger Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
