@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/hyperledger-identus/apollo/compare/v1.5.0...v1.6.0) (2025-06-16)
+
+
+### Features
+
+* add bip32 pub key derivation ([#204](https://github.com/hyperledger-identus/apollo/issues/204)) ([3fef8f9](https://github.com/hyperledger-identus/apollo/commit/3fef8f9652b20ae66dbd5d0cce7f1d3e4ca5be66))
+
 # [1.5.0](https://github.com/hyperledger-identus/apollo/compare/v1.4.5...v1.5.0) (2025-06-09)
 
 
