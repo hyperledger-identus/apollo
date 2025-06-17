@@ -1,3 +1,10 @@
+# [1.7.0-beta.1](https://github.com/hyperledger-identus/apollo/compare/v1.6.0...v1.7.0-beta.1) (2025-06-17)
+
+
+### Features
+
+* an empty commit to trigger the release ([dbadef7](https://github.com/hyperledger-identus/apollo/commit/dbadef76025586a67456f76e5694ee9ddf5120f3))
+
 # [1.6.0](https://github.com/hyperledger-identus/apollo/compare/v1.5.0...v1.6.0) (2025-06-16)
 
 
