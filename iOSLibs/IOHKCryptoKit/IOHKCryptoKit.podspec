@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
     s.homepage         = 'https://github.com/input-output-hk/atala-prism-apollo'
     s.author           = { 'Gonçalo Frade' => 'goncalo.frade@iohk.io' }
     s.source           = { :git => 'https://github.com/hyperledger/identus-apollo.git', :tag => s.version.to_s }
-    s.swift_version = '5.7'
+    s.swift_version = '5.9'
     s.cocoapods_version = '>= 1.10.0'
     
     s.ios.deployment_target = '15.6'
