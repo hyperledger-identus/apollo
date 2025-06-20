@@ -3,7 +3,6 @@
 	url = https://github.com/bitcoin-core/secp256k1
 	branch = master
 
-[submodule "rust-ed25519-bip32"]
-	path = rust-ed25519-bip32
+[submodule "bip32-ed25519/rust-ed25519-bip32"]
+	path = bip32-ed25519/rust-ed25519-bip32
 	url = https://github.com/input-output-hk/rust-ed25519-bip32.git
-	branch = master
