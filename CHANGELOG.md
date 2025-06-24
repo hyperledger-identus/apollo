@@ -1,3 +1,15 @@
+# [1.7.0-beta.3](https://github.com/hyperledger-identus/apollo/compare/v1.7.0-beta.2...v1.7.0-beta.3) (2025-06-24)
+
+
+### Bug Fixes
+
+* gradle publishing configuration ([728ffb6](https://github.com/hyperledger-identus/apollo/commit/728ffb6aefa4236e8d8e0e13f33a88cf903e9149))
+
+
+### Features
+
+* an empty commit to trigger the release [#3](https://github.com/hyperledger-identus/apollo/issues/3) ([f47da97](https://github.com/hyperledger-identus/apollo/commit/f47da97e5c7410e186b08802f30c3fd2d05f78ca))
+
 # [1.7.0-beta.2](https://github.com/hyperledger-identus/apollo/compare/v1.7.0-beta.1...v1.7.0-beta.2) (2025-06-24)
 
 
