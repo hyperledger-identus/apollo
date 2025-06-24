@@ -1,3 +1,10 @@
+# [1.7.0-beta.4](https://github.com/hyperledger-identus/apollo/compare/v1.7.0-beta.3...v1.7.0-beta.4) (2025-06-24)
+
+
+### Bug Fixes
+
+* switch to io.hyperledger.identus namespace ([5e18111](https://github.com/hyperledger-identus/apollo/commit/5e18111f79468db3b6ea86849d85ae3d9e078f42))
+
 # [1.7.0-beta.3](https://github.com/hyperledger-identus/apollo/compare/v1.7.0-beta.2...v1.7.0-beta.3) (2025-06-24)
 
 
