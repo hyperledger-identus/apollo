@@ -136,4 +136,4 @@ jobs:
           OSSRH_GPG_SECRET_KEY_PASSWORD: ${{ secrets.HYP_BOT_GPG_PASSWORD }}
         run: |
           npm install
-          npx semantic-release
+          npx semantic-release --debug
