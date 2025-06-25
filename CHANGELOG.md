@@ -1,3 +1,10 @@
+# [1.7.0-beta.6](https://github.com/hyperledger-identus/apollo/compare/v1.7.0-beta.5...v1.7.0-beta.6) (2025-06-25)
+
+
+### Features
+
+* add debug log level to the gradle.properties ([e3224e9](https://github.com/hyperledger-identus/apollo/commit/e3224e930830af00511d675086c29f3e212a30c2))
+
 # [1.7.0-beta.5](https://github.com/hyperledger-identus/apollo/compare/v1.7.0-beta.4...v1.7.0-beta.5) (2025-06-25)
 
 
