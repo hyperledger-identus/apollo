@@ -1,145 +1,94 @@
-import org.gradle.internal.os.OperatingSystem
+plugins {
+    base
+}
 
-val currentOs = OperatingSystem.current()
 val bash = "bash"
 
-val buildSecp256k1 by tasks.creating { group = "build native" }
+val currentOs = org.gradle.internal.os.OperatingSystem.current()
 
-val buildSecp256k1Host by tasks.creating(Exec::class) {
-    group = "build native"
-    buildSecp256k1.dependsOn(this)
+val buildDirPath = projectDir.resolve("build")
 
-    val target =
+val iosPlatforms = listOf("ios", "iossimulator")
+
+val macosArchitecture = listOf("macosX64", "macosArm64")
+
+fun outputMissing(dir: File) = !dir.exists() || dir.listFiles().isNullOrEmpty()
+
+// Host build task
+tasks.register<Exec>("buildSecp256k1Host") {
+    group = "native build"
+    workingDir = projectDir
+    environment(
+        "TARGET",
         when {
             currentOs.isLinux -> "linux"
             currentOs.isMacOsX -> "darwin"
             currentOs.isWindows -> "mingw"
             else -> error("Unsupported OS $currentOs")
         }
-
-    inputs.files(projectDir.resolve("build.sh"))
-    outputs.dir(projectDir.resolve("build/$target"))
-
-    workingDir = projectDir
-    environment("TARGET", target)
-    commandLine(bash, "-l", "build.sh")
+    )
+    commandLine(bash, "build.sh")
+    inputs.file("build.sh")
+    outputs.dir(buildDirPath)
 }
 
-val buildSecp256k1Ios by tasks.creating(Exec::class) {
-    group = "build native"
-    buildSecp256k1.dependsOn(this)
-
-    onlyIf { currentOs.isMacOsX }
-
-    inputs.files(projectDir.resolve("build-ios.sh"))
-    outputs.dir(projectDir.resolve("build/ios"))
-
+tasks.register<Exec>(
+    "buildSecp256k1MacosArm64"
+) {
+    group = "native build"
     workingDir = projectDir
-    if (!file("build/ios/arm64-iphoneos/libsecp256k1.a").exists() || !file("build/ios/x86_x64-iphonesimulator/libsecp256k1.a").exists()) {
-        commandLine(bash, "build-ios.sh", "ios", "iossimulator")
-    } else {
-        commandLine("echo", "Skipping ios libsecp256k1.a build execution as the necessary file exists.")
+    commandLine(bash, "build-ios.sh", "macosx")
+    inputs.file("build-ios.sh")
+    outputs.dir(buildDirPath.resolve("ios"))
+    onlyIf { currentOs.isMacOsX }
+    onlyIf { outputMissing(buildDirPath.resolve("ios").resolve("arm64-x86_x64-macosx")) }
+}
+
+tasks.register<Exec>("buildSecp256k1Ios") {
+    group = "native build"
+    workingDir = projectDir
+    commandLine(bash, "build-ios.sh", *iosPlatforms.toTypedArray())
+    inputs.file("build-ios.sh")
+    outputs.dir(buildDirPath.resolve("ios"))
+    onlyIf { currentOs.isMacOsX }
+    onlyIf { outputMissing(buildDirPath.resolve("ios").resolve("arm64-iphoneos")) }
+}
+
+tasks.register<Exec>("buildSecp256k1IosSimulatorArm64") {
+    group = "native build"
+    workingDir = projectDir
+    commandLine(bash, "build-ios.sh", "iossimulator")
+    inputs.file("build-ios.sh")
+    outputs.dir(buildDirPath.resolve("ios"))
+    onlyIf { currentOs.isMacOsX }
+}
+
+// Aggregate all builds task
+tasks.register("buildSecp256k1") {
+    group = "native build"
+    dependsOn("buildSecp256k1Host")
+    if (currentOs.isMacOsX) {
+        dependsOn("buildSecp256k1Ios")
+        dependsOn("buildSecp256k1IosSimulatorArm64")
+        dependsOn("buildSecp256k1MacosArm64")
     }
 }
 
-val buildSecp256k1IosSimulatorArm64 by tasks.creating(Exec::class) {
-    group = "build native"
-    buildSecp256k1.dependsOn(this)
-
-    onlyIf { currentOs.isMacOsX }
-
-    inputs.files(projectDir.resolve("build-ios.sh"))
-    outputs.dir(projectDir.resolve("build/ios"))
-
-    workingDir = projectDir
-    if (!file("build/ios/arm64-iphonesimulator/libsecp256k1.a").exists()) {
-        commandLine(bash, "build-ios.sh", "iossimulator")
-    } else {
-        commandLine("echo", "Skipping iosimulator arm64 libsecp256k1.a build execution as the necessary file exists.")
-    }
-}
-
-val buildSecp256k1MacosArm64 by tasks.creating(Exec::class) {
-    group = "build native"
-    buildSecp256k1.dependsOn(this)
-
-    onlyIf { currentOs.isMacOsX }
-
-    inputs.files(projectDir.resolve("build-ios.sh"))
-    outputs.dir(projectDir.resolve("build/ios"))
-
-    workingDir = projectDir
-    if (!file("build/ios/x86_x64-macosx/libsecp256k1.a").exists()) {
-        commandLine(bash, "build-ios.sh", "macosx")
-    } else {
-        commandLine("echo", "Skipping macosx Arm64 libsecp256k1.a build execution as the necessary file exists.")
-    }
-}
-
-val buildSecp256k1MacosX64 by tasks.creating(Exec::class) {
-    group = "build native"
-    buildSecp256k1.dependsOn(this)
-
-    onlyIf { currentOs.isMacOsX }
-
-    inputs.files(projectDir.resolve("build-ios.sh"))
-    outputs.dir(projectDir.resolve("build/ios"))
-
-    workingDir = projectDir
-    if (!file("build/ios/arm64-macosx/libsecp256k1.a").exists()) {
-        commandLine(bash, "build-ios.sh", "macosx")
-    } else {
-        commandLine("echo", "Skipping macosx X64 libsecp256k1.a build execution as the necessary file exists.")
-    }
-}
-
-val buildSecp256k1WatchOSArm64 by tasks.creating(Exec::class) {
-    group = "build native"
-    buildSecp256k1.dependsOn(this)
-
-    onlyIf { currentOs.isMacOsX }
-
-    inputs.files(projectDir.resolve("build-ios.sh"))
-    outputs.dir(projectDir.resolve("build/ios"))
-
-    workingDir = projectDir
-    if (!file("build/ios/arm64-watchos/libsecp256k1.a").exists()) {
-        commandLine(bash, "build-ios.sh", "watchos")
-    } else {
-        commandLine("echo", "Skipping watchos libsecp256k1.a build execution as the necessary file exists.")
-    }
-}
-
-val buildSecp256k1TvOSArm64 by tasks.creating(Exec::class) {
-    group = "build native"
-    buildSecp256k1.dependsOn(this)
-
-    onlyIf { currentOs.isMacOsX }
-
-    inputs.files(projectDir.resolve("build-ios.sh"))
-    outputs.dir(projectDir.resolve("build/ios"))
-
-    workingDir = projectDir
-    if (!file("build/ios/arm64-tvos/libsecp256k1.a").exists()) {
-        commandLine(bash, "build-ios.sh", "tvos")
-    } else {
-        commandLine("echo", "Skipping tvos libsecp256k1.a build execution as the necessary file exists.")
-    }
-}
-
-val deleteBuildFolder by tasks.register<Delete>("deleteBuildFolder") {
+// Proper clean-up
+tasks.register<Delete>("deleteNativeBuild") {
     group = "build"
-    delete(projectDir.resolve("build"))
+    delete(buildDirPath)
 }
 
-afterEvaluate {
-    tasks.named("clean") {
-        dependsOn(deleteBuildFolder)
-    }
-    tasks.withType<PublishToMavenRepository>().configureEach {
-        enabled = false
-    }
-    tasks.withType<PublishToMavenLocal>().configureEach {
-        enabled = false
-    }
+// Attach clean to Gradle's standard clean
+tasks.named("clean") {
+    dependsOn("deleteNativeBuild")
+}
+
+// Disable publishing for this module
+tasks.withType<PublishToMavenRepository>().configureEach {
+    enabled = false
+}
+tasks.withType<PublishToMavenLocal>().configureEach {
+    enabled = false
 }

@@ -2,6 +2,7 @@
 
 package fr.acinq.secp256k1
 
+import kotlin.*
 import kotlinx.cinterop.*
 import platform.posix.size_tVar
 import secp256k1.*
@@ -9,7 +10,7 @@ import secp256k1.*
 @OptIn(ExperimentalUnsignedTypes::class, UnsafeNumber::class, ExperimentalForeignApi::class)
 public object Secp256k1Native : Secp256k1 {
     private val ctx: CPointer<secp256k1_context> by lazy {
-        secp256k1_context_create((SECP256K1_FLAGS_TYPE_CONTEXT or SECP256K1_FLAGS_BIT_CONTEXT_SIGN or SECP256K1_FLAGS_BIT_CONTEXT_VERIFY).toUInt())
+        secp256k1_context_create((SECP256K1_FLAGS_TYPE_CONTEXT or SECP256K1_FLAGS_BIT_CONTEXT_SIGN or SECP256K1_FLAGS_BIT_CONTEXT_VERIFY).convert())
             ?: error("Could not create secp256k1 context")
     }
 
@@ -231,7 +232,7 @@ public object Secp256k1Native : Secp256k1 {
             secp256k1_xonly_pubkey_parse(ctx, pubkey.ptr, nPub).requireSuccess("secp256k1_xonly_pubkey_parse() failed")
             val nData = toNat(data)
             val nSig = toNat(signature)
-            return secp256k1_schnorrsig_verify(ctx, nSig, nData, 32u, pubkey.ptr) == 1
+            return secp256k1_schnorrsig_verify(ctx, nSig, nData, 32.convert(), pubkey.ptr) == 1
         }
     }
 

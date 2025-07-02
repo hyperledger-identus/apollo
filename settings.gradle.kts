@@ -1,26 +1,29 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        mavenCentral()
         google()
+        mavenCentral()
+        maven("https://plugins.gradle.org/m2/")
     }
 }
 
-buildscript {
+dependencyResolutionManagement {
     repositories {
-        gradlePluginPortal()
-        mavenCentral()
-        mavenLocal()
         google()
+        mavenCentral()
+        gradlePluginPortal()
     }
-
-    dependencies {
-        classpath("io.arrow-kt:arrow-ank-gradle:0.11.0")
+    versionCatalogs {
+        create("libs") {
+//            from(files("gradle/libs.versions.toml"))
+        }
     }
 }
 
 rootProject.name = "apollo"
+
 include(":apollo")
 include(":iOSLibs")
-include("secp256k1-kmp")
-include("secp256k1-kmp:native")
+include(":secp256k1-kmp")
+include(":secp256k1-kmp:native")
+include(":bip32-ed25519")

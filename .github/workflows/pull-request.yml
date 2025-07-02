@@ -59,7 +59,7 @@ jobs:
           distribution: "adopt"
 
       - name: "Gradle Build Action"
-        uses: gradle/gradle-build-action@v3
+        uses: gradle/actions/setup-gradle@v4
 
       - name: "Install Homebrew"
         if: matrix.os-type == 'macos'
@@ -128,6 +128,9 @@ jobs:
           
       - name: "Install wasm-pack"
         run: cargo install wasm-pack
+
+      - name: "Upgrade yarn lock if needed"
+        run: ./gradlew kotlinUpgradeYarnLock
 
       - name: "Test Kotlin code is properly formatted"
         run: ./gradlew ktlintCheck

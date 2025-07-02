@@ -1,86 +1,69 @@
-import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
+plugins {
+    base
+}
 
-val os: OperatingSystem = DefaultNativePlatform.getCurrentOperatingSystem()
+val os = org.gradle.internal.os.OperatingSystem.current()
 val libraries = listOf("IOHKSecureRandomGeneration", "IOHKCryptoKit")
 val sdks = listOf("iphoneos", "iphonesimulator", "macosx")
 
 libraries.forEach { library ->
     sdks.forEach { sdk ->
-        tasks.create<Exec>("build${library.replaceFirstChar(Char::uppercase)}${sdk.replaceFirstChar(Char::uppercase)}") {
+        tasks.register<Exec>("build${library.replaceFirstChar(Char::uppercase)}${sdk.replaceFirstChar(Char::uppercase)}") {
             group = "build swift"
-
-            if (os.isMacOsX) {
-                when (sdk) {
-                    "iphoneos", "iphonesimulator" -> {
-                        commandLine(
-                            "xcodebuild",
-                            "-project",
-                            "$library/$library.xcodeproj",
-                            "-target",
-                            "${library}Iphoneos",
-                            "-sdk",
-                            sdk
-                        )
-                    }
-                    "macosx" -> {
-                        commandLine(
-                            "xcodebuild",
-                            "-project",
-                            "$library/$library.xcodeproj",
-                            "-target",
-                            "${library}Macos",
-                            "-sdk",
-                            sdk
-                        )
-                    }
-                }
-            } else {
-                commandLine("echo", "Unsupported platform.")
-            }
+            description = "Build $library for $sdk."
 
             workingDir(projectDir)
+
+            commandLine(
+                "xcodebuild",
+                "-project",
+                "$library/$library.xcodeproj",
+                "-target",
+                when (sdk) {
+                    "macosx" -> "${library}Macos"
+                    else -> "${library}Iphoneos"
+                },
+                "-sdk",
+                sdk,
+                "-configuration",
+                "Release"
+            )
+
+            onlyIf { os.isMacOsX }
 
             inputs.files(
                 fileTree("$projectDir/$library.xcodeproj") { exclude("**/xcuserdata") },
                 fileTree("$projectDir/$library/$library")
             )
-            when (sdk) {
-                "iphoneos" -> {
-                    outputs.files(
-                        fileTree(projectDir.resolve("$library/build/Release-iphoneos/"))
-                    )
+
+            outputs.dir(
+                when (sdk) {
+                    "iphoneos" -> projectDir.resolve("$library/build/Release-iphoneos/")
+                    "iphonesimulator" -> projectDir.resolve("$library/build/Release-iphonesimulator/")
+                    "macosx" -> projectDir.resolve("$library/build/Release/")
+                    else -> error("Unsupported SDK: $sdk")
                 }
-                "iphonesimulator" -> {
-                    outputs.files(
-                        fileTree(projectDir.resolve("$library/build/Release-iphonesimulator/"))
-                    )
-                }
-                "macosx" -> {
-                    outputs.files(
-                        fileTree(projectDir.resolve("$library/build/Release"))
-                    )
-                }
-            }
+            )
         }
     }
 }
 
-val deleteBuildFolder by tasks.register<Delete>("deleteBuildFolder") {
+tasks.register<Delete>("deleteBuildFolder") {
     group = "build"
-    delete("$projectDir/build")
+    delete(buildDir)
     libraries.forEach {
         delete("$projectDir/$it/build")
     }
 }
 
-afterEvaluate {
-    tasks.named("clean") {
-        dependsOn(deleteBuildFolder)
-    }
-    tasks.withType<PublishToMavenRepository>().configureEach {
-        enabled = false
-    }
-    tasks.withType<PublishToMavenLocal>().configureEach {
-        enabled = false
-    }
+tasks.named("clean") {
+    dependsOn("deleteBuildFolder")
+}
+
+tasks.withType<PublishToMavenRepository>().configureEach {
+    enabled = false
+}
+
+tasks.withType<PublishToMavenLocal>().configureEach {
+    enabled = false
 }

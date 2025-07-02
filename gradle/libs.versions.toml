@@ -1,0 +1,39 @@
+[versions]
+kotlin = "2.2.0"
+android-gradle-plugin = "8.10.0"
+dokka = "1.9.20"
+ktlint = "12.3.0"
+kover = "0.7.5"
+nexus-publish = "2.0.0"
+npm-publish = "3.4.1"
+swiftpackage = "2.2.4"
+secp256k1-kmp = "0.16.0"
+
+[libraries]
+serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.6.3" }
+bignum = { module = "com.ionspin.kotlin:bignum", version = "0.3.9" }
+okio = { module = "com.squareup.okio:okio", version = "3.7.0" }
+atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version = "0.23.2" }
+macs-hmac-sha2 = { module = "org.kotlincrypto.macs:hmac-sha2", version = "0.3.0" }
+hash-hmac-sha2 = { module = "org.kotlincrypto.hash:sha2", version = "0.4.0" }
+bouncycastle = { module = "org.bouncycastle:bcprov-jdk18on", version = "1.80"}
+bitcoinjcore = { module = "org.bitcoinj:bitcoinj-core", version = "0.17" }
+kotlin-web = { module = "org.jetbrains.kotlin-wrappers:kotlin-web", version = "1.0.0-pre.461"}
+kotlin-node = { module = "org.jetbrains.kotlin-wrappers:kotlin-node", version = "18.11.13-pre.461"}
+junit = { module = "junit:junit", version = "4.13.2" }
+secp256k1-kmp = { module = "fr.acinq.secp256k1:secp256k1-kmp", version.ref = "secp256k1-kmp"}
+secp256k1-kmp-jvm = { module = "fr.acinq.secp256k1:secp256k1-kmp-jni-jvm", version.ref = "secp256k1-kmp"}
+guava = { module = "com.google.guava:guava", version = "30.1-jre" }
+jna = { module = "net.java.dev.jna:jna", version = "5.13.0"}
+jna-android = { module = "net.java.dev.jna:jna", version = "5.13.0@aar"}
+secp256k1-kmp-android = { module = "fr.acinq.secp256k1:secp256k1-kmp-jni-android", version.ref = "secp256k1-kmp"}
+
+[plugins]
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
+nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus-publish" }
+npm-publish = { id = "dev.petuska.npm.publish", version.ref = "npm-publish" }
+swiftpackage = { id = "io.github.luca992.multiplatform-swiftpackage", version.ref = "swiftpackage" }
