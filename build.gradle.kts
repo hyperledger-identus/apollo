@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
+val publishedMavenId: String = "org.hyperledger.identus"
 
 plugins {
     alias(libs.plugins.dokka)
@@ -182,9 +183,10 @@ subprojects {
 
 nexusPublishing {
     repositories {
+        // see https://central.sonatype.org/publish/publish-portal-ossrh-staging-api/#configuration
         sonatype {
-            nexusUrl.set(uri("https://oss.sonatype.org/service/local/"))
-            snapshotRepositoryUrl.set(uri("https://oss.sonatype.org/content/repositories/releases/"))
+            nexusUrl.set(uri("https://ossrh-staging-api.central.sonatype.com/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://central.sonatype.com/repository/maven-snapshots/"))
             username.set(System.getenv("OSSRH_USERNAME"))
             password.set(System.getenv("OSSRH_PASSWORD"))
         }
