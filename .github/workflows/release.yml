@@ -31,6 +31,7 @@ jobs:
       - name: Checkout specified branch
         uses: actions/checkout@v4
         with:
+          submodules: recursive
           fetch-depth: 0
           ref: ${{ github.event.inputs.branch }}
           token: ${{ secrets.IDENTUS_CI }}
