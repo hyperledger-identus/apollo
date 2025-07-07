@@ -1,4 +1,4 @@
-val publishedMavenId: String = "org.hyperledger.identus.apollo"
+val publishedMavenId: String = "org.hyperledger.identus"
 
 plugins {
     id("org.jetbrains.dokka") version "1.9.20"
