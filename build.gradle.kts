@@ -37,6 +37,7 @@ subprojects {
                 groupId = rootProject.group.toString()
                 artifactId = project.name
                 version = project.version.toString()
+                artifact(javadocJar)
 
                 pom {
                     name.set("Identus Apollo")
@@ -185,6 +186,22 @@ nexusPublishing {
             username.set(System.getenv("OSSRH_USERNAME"))
             password.set(System.getenv("OSSRH_PASSWORD"))
         }
+    }
+}
+
+/**
+ * The `javadocJar` variable is used to register a `Jar` task to generate a Javadoc JAR file.
+ * The Javadoc JAR file is created with the classifier "javadoc" and it includes the HTML documentation generated
+ * by the `dokkaHtml` task.
+ */
+val javadocJar by tasks.registering(Jar::class) {
+    archiveClassifier.set("javadoc")
+    from(tasks.dokkaHtml)
+}
+
+if (tasks.findByName(":apollo:publishAndroidDebugPublicationToSonatypeRepository") != null) {
+    tasks.named(":apollo:publishAndroidDebugPublicationToSonatypeRepository").configure {
+        dependsOn(":apollo:signAndroidReleasePublication")
     }
 }
 
