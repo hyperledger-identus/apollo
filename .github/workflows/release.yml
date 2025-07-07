@@ -72,9 +72,24 @@ jobs:
       - name: Install wasm-pack
         run: cargo install wasm-pack
 
-      - name: Build Kotlin Multiplatform Artifacts
+      - name: Update yarn
         run: |
-          ./gradlew clean build :apollo:createSwiftPackage publishToMavenLocal :apollo:assembleJsPackage
+          ./gradlew kotlinUpgradeYarnLock
+
+      - name: Build Kotlin Multiplatform Swift Artifacts
+        if: ${{ inputs.release_swift }}
+        run: |
+          ./gradlew :apollo:createSwiftPackage
+
+      - name: Build Kotlin Multiplatform Maven Artifacts
+        if: ${{ inputs.release_maven }}
+        run: |
+          ./gradlew publishToMavenLocal
+
+      - name: Build Kotlin Multiplatform NPM Artifacts
+        if: ${{ inputs.release_ts }}
+        run: |
+          ./gradlew :apollo:assembleJsPackage
 
       - name: Prepare Swift XCFramework
         if: ${{ inputs.release_swift }}
@@ -108,9 +123,7 @@ jobs:
       - name: npm publish
         if: ${{ inputs.release_ts }}
         run: |
-          npm install
-          npm version ${{ github.event.inputs.version }} --no-git-tag-version
-          npm publish
+          ./gradlew :apollo:publishJsPackageToNpmjsRegistry
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
