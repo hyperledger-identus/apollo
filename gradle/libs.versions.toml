@@ -5,7 +5,7 @@ dokka = "1.9.20"
 ktlint = "12.3.0"
 kover = "0.7.5"
 nexus-publish = "2.0.0"
-npm-publish = "3.4.1"
+npm-publish = "3.5.3"
 swiftpackage = "2.2.4"
 secp256k1-kmp = "0.16.0"
 
