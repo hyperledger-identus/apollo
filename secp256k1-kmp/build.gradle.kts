@@ -1,119 +1,129 @@
-import org.gradle.internal.os.OperatingSystem
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-
-val currentOs = OperatingSystem.current()
-
 plugins {
-    kotlin("multiplatform")
-    id("org.jetbrains.dokka")
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.dokka)
 }
 
-fun KotlinNativeTarget.secp256k1CInterop(target: String) {
-    compilations["main"].cinterops {
-        val libsecp256k1 by creating {
-            includeDirs.headerFilterOnly(project.file("native/secp256k1/include/"))
-            tasks[interopProcessingTaskName].dependsOn(":secp256k1-kmp:native:buildSecp256k1${target.replaceFirstChar(Char::uppercase)}")
-        }
-    }
-}
+val secp256k1Dir = rootDir.resolve("secp256k1-kmp")
 
 kotlin {
-    if (currentOs.isLinux) {
-        linuxX64 {
-            secp256k1CInterop("host")
-            // https://youtrack.jetbrains.com/issue/KT-39396
-            compilations["main"].kotlinOptions.freeCompilerArgs +=
-                listOf(
-                    "-include-binary",
-                    "$rootDir/secp256k1-kmp/native/build/linux/libsecp256k1.a"
-                )
+    iosX64 {
+        compilations["main"].compilerOptions.configure {
+            freeCompilerArgs.addAll(
+                "-include-binary",
+                secp256k1Dir
+                    .resolve("native")
+                    .resolve("build")
+                    .resolve("ios")
+                    .resolve("x86_x64-iphonesimulator")
+                    .resolve("libsecp256k1.a")
+                    .absolutePath
+            )
         }
     }
-    if (currentOs.isMacOsX) {
-        iosX64 {
-            secp256k1CInterop("ios")
-            // https://youtrack.jetbrains.com/issue/KT-39396
-            compilations["main"].kotlinOptions.freeCompilerArgs +=
-                listOf(
-                    "-include-binary",
-                    "$rootDir/secp256k1-kmp/native/build/ios/x86_x64-iphonesimulator/libsecp256k1.a"
-                )
-        }
-        iosArm64 {
-            secp256k1CInterop("ios")
-            // https://youtrack.jetbrains.com/issue/KT-39396
-            compilations["main"].kotlinOptions.freeCompilerArgs +=
-                listOf(
-                    "-include-binary",
-                    "$rootDir/secp256k1-kmp/native/build/ios/arm64-iphoneos/libsecp256k1.a"
-                )
-        }
-        iosSimulatorArm64 {
-            secp256k1CInterop("iosSimulatorArm64")
-            // https://youtrack.jetbrains.com/issue/KT-39396
-            compilations["main"].kotlinOptions.freeCompilerArgs +=
-                listOf(
-                    "-include-binary",
-                    "$rootDir/secp256k1-kmp/native/build/ios/arm64-iphonesimulator/libsecp256k1.a"
-                )
-        }
-        macosX64 {
-            secp256k1CInterop("macosX64")
-            // https://youtrack.jetbrains.com/issue/KT-39396
-            compilations["main"].kotlinOptions.freeCompilerArgs +=
-                listOf(
-                    "-include-binary",
-                    "$rootDir/secp256k1-kmp/native/build/ios/x86_x64-macosx/libsecp256k1.a"
-                )
-        }
-        macosArm64 {
-            secp256k1CInterop("macosArm64")
-            // https://youtrack.jetbrains.com/issue/KT-39396
-            compilations["main"].kotlinOptions.freeCompilerArgs +=
-                listOf(
-                    "-include-binary",
-                    "$rootDir/secp256k1-kmp/native/build/ios/arm64-macosx/libsecp256k1.a"
-                )
+    iosArm64 {
+        compilations["main"].compilerOptions.configure {
+            freeCompilerArgs.addAll(
+                "-include-binary",
+                secp256k1Dir
+                    .resolve("native")
+                    .resolve("build")
+                    .resolve("ios")
+                    .resolve("arm64-iphoneos")
+                    .resolve("libsecp256k1.a")
+                    .absolutePath
+            )
         }
     }
-    applyDefaultHierarchyTemplate()
+    iosSimulatorArm64 {
+        compilations["main"].compilerOptions.configure {
+            freeCompilerArgs.addAll(
+                "-include-binary",
+                secp256k1Dir
+                    .resolve("native")
+                    .resolve("build")
+                    .resolve("ios")
+                    .resolve("arm64-iphonesimulator")
+                    .resolve("libsecp256k1.a")
+                    .absolutePath
+            )
+        }
+    }
+    macosArm64 {
+        compilations["main"].compilerOptions.configure {
+            freeCompilerArgs.addAll(
+                "-include-binary",
+                secp256k1Dir
+                    .resolve("native")
+                    .resolve("build")
+                    .resolve("ios")
+                    .resolve("arm64-x86_x64-macosx")
+                    .resolve("libsecp256k1.a")
+                    .absolutePath
+            )
+        }
+    }
 
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api("com.ionspin.kotlin:bignum:0.3.9")
+                api(libs.bignum)
             }
         }
-        val nativeMain by getting
+
+        val nativeMain by creating {
+            dependsOn(commonMain)
+        }
+
+        val iosArm64Main by getting { dependsOn(nativeMain) }
+        val iosX64Main by getting { dependsOn(nativeMain) }
+        val iosSimulatorArm64Main by getting { dependsOn(nativeMain) }
+        val macosArm64Main by getting { dependsOn(nativeMain) }
+
         all {
             languageSettings.optIn("kotlin.RequiresOptIn")
         }
     }
 
-//    watchosArm64 {
-//        secp256k1CInterop("watchOSArm64")
-//        compilations["main"].defaultSourceSet.dependsOn(nativeMain)
-//        // https://youtrack.jetbrains.com/issue/KT-39396
-//        compilations["main"].kotlinOptions.freeCompilerArgs += listOf("-include-binary", "$rootDir/secp256k1-kmp/native/build/ios/arm64-watchos/libsecp256k1.a")
-//    }
-//
-//    watchosSimulatorArm64 {
-//        secp256k1CInterop("ios")
-//        compilations["main"].defaultSourceSet.dependsOn(nativeMain)
-//        // https://youtrack.jetbrains.com/issue/KT-39396
-//        compilations["main"].kotlinOptions.freeCompilerArgs += listOf("-include-binary", "$rootDir/native/build/ios/arm64_x86_x64-watchossimulator.a")
-//    }
+    targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>().configureEach {
+        val currentTargetName = this.name
+        compilations["main"].apply {
+            cinterops.create("libsecp256k1") {
+                includeDirs.headerFilterOnly(project.file("native/secp256k1/include/"))
+                tasks[interopProcessingTaskName].dependsOn(
+                    when (currentTargetName) {
+                        "iosX64", "iosArm64" -> ":secp256k1-kmp:native:buildSecp256k1Ios"
+                        "iosSimulatorArm64" -> ":secp256k1-kmp:native:buildSecp256k1IosSimulatorArm64"
+                        "macosX64" -> ":secp256k1-kmp:native:buildSecp256k1MacosX64"
+                        "macosArm64" -> ":secp256k1-kmp:native:buildSecp256k1MacosArm64"
+                        else -> ":secp256k1-kmp:native:buildSecp256k1Host"
+                    }
+                )
+            }
 
-//    tvosArm64 {
-//        secp256k1CInterop("tvOSArm64")
-//        compilations["main"].defaultSourceSet.dependsOn(nativeMain)
-//        // https://youtrack.jetbrains.com/issue/KT-39396
-//        compilations["main"].kotlinOptions.freeCompilerArgs += listOf("-include-binary", "$rootDir/secp256k1-kmp/native/build/ios/arm64-appletvos/libsecp256k1.a")
-//    }
+            val binaryPath =
+                when (currentTargetName) {
+                    "iosArm64" -> "ios/arm64-iphoneos/libsecp256k1.a"
+                    "iosX64" -> "ios/x86_x64-iphonesimulator/libsecp256k1.a"
+                    "iosSimulatorArm64" -> "ios/arm64-iphonesimulator/libsecp256k1.a"
+                    "macosX64" -> "ios/x86_64-macosx/libsecp256k1.a"
+                    "macosArm64" -> "ios/arm64-macosx/libsecp256k1.a"
+                    else -> "host/libsecp256k1.a"
+                }
+
+            compilerOptions.configure {
+                freeCompilerArgs.addAll(
+                    "-include-binary",
+                    secp256k1Dir.resolve("native/build/$binaryPath").absolutePath
+                )
+            }
+        }
+    }
 }
 
-afterEvaluate {
-    tasks.withType<PublishToMavenRepository>().configureEach {
-        enabled = false
-    }
+tasks.withType<PublishToMavenRepository>().configureEach {
+    enabled = false
+}
+
+tasks.withType<PublishToMavenLocal>().configureEach {
+    enabled = false
 }
