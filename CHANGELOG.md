@@ -1,3 +1,15 @@
+# [1.7.0](https://github.com/hyperledger-identus/apollo/compare/v1.6.0...v1.7.0) (2025-07-07)
+
+
+### Bug Fixes
+
+* npm publish plugin version update ([11da7df](https://github.com/hyperledger-identus/apollo/commit/11da7df3bec5ec685fbe15ee3e8018dc5c4b9adf))
+
+
+### Features
+
+* new project organization ([#206](https://github.com/hyperledger-identus/apollo/issues/206)) ([92d8c39](https://github.com/hyperledger-identus/apollo/commit/92d8c39dd8e8cc2cb597074bd84e918237727e24))
+
 # [1.6.0](https://github.com/hyperledger-identus/apollo/compare/v1.5.0...v1.6.0) (2025-06-16)
 
 
