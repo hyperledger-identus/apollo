@@ -9,6 +9,8 @@ plugins:
   - "@semantic-release/commit-analyzer"
   - "@semantic-release/release-notes-generator"
   - [ "@semantic-release/changelog", { changelogFile: "CHANGELOG.md" } ]
+  - [ '@semantic-release/exec', {
+    prepareCmd: './gradlew kotlinUpgradeYarnLock' } ]
   - "gradle-semantic-release-plugin"
   - [ '@semantic-release/exec', {
     prepareCmd: './gradlew :apollo:publishJsPackageToNpmjsRegistry' } ]
