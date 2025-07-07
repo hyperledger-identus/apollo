@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
-val publishedMavenId: String = "org.hyperledger.identus"
 
 plugins {
     alias(libs.plugins.dokka)
@@ -144,10 +143,6 @@ subprojects {
                         println("Signing skipped: signing keys not configured.")
                     }
                 }
-            }
-
-            repositories {
-                mavenLocal()
             }
         }
     } else {

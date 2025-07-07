@@ -1,3 +1,4 @@
+import dev.petuska.npm.publish.extension.domain.NpmAccess
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import java.io.ByteArrayOutputStream
@@ -250,11 +251,29 @@ android {
 npmPublish {
     organization.set("hyperledger")
     version.set(rootProject.version.toString())
+    access.set(NpmAccess.PUBLIC)
     packages {
+        access.set(NpmAccess.PUBLIC)
         named("js") {
             scope.set("hyperledger")
             packageName.set("identus-apollo")
             readme.set(rootDir.resolve("README.md"))
+            packageJson {
+                author {
+                    name.set("IOG")
+                }
+                repository {
+                    type.set("git")
+                    url.set("https://github.com/hyperledger-identus/apollo")
+                }
+            }
+        }
+    }
+    registries {
+        access.set(NpmAccess.PUBLIC)
+        register("npmjs") {
+            uri.set("https://registry.npmjs.org")
+            authToken.set(System.getenv("NPM_TOKEN"))
         }
     }
 }
