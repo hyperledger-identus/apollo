@@ -30,6 +30,11 @@ jobs:
   unified_release:
     name: Unified Release (Swift/Maven/npm)
     runs-on: macos-latest
+    env:
+      ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.HYP_BOT_GPG_PRIVATE }}
+      ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.HYP_BOT_GPG_PASSWORD }}
+      ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.OSSRH_USERNAME }}
+      ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.OSSRH_PASSWORD }}
 
     steps:
       - name: Checkout specified branch
@@ -37,8 +42,9 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-          ref: ${{ github.event.inputs.branch }}
-          token: ${{ secrets.IDENTUS_CI }}
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/actions/wrapper-validation@v4
 
       - name: Install Java
         uses: actions/setup-java@v4
@@ -46,16 +52,10 @@ jobs:
           java-version: '17'
           distribution: zulu
 
-      - name: Setup Homebrew & Dependencies
+      - name: Install Dependencies
         run: |
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          brew install autoconf automake libtool rustup
-          brew tap messense/macos-cross-toolchains
-          brew install --overwrite x86_64-unknown-linux-gnu aarch64-unknown-linux-gnu
-
-      - name: Clean Python Symlinks
-        run: |
-          rm -f '/usr/local/bin/2to3' '/usr/local/bin/python3' '/usr/local/bin/python3-config'
+          brew install messense/macos-cross-toolchains/aarch64-unknown-linux-gnu
+          brew install autoconf automake x86_64-unknown-linux-gnu
 
       - name: Install Rust Targets
         run: |
@@ -76,76 +76,72 @@ jobs:
       - name: Install wasm-pack
         run: cargo install wasm-pack
 
-      - name: Update gradle.properties with new version
-        run: |
-          sed -i.bak "s/^version=.*/version=${{ github.event.inputs.version }}/" gradle.properties
-
-      - name: Update yarn
-        run: |
-          ./gradlew kotlinUpgradeYarnLock
-
-      - name: Build Kotlin Multiplatform Swift Artifacts
-        if: ${{ inputs.release_swift }}
-        run: |
-          ./gradlew :apollo:createSwiftPackage
-
-      - name: Build Kotlin Multiplatform Maven Artifacts
-        if: ${{ inputs.release_maven }}
-        run: |
-          ./gradlew publishToMavenLocal
-
-      - name: Build Kotlin Multiplatform NPM Artifacts
-        if: ${{ inputs.release_ts }}
-        run: |
-          ./gradlew :apollo:assembleJsPackage
-
-      - name: Prepare Swift XCFramework
-        if: ${{ inputs.release_swift }}
-        run: |
-          cd ./apollo/build/packages/ApolloSwift
-          zip -r Apollo.xcframework.zip Apollo.xcframework
-          cd ${{ github.workspace }}
-          checksum=$(swift package compute-checksum ./apollo/build/packages/ApolloSwift/Apollo.xcframework.zip)
-          sed -i.bak \
-            -e "s/checksum:.*/checksum: \"$checksum\"/" \
-            -e "s|download/.*/Apollo.xcframework.zip|download/v${{ github.event.inputs.version }}/Apollo.xcframework.zip|" \
-            Package.swift
-
-      - name: Publish JVM & Android to Maven Central
-        if: ${{ inputs.release_maven }}
-        env:
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-          OSSRH_GPG_SECRET_KEY: ${{ secrets.HYP_BOT_GPG_PRIVATE }}
-          OSSRH_GPG_SECRET_KEY_PASSWORD: ${{ secrets.HYP_BOT_GPG_PASSWORD }}
-        run: |
-          ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository -Pversion=${{ github.event.inputs.version }}
-
-      - name: Publish TypeScript package to npm
+      - name: Setup node
         if: ${{ inputs.release_ts }}
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: npm publish
-        if: ${{ inputs.release_ts }}
+      - name: Update gradle.properties with new version
         run: |
-          ./gradlew :apollo:publishJsPackageToNpmjsRegistry
+          sed -i '' 's/^version = *.*.*/version = ${{ github.event.inputs.version }}/' gradle.properties
+
+      - name: Update yarn
+        run: ./gradlew kotlinUpgradeYarnLock
+
+      - name: Build Kotlin Multiplatform Swift Artifacts
+        if: ${{ inputs.release_swift }}
+        run: ./gradlew :apollo:createSwiftPackage --no-configuration-cache
+
+      - name: Build Kotlin Multiplatform Maven Artifacts
+        if: ${{ inputs.release_maven }}
+        run: ./gradlew publishToMavenLocal --no-configuration-cache
+
+      - name: Build Kotlin Multiplatform NPM Artifacts
+        if: ${{ inputs.release_ts }}
+        run: ./gradlew :apollo:assembleJsPackage
+
+      - name: Prepare Swift XCFramework
+        if: ${{ inputs.release_swift }}
+        run: |
+          cd ./apollo/build/packages/ApolloSwift
+          zip -r ApolloLibrary.xcframework.zip ApolloLibrary.xcframework
+          cd ${{ github.workspace }}
+          checksum=$(swift package compute-checksum ./apollo/build/packages/ApolloSwift/ApolloLibrary.xcframework.zip)
+          sed -i.bak \
+            -e "s/checksum:.*/checksum: \"$checksum\"/" \
+            -e "s|download/.*/ApolloLibrary.xcframework.zip|download/v${{ github.event.inputs.version }}/ApolloLibrary.xcframework.zip|" \
+            Package.swift
+
+      - name: Prepare CocoaPods Specification
+        if: ${{ inputs.release_swift }}
+        run: |
+          sed -i.bak \
+            -e "s|download/.*/ApolloLibrary.xcframework.zip|download/v${{ github.event.inputs.version }}/ApolloLibrary.xcframework.zip|" \
+            -e "s|spec.version *= *'.*'|spec.version      = '${{ github.event.inputs.version }}'|" \
+            ApolloLibrary.podspec
+
+      - name: Publish JVM & Android to Maven Central
+        if: ${{ inputs.release_maven }}
+        env:
+          ORG_GRADLE_PROJECT_autoRelease: true
+        run: ./gradlew publishToMavenCentral --no-configuration-cache
+
+      - name: NPM publish
+        if: ${{ inputs.release_ts }}
+        run: ./gradlew :apollo:publishJsPackageToNpmjsRegistry
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Commit updated files and tag the release
         uses: stefanzweifel/git-auto-commit-action@v5
+        if: ${{ inputs.release_swift }}
         with:
           commit_message: |
             chore(release): v${{ github.event.inputs.version }}
           tagging_message: v${{ github.event.inputs.version }}
-          file_pattern: |
-            Package.swift
-            package.json
-            CHANGELOG.md
-            gradle.properties
+          file_pattern: Package.swift ApolloLibrary.podspec gradle.properties
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -153,6 +149,6 @@ jobs:
         with:
           tag_name: v${{ github.event.inputs.version }}
           files: |
-            ./apollo/build/packages/ApolloSwift/Apollo.xcframework.zip
+            ./apollo/build/packages/ApolloSwift/ApolloLibrary.xcframework.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,13 +1,15 @@
 [versions]
 kotlin = "2.2.0"
-android-gradle-plugin = "8.10.0"
+agp = "8.11.0"
 dokka = "1.9.20"
 ktlint = "12.3.0"
-kover = "0.7.5"
-nexus-publish = "2.0.0"
+kover = "0.9.1"
+vanniktech-maven-publish = "0.33.0"
 npm-publish = "3.5.3"
 swiftpackage = "2.2.4"
 secp256k1-kmp = "0.16.0"
+android-minSdk = "24"
+android-compileSdk = "34"
 
 [libraries]
 serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.6.3" }
@@ -25,15 +27,16 @@ secp256k1-kmp = { module = "fr.acinq.secp256k1:secp256k1-kmp", version.ref = "se
 secp256k1-kmp-jvm = { module = "fr.acinq.secp256k1:secp256k1-kmp-jni-jvm", version.ref = "secp256k1-kmp"}
 guava = { module = "com.google.guava:guava", version = "30.1-jre" }
 jna = { module = "net.java.dev.jna:jna", version = "5.13.0"}
-jna-android = { module = "net.java.dev.jna:jna", version = "5.13.0@aar"}
+jna-android = { module = "net.java.dev.jna:jna", version = "5.13.0"}
 secp256k1-kmp-android = { module = "fr.acinq.secp256k1:secp256k1-kmp-jni-android", version.ref = "secp256k1-kmp"}
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
+android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
-nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus-publish" }
+maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktech-maven-publish" }
 npm-publish = { id = "dev.petuska.npm.publish", version.ref = "npm-publish" }
 swiftpackage = { id = "io.github.luca992.multiplatform-swiftpackage", version.ref = "swiftpackage" }

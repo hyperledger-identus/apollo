@@ -1,36 +1,25 @@
 ---
-name: Bug Report
-description: Report a bug in Apollo
-
+name: 'Bug Report'
+description: 'Report a bug in Apollo'
+title: '[BUG]'
+labels: ['bug']
 body:
-  - type: dropdown
-    id: is-regression
+  - type: markdown
     attributes:
-      label: Is this a regression?
-      options:
-        - 'Yes'
-        - 'No'
-    validations:
-      required: true
-
+      value: |
+        Thanks for taking the time to report a bug!
   - type: textarea
     id: description
     attributes:
       label: Description
+      description: Also tell us, what did you expect to happen?
     validations:
       required: true
 
-  - type: textarea
-    id: exception-or-error
+  - type: input
+    id: version
     attributes:
-      label: Please provide the exception or error you saw
-
-  - type: textarea
-    id: environment
-    attributes:
-      label: Please provide the environment you discovered this bug in
-
-  - type: textarea
-    id: other
-    attributes:
-      label: Anything else?
+      label: Version
+      description: Which version you are using?
+    validations:
+      required: true

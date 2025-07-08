@@ -13,6 +13,3 @@ TARGET_PLATFORMS="${TARGET_PLATFORMS}" sh xconfigure.sh --enable-experimental --
 
 mkdir -p ../build/ios
 cp -R _build/universal/* ../build/ios/
-
-rm -rf _build
-make clean

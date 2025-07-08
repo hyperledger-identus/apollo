@@ -1,7 +1,8 @@
 ---
 name: 'Feature Request'
-description: Suggest a new feature for Apollo
-
+description: 'Suggest a new feature for Apollo'
+title: '[FEATURE]'
+labels: ['feature']
 body:
   - type: textarea
     id: proposed-feature

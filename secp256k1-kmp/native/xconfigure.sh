@@ -22,20 +22,22 @@ Build() {
     export CXXFLAGS="${HOST_FLAGS} ${OPT_FLAGS}"
     export LDFLAGS="${HOST_FLAGS}"
 
-    EXEC_PREFIX="${PLATFORMS}/${PLATFORM}"
-    ./configure \
+    # Create a unique, isolated build directory for this specific architecture
+    BUILD_DIR_ARCH="${PLATFORMS}/${PLATFORM}/build"
+    mkdir -p "${BUILD_DIR_ARCH}"
+    cd "${BUILD_DIR_ARCH}" # Enter the isolated directory
+    
+    ../../../../configure \
         --host="${CHOST}" \
         --prefix="${PREFIX}" \
-        --exec-prefix="${EXEC_PREFIX}" \
+        --exec-prefix="${PLATFORMS}/${PLATFORM}" \
         --enable-static \
         --disable-shared \
         "$@"
-        # Avoid Xcode loading dylibs even when staticlibs exist
 
-    make clean
-    mkdir -p "${PLATFORMS}" &> /dev/null
     make -j"${MAKE_JOBS}"
     make install
+    cd ../../../..
 }
 
 # Locations

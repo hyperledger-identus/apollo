@@ -16,16 +16,16 @@ let package = Package(
 
     targets: [
         // LOCAL
-         .binaryTarget(
-             name: "ApolloBinary",
-             path: "./apollo/build/packages/ApolloSwift/Apollo.xcframework.zip"
-         ),
+//          .binaryTarget(
+//              name: "ApolloBinary",
+//              path: "./apollo/build/packages/ApolloSwift/ApolloBinary.xcframework.zip"
+//          ),
 
         // RELEASE
-//        .binaryTarget(
-//            name: "ApolloBinary",
-//            url: "https://github.com/hyperledger-identus/apollo/releases/download/v1.7.0/Apollo.xcframework.zip",
-//            checksum: "61404fdcce61867f33b53dc4d1ad0821f67b99ec324e728fc2a621853631ddd7"
-//        )
+       .binaryTarget(
+           name: "ApolloBinary",
+           url: "https://github.com/hyperledger-identus/apollo/releases/download/v2.1.0/ApolloLibrary.xcframework.zip",
+           checksum: "475be7f961b47deee9323833c327f418170b3e1ddf363ed130fa00a96e3cb8f2"
+       )
     ]
 )

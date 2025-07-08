@@ -76,7 +76,7 @@ class IOHKRSATests: XCTestCase {
     
     // MARK: - Helper methods
     private func generateKeyPair() throws -> (privateKey: SecKey, publicKey: SecKey) {
-        let tag = "io.iohk.atala.prism.apollo.keys".data(using: .utf8)!
+        let tag = "org.hyperledger.identus.apollo.keys".data(using: .utf8)!
         let attributes: [String: Any] = [
             kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
             kSecAttrKeySizeInBits as String: 2048 as CFNumber,

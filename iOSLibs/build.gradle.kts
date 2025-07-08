@@ -2,7 +2,6 @@ plugins {
     base
 }
 
-val os = org.gradle.internal.os.OperatingSystem.current()
 val libraries = listOf("IOHKSecureRandomGeneration", "IOHKCryptoKit")
 val sdks = listOf("iphoneos", "iphonesimulator", "macosx")
 
@@ -12,7 +11,8 @@ libraries.forEach { library ->
             group = "build swift"
             description = "Build $library for $sdk."
 
-            workingDir(projectDir)
+            // FIX 1: Revert to direct assignment, which is what your Gradle version expects.
+            workingDir = layout.projectDirectory.asFile
 
             commandLine(
                 "xcodebuild",
@@ -29,20 +29,27 @@ libraries.forEach { library ->
                 "Release"
             )
 
-            onlyIf { os.isMacOsX }
+            onlyIf {
+                System.getProperty("os.name").contains("Mac OS X", ignoreCase = true)
+            }
 
+            // FIX 2: Use `project.fileTree` with a directory from the layout API.
             inputs.files(
-                fileTree("$projectDir/$library.xcodeproj") { exclude("**/xcuserdata") },
-                fileTree("$projectDir/$library/$library")
+                project.fileTree(layout.projectDirectory.dir("$library/$library.xcodeproj")) {
+                    exclude("**/xcuserdata")
+                },
+                project.fileTree(layout.projectDirectory.dir("$library/$library"))
             )
 
             outputs.dir(
-                when (sdk) {
-                    "iphoneos" -> projectDir.resolve("$library/build/Release-iphoneos/")
-                    "iphonesimulator" -> projectDir.resolve("$library/build/Release-iphonesimulator/")
-                    "macosx" -> projectDir.resolve("$library/build/Release/")
-                    else -> error("Unsupported SDK: $sdk")
-                }
+                layout.projectDirectory.dir(
+                    when (sdk) {
+                        "iphoneos" -> "$library/build/Release-iphoneos/"
+                        "iphonesimulator" -> "$library/build/Release-iphonesimulator/"
+                        "macosx" -> "$library/build/Release/"
+                        else -> error("Unsupported SDK: $sdk")
+                    }
+                )
             )
         }
     }
@@ -50,20 +57,13 @@ libraries.forEach { library ->
 
 tasks.register<Delete>("deleteBuildFolder") {
     group = "build"
-    delete(buildDir)
-    libraries.forEach {
-        delete("$projectDir/$it/build")
+    // FIX 3: Use `layout.buildDirectory` to avoid the deprecation warning.
+    delete(layout.buildDirectory)
+    libraries.forEach { library ->
+        delete(layout.projectDirectory.dir("$library/build"))
     }
 }
 
 tasks.named("clean") {
     dependsOn("deleteBuildFolder")
-}
-
-tasks.withType<PublishToMavenRepository>().configureEach {
-    enabled = false
-}
-
-tasks.withType<PublishToMavenLocal>().configureEach {
-    enabled = false
 }

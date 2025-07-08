@@ -13,11 +13,11 @@ Built on a distributed ledger, it offers core infrastructure for issuing DIDs (D
 verifiable credentials, alongside tools and frameworks to help expand your ecosystem.  
 The complete platform is separated in multiple repositories:
 
-* [Apollo](https://github.com/input-output-hk/atala-prism-apollo) - Repo for the Apollo Building Block, this contains
+* [Apollo](https://github.com/hyperledger-identus/apollo) - Repo for the Apollo Building Block, this contains
   the collection of the cryptographic methods used all around Identus platform.
 * [identus-cloud-agent](https://github.com/hyperledger/identus-cloud-agent) - Repo that contains the servers Building
   Blocks.
-* [Edge Agent SDK KMP](https://github.com/input-output-hk/atala-prism-wallet-sdk-kmm/) - Repo that represents the Kotlin
+* [Edge Agent SDK KMP](https://github.com/hyperledger-identus/sdk-kmp) - Repo that represents the Kotlin
   Multiplatform Edge Agent SDK.
 
 ### What is Apollo
@@ -34,7 +34,7 @@ Future target might be supported in the future.
 ### Your First Code Contribution
 
 Unsure where to begin contributing to Apollo? You can start by looking through
-the [Readme](https://github.com/input-output-hk/atala-prism-apollo/blob/main/README.md) that provides all the steps to
+the [Readme](https://github.com/hyperledger-identus/apollo/blob/main/README.md) that provides all the steps to
 set up your environment.
 
 ### Pull Requests
@@ -68,7 +68,7 @@ related reports :mag_right:.
 
 Before creating bug reports, please check [this list]() as you might find out that you don't need to create one. When
 you are creating a bug report, please [include as many details as possible](). Fill
-out [the required template](https://github.com/input-output-hk/atala-prism-apollo/blob/main/.github/ISSUE_TEMPLATE/bug_report.md),
+out [the required template](https://github.com/hyperledger-identus/apollo/blob/main/.github/ISSUE_TEMPLATE/bug_report.md),
 the information it asks for helps us resolve issues faster.
 
 > **Note:** If you find a **Closed** issue that seems like it is the same thing that you're experiencing, open a new
@@ -76,15 +76,15 @@ the information it asks for helps us resolve issues faster.
 
 * **You might be able to find the cause of the problem and fix things yourself by Debugging**. Most importantly, check
   if you can reproduce the problem in the latest version.
-* **Check the [Readme](https://github.com/input-output-hk/atala-prism-apollo/blob/main/README.md) ** if you have
-  problems on the setup and the [discussions](https://github.com/input-output-hk/atala-prism-apollo/discussions)** for a
+* **Check the [Readme](https://github.com/hyperledger-identus/apollo/blob/main/README.md) ** if you have
+  problems on the setup and the [discussions](https://github.com/hyperledger-identus/apollo/discussions)** for a
   list of common questions and problems.
 * **Perform a cursory search to see if the problem has already been reported**. If it has **and the issue is still open
   **, add a comment to the existing issue instead of opening a new one.
 
 Bugs are tracked as [GitHub issues](https://docs.github.com/en/issues/tracking-your-work-with-issues/about-issues).
 Create an issue on that repository and provide the following information by filling
-in [the template](https://github.com/input-output-hk/atala-prism-apollo/blob/main/.github/ISSUE_TEMPLATE/bug_report.md).
+in [the template](https://github.com/hyperledger-identus/apollo/blob/main/.github/ISSUE_TEMPLATE/bug_report.md).
 
 Explain the problem and include additional details to help maintainers reproduce the problem:
 
@@ -122,7 +122,7 @@ your suggestion :pencil: and find related suggestions :mag_right:.
 
 Before creating enhancement suggestions, please check [this list]() as you might find out that you don't need to create
 one. When you are creating an enhancement suggestion, please [include as many details as possible](). Fill
-in [the template](https://github.com/input-output-hk/atala-prism-apollo/blob/main/.github/ISSUE_TEMPLATE/feature_request.md),
+in [the template](https://github.com/hyperledger-identus/apollo/blob/main/.github/ISSUE_TEMPLATE/feature_request.md),
 including the steps that you imagine you would take if the feature you're requesting existed.
 
 * Most importantly, **check if you're using the latest version.**
