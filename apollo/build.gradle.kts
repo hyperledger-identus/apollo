@@ -242,7 +242,6 @@ android {
     publishing {
         multipleVariants {
             withSourcesJar()
-            withJavadocJar()
             allVariants()
         }
     }
