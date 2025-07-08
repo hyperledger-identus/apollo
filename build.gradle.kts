@@ -199,6 +199,12 @@ val javadocJar by tasks.registering(Jar::class) {
     from(tasks.dokkaHtml)
 }
 
+if (tasks.findByName(":apollo:publishAndroidDebugPublicationToSonatypeRepository") != null) {
+    tasks.named(":apollo:publishAndroidDebugPublicationToSonatypeRepository").configure {
+        dependsOn(":apollo:signAndroidReleasePublication")
+    }
+}
+
 tasks.wrapper {
     gradleVersion = "8.13"
     distributionType = Wrapper.DistributionType.ALL

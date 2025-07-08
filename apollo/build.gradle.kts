@@ -395,12 +395,6 @@ tasksPublishingDisabled.forEach {
     }
 }
 
-if (tasks.findByName("publishAndroidDebugPublicationToSonatypeRepository") != null) {
-    tasks.named("publishAndroidDebugPublicationToSonatypeRepository").configure {
-        dependsOn("signAndroidReleasePublication")
-    }
-}
-
 val swiftPackageUpdateMinOSVersion =
     tasks.register("updateMinOSVersion") {
         group = "multiplatform-swift-package"
@@ -466,6 +460,13 @@ afterEvaluate {
 // Ensure copy tasks always include duplicates
 tasks.withType<Copy>().configureEach {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
+tasks.withType<PublishToMavenRepository> {
+    dependsOn(tasks.withType<Sign>())
+}
+tasks.withType<PublishToMavenLocal> {
+    dependsOn(tasks.withType<Sign>())
 }
 
 // Configure Dokka tasks uniformly
