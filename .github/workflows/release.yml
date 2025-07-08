@@ -76,6 +76,10 @@ jobs:
       - name: Install wasm-pack
         run: cargo install wasm-pack
 
+      - name: Update gradle.properties with new version
+        run: |
+          sed -i.bak "s/^version=.*/version=${{ github.event.inputs.version }}/" gradle.properties
+
       - name: Update yarn
         run: |
           ./gradlew kotlinUpgradeYarnLock
