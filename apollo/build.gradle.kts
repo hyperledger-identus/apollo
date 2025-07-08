@@ -395,6 +395,12 @@ tasksPublishingDisabled.forEach {
     }
 }
 
+if (tasks.findByName("publishAndroidDebugPublicationToSonatypeRepository") != null) {
+    tasks.named("publishAndroidDebugPublicationToSonatypeRepository").configure {
+        dependsOn("signAndroidReleasePublication")
+    }
+}
+
 val swiftPackageUpdateMinOSVersion =
     tasks.register("updateMinOSVersion") {
         group = "multiplatform-swift-package"
