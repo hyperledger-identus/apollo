@@ -6,7 +6,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import java.io.ByteArrayOutputStream
 import java.net.URL
-import java.time.Year
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
@@ -350,16 +349,6 @@ fun KotlinNativeTarget.swiftCinterop(library: String, platform: String) {
             }
         }
     }
-}
-
-/**
- * The `javadocJar` variable is used to register a `Jar` task to generate a Javadoc JAR file.
- * The Javadoc JAR file is created with the classifier "javadoc" and it includes the HTML documentation generated
- * by the `dokkaHtml` task.
- */
-val javadocJar by tasks.registering(Jar::class) {
-    archiveClassifier.set("javadoc")
-    from(tasks.dokkaHtml)
 }
 
 tasks.withType<Test>().configureEach {
