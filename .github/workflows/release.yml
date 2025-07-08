@@ -22,6 +22,10 @@ on:
         required: false
         default: true
 
+permissions:
+  contents: write
+  packages: write
+
 jobs:
   unified_release:
     name: Unified Release (Swift/Maven/npm)
@@ -141,6 +145,7 @@ jobs:
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
+        if: ${{ inputs.release_swift }}
         with:
           tag_name: v${{ github.event.inputs.version }}
           files: |
