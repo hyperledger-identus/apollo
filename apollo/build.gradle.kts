@@ -1,7 +1,12 @@
 import dev.petuska.npm.publish.extension.domain.NpmAccess
+import org.gradle.kotlin.dsl.invoke
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import java.io.ByteArrayOutputStream
+import java.net.URL
+import java.time.Year
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
@@ -242,7 +247,47 @@ android {
     publishing {
         multipleVariants {
             withSourcesJar()
+            withJavadocJar()
             allVariants()
+        }
+    }
+}
+
+tasks.withType<DokkaTask>().configureEach {
+    moduleName.set(currentModuleName)
+    moduleVersion.set(rootProject.version.toString())
+    description = "This is a Kotlin Multiplatform Library for cryptography"
+    dokkaSourceSets {
+        configureEach {
+            jdkVersion.set(17)
+            languageVersion.set("1.9.22")
+            apiVersion.set("2.0")
+            includes.from(
+                "docs/Apollo.md",
+                "docs/Base64.md",
+                "docs/SecureRandom.md"
+            )
+            sourceLink {
+                localDirectory.set(projectDir.resolve("src"))
+                remoteUrl.set(URL("https://github.com/hyperledger-identus/apollo/tree/main/src"))
+                remoteLineSuffix.set("#L")
+            }
+            externalDocumentationLink {
+                url.set(URL("https://kotlinlang.org/api/latest/jvm/stdlib/"))
+            }
+            externalDocumentationLink {
+                url.set(URL("https://kotlinlang.org/api/kotlinx.serialization/"))
+            }
+            externalDocumentationLink {
+                url.set(URL("https://api.ktor.io/"))
+            }
+            externalDocumentationLink {
+                url.set(URL("https://kotlinlang.org/api/kotlinx-datetime/"))
+                packageListUrl.set(URL("https://kotlinlang.org/api/kotlinx-datetime/"))
+            }
+            externalDocumentationLink {
+                url.set(URL("https://kotlinlang.org/api/kotlinx.coroutines/"))
+            }
         }
     }
 }
@@ -305,6 +350,16 @@ fun KotlinNativeTarget.swiftCinterop(library: String, platform: String) {
             }
         }
     }
+}
+
+/**
+ * The `javadocJar` variable is used to register a `Jar` task to generate a Javadoc JAR file.
+ * The Javadoc JAR file is created with the classifier "javadoc" and it includes the HTML documentation generated
+ * by the `dokkaHtml` task.
+ */
+val javadocJar by tasks.registering(Jar::class) {
+    archiveClassifier.set("javadoc")
+    from(tasks.dokkaHtml)
 }
 
 tasks.withType<Test>().configureEach {
@@ -404,41 +459,11 @@ val swiftPackageUpdateMinOSVersion =
         }
     }
 
-val logLinuxBinaries by tasks.registering {
-    group = "verification"
-    description = "Logs the files present in the Linux binaries folder (useful for CI debugging)."
-
-    val targetDir = project.layout.buildDirectory.dir("generatedResources/jvmMain/libs/aarch64-unknown-linux-gnu")
-
-    doLast {
-        val dir = targetDir.get().asFile
-        println("Logging contents of: ${dir.absolutePath}")
-
-        if (dir.exists()) {
-            val files = dir.walkTopDown().toList()
-            if (files.isEmpty()) {
-                println("No files found in ${dir.absolutePath}")
-            } else {
-                files.forEach {
-                    println(" - ${it.relativeTo(dir)}")
-                }
-            }
-        } else {
-            println("Directory ${dir.absolutePath} does not exist.")
-        }
-    }
-}
 
 afterEvaluate {
     if (tasks.findByName("createSwiftPackage") != null) {
         tasks.named("createSwiftPackage").configure {
             finalizedBy(swiftPackageUpdateMinOSVersion)
-        }
-    }
-
-    if (tasks.findByName("jvmTest") != null) {
-        tasks.named("jvmTest") {
-            dependsOn(logLinuxBinaries)
         }
     }
 }
