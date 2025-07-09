@@ -30,9 +30,9 @@ val generatedResourcesDir =
         .resolve("generatedResources")
 val generatedJvmLibsDirs =
     listOf(
-        generatedResourcesDir.resolve("jvmMain/libs/aarch64-apple-darwin"),
+        generatedResourcesDir.resolve("jvmMain/libs/darwin-aarch64"),
         generatedResourcesDir.resolve("jvmMain/libs/linux-aarch64"),
-        generatedResourcesDir.resolve("jvmMain/libs/x86_64-apple-darwin"),
+        generatedResourcesDir.resolve("jvmMain/libs/darwin-x86-64"),
         generatedResourcesDir.resolve("jvmMain/libs/linux-x86-64")
     )
 
@@ -472,7 +472,7 @@ tasks.withType<PublishToMavenLocal> {
 }
 
 // Configure Dokka tasks uniformly
-tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
+tasks.withType<DokkaTask>().configureEach {
     moduleName.set(currentModuleName)
     moduleVersion.set(rootProject.version.toString())
 }

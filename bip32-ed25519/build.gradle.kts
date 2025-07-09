@@ -26,9 +26,9 @@ val generatedResourcesDir =
         .resolve("generatedResources")
 val generatedJvmLibsDirs =
     listOf(
-        generatedResourcesDir.resolve("jvmMain/libs/aarch64-apple-darwin"),
+        generatedResourcesDir.resolve("jvmMain/libs/darwin-aarch64"),
         generatedResourcesDir.resolve("jvmMain/libs/linux-aarch64"),
-        generatedResourcesDir.resolve("jvmMain/libs/x86_64-apple-darwin"),
+        generatedResourcesDir.resolve("jvmMain/libs/darwin-x86-64"),
         generatedResourcesDir.resolve("jvmMain/libs/linux-x86-64")
     )
 
@@ -197,7 +197,7 @@ kotlin {
         // Mapping of Kotlin Native targets to their corresponding Rust architecture directories
         val archMapping =
             mapOf(
-                "macosArm64" to "aarch64-apple-darwin",
+                "macosArm64" to "darwin-aarch64",
                 "iosX64" to "x86_64-apple-ios",
                 "iosArm64" to "aarch64-apple-ios",
                 "iosSimulatorArm64" to "aarch64-apple-ios-sim"
@@ -337,7 +337,9 @@ tasks.register("copyNativeLibs") {
     val archMapping =
         mapOf(
             "x86_64-unknown-linux-gnu" to "linux-x86-64",
-            "aarch64-unknown-linux-gnu" to "linux-aarch64"
+            "aarch64-unknown-linux-gnu" to "linux-aarch64",
+            "aarch64-apple-darwin" to "darwin-aarch64",
+            "x86_64-apple-darwin" to "darwin-x86-64"
         )
 
     val targetDirs =
