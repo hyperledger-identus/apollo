@@ -197,6 +197,18 @@ nexusPublishing {
     }
 }
 
+gradle.projectsEvaluated {
+    subprojects {
+        if (name == "apollo") {
+            tasks.withType<AbstractPublishToMaven>().configureEach {
+                dependsOn(":bip32-ed25519:publishAllPublicationsToMavenRepository")
+            }
+            tasks.withType<PublishToMavenLocal>().configureEach {
+                dependsOn(":bip32-ed25519:publishToMavenLocal")
+            }
+        }
+    }
+}
 /**
  * The `javadocJar` variable is used to register a `Jar` task to generate a Javadoc JAR file.
  * The Javadoc JAR file is created with the classifier "javadoc" and it includes the HTML documentation generated
