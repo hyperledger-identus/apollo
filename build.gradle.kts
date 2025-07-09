@@ -41,7 +41,14 @@ subprojects {
                 artifact(javadocJar)
 
                 pom {
-                    name.set("Identus " + project.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() })
+                    name.set(
+                        "Identus " +
+                            project
+                                .name
+                                .replaceFirstChar {
+                                    if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+                                }
+                    )
                     description.set(project.description)
                     url.set("https://docs.atalaprism.io/")
 

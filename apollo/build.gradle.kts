@@ -21,20 +21,6 @@ val currentModuleName = "Apollo"
 val appleBinaryName = "ApolloLibrary"
 val minimumIosVersion = "15.0"
 val minimumMacOSVersion = "13.0"
-val generatedResourcesDir =
-    project(":bip32-ed25519")
-        .layout
-        .buildDirectory
-        .asFile
-        .get()
-        .resolve("generatedResources")
-val generatedJvmLibsDirs =
-    listOf(
-        generatedResourcesDir.resolve("jvmMain/libs/darwin-aarch64"),
-        generatedResourcesDir.resolve("jvmMain/libs/linux-aarch64"),
-        generatedResourcesDir.resolve("jvmMain/libs/darwin-x86-64"),
-        generatedResourcesDir.resolve("jvmMain/libs/linux-x86-64")
-    )
 
 kotlin {
     jvm {
@@ -43,15 +29,6 @@ kotlin {
             compilerOptions.configure {
                 jvmTarget.set(JvmTarget.JVM_17)
             }
-        }
-
-        testRuns["test"].executionTask.configure {
-            useJUnitPlatform()
-            systemProperty(
-                "jna.library.path",
-                generatedJvmLibsDirs.joinToString(File.pathSeparator) { it.absolutePath }
-            )
-            jvmArgs("-Djava.library.path=${generatedJvmLibsDirs.joinToString(File.pathSeparator) { it.absolutePath }}")
         }
     }
 
@@ -155,13 +132,6 @@ kotlin {
 
         val jvmMain by getting {
             dependsOn(commonMain)
-            resources
-                .srcDir(
-                    project(":bip32-ed25519")
-                        .layout
-                        .buildDirectory
-                        .dir("generatedResources/jvmMain/libs")
-                )
             dependencies {
                 api(libs.secp256k1.kmp)
                 implementation(libs.secp256k1.kmp.jvm)
@@ -353,15 +323,6 @@ fun KotlinNativeTarget.swiftCinterop(library: String, platform: String) {
     }
 }
 
-tasks.withType<Test>().configureEach {
-    dependsOn(":bip32-ed25519:prepareRustLibs")
-    doFirst {
-        val paths = generatedJvmLibsDirs.joinToString(separator = File.pathSeparator) { it.absolutePath }
-        systemProperty("jna.library.path", paths)
-        jvmArgs("-Djava.library.path=$paths")
-    }
-}
-
 // === Group: Resource and Test Task Dependencies ===
 val tasksRequiringRustLibs =
     listOf(
@@ -449,7 +410,6 @@ val swiftPackageUpdateMinOSVersion =
             }
         }
     }
-
 
 afterEvaluate {
     if (tasks.findByName("createSwiftPackage") != null) {
