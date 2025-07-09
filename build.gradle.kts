@@ -226,7 +226,11 @@ listOf(
 if (tasks.findByName(":bip32-ed25519:publishAndroidDebugPublicationToSonatypeRepository") != null) {
     tasks.named(":bip32-ed25519:publishAndroidDebugPublicationToSonatypeRepository").configure {
         listOf(
-            ":apollo:signJvmPublication"
+            ":apollo:signJvmPublication",
+            ":apollo:signMacosArm64Publication",
+            ":apollo:signKotlinMultiplatformPublication",
+            ":apollo:signJsPublication",
+            ":apollo:signIosX64Publication"
         ).forEach {
             if (tasks.findByName(it) != null) {
                 dependsOn(it)
