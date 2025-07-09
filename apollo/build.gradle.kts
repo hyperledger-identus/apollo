@@ -15,6 +15,8 @@ plugins {
     alias(libs.plugins.swiftpackage)
 }
 
+project.description = "Collection of cryptographic methods used across Identus platform."
+
 val currentModuleName = "Apollo"
 val appleBinaryName = "ApolloLibrary"
 val minimumIosVersion = "15.0"

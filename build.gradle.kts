@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
+import java.util.Locale
 
 plugins {
     alias(libs.plugins.dokka)
@@ -28,7 +29,7 @@ allprojects {
 }
 
 subprojects {
-    if (project.name == "apollo") {
+    if (project.name == "apollo" || project.name == "bip32-ed25519") {
         apply(plugin = "org.gradle.maven-publish")
         apply(plugin = "org.gradle.signing")
 
@@ -40,8 +41,8 @@ subprojects {
                 artifact(javadocJar)
 
                 pom {
-                    name.set("Identus Apollo")
-                    description.set("Collection of cryptographic methods used across Identus platform.")
+                    name.set("Identus " + project.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() })
+                    description.set(project.description)
                     url.set("https://docs.atalaprism.io/")
 
                     organization {
@@ -202,6 +203,16 @@ val javadocJar by tasks.registering(Jar::class) {
 if (tasks.findByName(":apollo:publishAndroidDebugPublicationToSonatypeRepository") != null) {
     tasks.named(":apollo:publishAndroidDebugPublicationToSonatypeRepository").configure {
         dependsOn(":apollo:signAndroidReleasePublication")
+    }
+}
+
+listOf(
+    ":bip32-ed25519:androidDebugSourcesJar"
+).forEach {
+    if (tasks.findByName(it) != null) {
+        tasks.named(it).configure {
+            dependsOn(":bip32-ed25519:copyGeneratedKotlin")
+        }
     }
 }
 

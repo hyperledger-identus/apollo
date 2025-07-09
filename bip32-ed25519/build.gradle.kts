@@ -1,3 +1,4 @@
+import com.android.build.gradle.tasks.MergeSourceSetFolders
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile
@@ -9,6 +10,7 @@ plugins {
     alias(libs.plugins.android.library)
 }
 
+project.description = "Identus Bip32 HD Keys in Ed25519"
 val appleBinaryName = "ApolloLibrary"
 val rustModuleDir = layout.projectDirectory.dir("rust-ed25519-bip32")
 val wrapperDir = rustModuleDir.dir("wrapper")
@@ -33,6 +35,11 @@ val generatedJvmLibsDirs =
 kotlin {
     jvm {
         withSourcesJar()
+        compilations.all {
+            compilerOptions.configure {
+                jvmTarget.set(JvmTarget.JVM_17)
+            }
+        }
 
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()
@@ -40,13 +47,14 @@ kotlin {
                 "jna.library.path",
                 generatedJvmLibsDirs.joinToString(File.pathSeparator) { it.absolutePath }
             )
-            jvmArgs("-Djna.library.path=${generatedJvmLibsDirs.joinToString(File.pathSeparator) { it.absolutePath }}")
             jvmArgs("-Djava.library.path=${generatedJvmLibsDirs.joinToString(File.pathSeparator) { it.absolutePath }}")
         }
     }
+
     androidTarget {
-        publishLibraryVariants()
+        publishLibraryVariants("release", "debug")
     }
+
     iosArm64 {
         binaries.framework {
             baseName = appleBinaryName
@@ -251,6 +259,14 @@ android {
         checkGeneratedSources = false
         abortOnError = false
     }
+
+    publishing {
+        multipleVariants {
+            withSourcesJar()
+            withJavadocJar()
+            allVariants()
+        }
+    }
 }
 
 // === Group: Rust tasks Tasks ===
@@ -436,16 +452,50 @@ tasks
         dependsOn("prepareRustLibs")
     }
 
+tasks.withType<MergeSourceSetFolders>().configureEach {
+    dependsOn("copyGeneratedKotlin")
+}
+
+tasks.withType<Jar>().configureEach {
+    dependsOn("copyGeneratedKotlin")
+}
+
+tasks.matching { it.name.endsWith("SourcesJar") }.configureEach {
+    dependsOn("copyGeneratedKotlin")
+}
+
+tasks.matching { it.name.endsWith("sourcesJar") }.configureEach {
+    dependsOn("copyGeneratedKotlin")
+}
 // === Group: KtLint Tasks ===
 tasks.withType<org.jlleitschuh.gradle.ktlint.tasks.KtLintCheckTask>().configureEach {
     dependsOn("prepareRustLibs")
 }
 
-// === Group: Publishing Tasks (Disabled) ===
-tasks.withType<PublishToMavenRepository>().configureEach {
-    enabled = false
+tasks.withType<PublishToMavenRepository> {
+    dependsOn(tasks.withType<Sign>())
+}
+tasks.withType<PublishToMavenLocal> {
+    dependsOn(tasks.withType<Sign>())
 }
 
-tasks.withType<PublishToMavenLocal>().configureEach {
-    enabled = false
+val tasksPublishingDisabled =
+    listOf(
+        "publishIosX64PublicationToSonatypeRepository",
+        "publishIosArm64PublicationToSonatypeRepository",
+        "publishIosSimulatorArm64PublicationToSonatypeRepository",
+        "publishMacosArm64PublicationToSonatypeRepository",
+        "publishJsPublicationToSonatypeRepository",
+        "publishIosX64PublicationToMavenLocal",
+        "publishIosArm64PublicationToMavenLocal",
+        "publishIosSimulatorArm64PublicationToMavenLocal",
+        "publishMacosArm64PublicationToMavenLocal",
+        "publishJsPublicationToMavenLocal"
+    )
+tasksPublishingDisabled.forEach {
+    if (tasks.findByName(it) != null) {
+        tasks.named(it).configure {
+            this.enabled = false
+        }
+    }
 }
