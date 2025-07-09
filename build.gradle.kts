@@ -197,18 +197,6 @@ nexusPublishing {
     }
 }
 
-gradle.projectsEvaluated {
-    subprojects {
-        if (name == "apollo") {
-            tasks.withType<AbstractPublishToMaven>().configureEach {
-                dependsOn(":bip32-ed25519:publishAllPublicationsToMavenRepository")
-            }
-            tasks.withType<PublishToMavenLocal>().configureEach {
-                dependsOn(":bip32-ed25519:publishToMavenLocal")
-            }
-        }
-    }
-}
 /**
  * The `javadocJar` variable is used to register a `Jar` task to generate a Javadoc JAR file.
  * The Javadoc JAR file is created with the classifier "javadoc" and it includes the HTML documentation generated
@@ -231,6 +219,32 @@ listOf(
     if (tasks.findByName(it) != null) {
         tasks.named(it).configure {
             dependsOn(":bip32-ed25519:copyGeneratedKotlin")
+        }
+    }
+}
+
+if (tasks.findByName(":bip32-ed25519:publishAndroidDebugPublicationToSonatypeRepository") != null) {
+    tasks.named(":bip32-ed25519:publishAndroidDebugPublicationToSonatypeRepository").configure {
+        listOf(
+            ":apollo:signJvmPublication"
+        ).forEach {
+            if (tasks.findByName(it) != null) {
+                dependsOn(it)
+            }
+        }
+    }
+}
+
+listOf(
+    ":apollo:signMacosArm64Publication",
+    ":apollo:signKotlinMultiplatformPublication",
+    ":apollo:signJsPublication",
+    ":apollo:signIosX64Publication",
+
+).forEach {
+    if (tasks.findByName(it) != null) {
+        tasks.named(it).configure {
+            enabled = false
         }
     }
 }
