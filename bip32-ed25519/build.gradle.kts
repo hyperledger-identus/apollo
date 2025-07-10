@@ -494,10 +494,27 @@ val tasksPublishingDisabled =
         "publishMacosArm64PublicationToMavenLocal",
         "publishJsPublicationToMavenLocal"
     )
+
 tasksPublishingDisabled.forEach {
     if (tasks.findByName(it) != null) {
         tasks.named(it).configure {
             this.enabled = false
+        }
+    }
+}
+
+if (tasks.findByName("publishAndroidDebugPublicationToSonatypeRepository") != null) {
+    tasks.named("publishAndroidDebugPublicationToSonatypeRepository").configure {
+        listOf(
+            ":apollo:signJvmPublication",
+            ":apollo:signMacosArm64Publication",
+            ":apollo:signKotlinMultiplatformPublication",
+            ":apollo:signJsPublication",
+            ":apollo:signIosX64Publication"
+        ).forEach {
+            if (tasks.findByName(it) != null) {
+                dependsOn(it)
+            }
         }
     }
 }
