@@ -49,7 +49,7 @@ jobs:
       - name: Setup Homebrew & Dependencies
         run: |
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          brew install autoconf automake libtool rustup
+          brew install autoconf automake libtool rustup gpg
           brew tap messense/macos-cross-toolchains
           brew install --overwrite x86_64-unknown-linux-gnu aarch64-unknown-linux-gnu
 
@@ -111,13 +111,24 @@ jobs:
             -e "s|download/.*/Apollo.xcframework.zip|download/v${{ github.event.inputs.version }}/Apollo.xcframework.zip|" \
             Package.swift
 
-      - name: Publish JVM & Android to Maven Central
+      - name: Configure Gradle and GPG for Publishing
         if: ${{ inputs.release_maven }}
         env:
-          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.OSSRH_USERNAME }}
-          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.OSSRH_PASSWORD }}
-          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.HYP_BOT_GPG_PRIVATE }}
-          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.HYP_BOT_GPG_PASSWORD }}
+          SIGNING_KEY: ${{ secrets.HYP_BOT_GPG_PRIVATE }}
+          MAVEN_CENTRAL_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_CENTRAL_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          SIGNING_KEY_ID: ${{ secrets.HYP_BOT_GPG_KEY_ID }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.HYP_BOT_GPG_PASSWORD }}
+        run: |
+          echo "$SIGNING_KEY" > ${HOME}/secring.gpg
+          echo "mavenCentralUsername=${MAVEN_CENTRAL_USERNAME}" >> gradle.properties
+          echo "mavenCentralPassword=${MAVEN_CENTRAL_PASSWORD}" >> gradle.properties
+          echo "signing.keyId=${SIGNING_KEY_ID}" >> gradle.properties
+          echo "signing.password=${SIGNING_KEY_PASSWORD}" >> gradle.properties
+          echo "signing.secretKeyRingFile=${HOME}/secring.gpg" >> gradle.properties
+
+      - name: Publish JVM & Android to Maven Central
+        if: ${{ inputs.release_maven }}
         run: |
           ./gradlew publishAllPublicationsToMavenCentralRepository -Pversion=${{ github.event.inputs.version }}
 

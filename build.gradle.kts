@@ -34,6 +34,14 @@ subprojects {
             publishToMavenCentral()
             signAllPublications()
 
+            val effectiveDescription =
+                when {
+                    !project.description.isNullOrBlank() -> project.description
+                    project.name == "apollo" -> "Collection of cryptographic methods used across Identus platform."
+                    project.name == "bip32-ed25519" -> "Identus Bip32 HD Keys in Ed25519"
+                    else -> "Identus Library"
+                }
+
             pom {
                 name.set(
                     "Identus " +
@@ -43,7 +51,7 @@ subprojects {
                                 if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
                             }
                 )
-                description.set(project.description)
+                description.set(effectiveDescription)
                 url.set("https://docs.atalaprism.io/")
 
                 organization {
