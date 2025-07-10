@@ -5,7 +5,6 @@ plugins {
     alias(libs.plugins.dokka)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.kover)
-    alias(libs.plugins.nexus.publish)
     id("maven-publish")
     id("signing")
     alias(libs.plugins.android.library) apply false
@@ -153,6 +152,17 @@ subprojects {
                     }
                 }
             }
+            repositories {
+                mavenLocal()
+                maven {
+                    name = "Sonatype"
+                    url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                    credentials {
+                        username = System.getenv("OSSRH_USERNAME")
+                        password = System.getenv("OSSRH_PASSWORD")
+                    }
+                }
+            }
         }
     } else {
         // Explicitly disable publishing tasks for other modules
@@ -181,18 +191,6 @@ subprojects {
             excludes {
                 classes("org.hyperledger.identus.apollo.utils.bip39.wordlists.*")
             }
-        }
-    }
-}
-
-nexusPublishing {
-    repositories {
-        // see https://central.sonatype.org/publish/publish-portal-ossrh-staging-api/#configuration
-        sonatype {
-            nexusUrl.set(uri("https://ossrh-staging-api.central.sonatype.com/service/local/"))
-            snapshotRepositoryUrl.set(uri("https://central.sonatype.com/repository/maven-snapshots/"))
-            username.set(System.getenv("OSSRH_USERNAME"))
-            password.set(System.getenv("OSSRH_PASSWORD"))
         }
     }
 }

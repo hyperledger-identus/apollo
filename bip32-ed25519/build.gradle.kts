@@ -488,11 +488,11 @@ val tasksPublishingDisabled =
         "publishIosSimulatorArm64PublicationToSonatypeRepository",
         "publishMacosArm64PublicationToSonatypeRepository",
         "publishJsPublicationToSonatypeRepository",
-        "publishIosX64PublicationToMavenLocal",
-        "publishIosArm64PublicationToMavenLocal",
-        "publishIosSimulatorArm64PublicationToMavenLocal",
-        "publishMacosArm64PublicationToMavenLocal",
-        "publishJsPublicationToMavenLocal"
+        "publishIosX64PublicationToMavenLocalRepository",
+        "publishIosArm64PublicationToMavenLocalRepository",
+        "publishIosSimulatorArm64PublicationToMavenLocalRepository",
+        "publishMacosArm64PublicationToMavenLocalRepository",
+        "publishJsPublicationToMavenLocalRepository"
     )
 
 tasksPublishingDisabled.forEach {

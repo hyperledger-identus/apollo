@@ -23,8 +23,9 @@ val minimumIosVersion = "15.0"
 val minimumMacOSVersion = "13.0"
 
 kotlin {
+    withSourcesJar(publish = false)
     jvm {
-        withSourcesJar()
+        withSourcesJar(publish = true)
         compilations.all {
             compilerOptions.configure {
                 jvmTarget.set(JvmTarget.JVM_17)
@@ -344,11 +345,11 @@ val tasksPublishingDisabled =
         "publishIosSimulatorArm64PublicationToSonatypeRepository",
         "publishMacosArm64PublicationToSonatypeRepository",
         "publishJsPublicationToSonatypeRepository",
-        "publishIosX64PublicationToMavenLocal",
-        "publishIosArm64PublicationToMavenLocal",
-        "publishIosSimulatorArm64PublicationToMavenLocal",
-        "publishMacosArm64PublicationToMavenLocal",
-        "publishJsPublicationToMavenLocal"
+        "publishIosX64PublicationToMavenLocalRepository",
+        "publishIosArm64PublicationToMavenLocalRepository",
+        "publishIosSimulatorArm64PublicationToMavenLocalRepository",
+        "publishMacosArm64PublicationToMavenLocalRepository",
+        "publishJsPublicationToMavenLocalRepository"
     )
 tasksPublishingDisabled.forEach {
     if (tasks.findByName(it) != null) {
