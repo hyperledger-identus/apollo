@@ -474,13 +474,6 @@ tasks.withType<org.jlleitschuh.gradle.ktlint.tasks.KtLintCheckTask>().configureE
     dependsOn("prepareRustLibs")
 }
 
-tasks.withType<PublishToMavenRepository> {
-    dependsOn(tasks.withType<Sign>())
-}
-tasks.withType<PublishToMavenLocal> {
-    dependsOn(tasks.withType<Sign>())
-}
-
 val tasksPublishingDisabled =
     listOf(
         "publishIosX64PublicationToSonatypeRepository",
@@ -488,6 +481,11 @@ val tasksPublishingDisabled =
         "publishIosSimulatorArm64PublicationToSonatypeRepository",
         "publishMacosArm64PublicationToSonatypeRepository",
         "publishJsPublicationToSonatypeRepository",
+        "publishIosX64PublicationToMavenCentralRepository",
+        "publishIosArm64PublicationToMavenCentralRepository",
+        "publishIosSimulatorArm64PublicationToMavenCentralRepository",
+        "publishMacosArm64PublicationToMavenCentralRepository",
+        "publishJsPublicationToMavenCentralRepository",
         "publishIosX64PublicationToMavenLocalRepository",
         "publishIosArm64PublicationToMavenLocalRepository",
         "publishIosSimulatorArm64PublicationToMavenLocalRepository",

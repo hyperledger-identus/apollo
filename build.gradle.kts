@@ -5,8 +5,7 @@ plugins {
     alias(libs.plugins.dokka)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.kover)
-    id("maven-publish")
-    id("signing")
+    alias(libs.plugins.nexus.publish)
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.kotlin.multiplatform) apply false
 }
@@ -29,138 +28,99 @@ allprojects {
 
 subprojects {
     if (project.name == "apollo" || project.name == "bip32-ed25519") {
-        apply(plugin = "org.gradle.maven-publish")
-        apply(plugin = "org.gradle.signing")
+        apply(plugin = "com.vanniktech.maven.publish")
 
-        publishing {
-            publications.withType<MavenPublication> {
-                groupId = rootProject.group.toString()
-                artifactId = project.name
-                version = project.version.toString()
-                artifact(javadocJar)
+        mavenPublishing {
+            publishToMavenCentral()
+            signAllPublications()
 
-                pom {
-                    name.set(
-                        "Identus " +
-                            project
-                                .name
-                                .replaceFirstChar {
-                                    if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
-                                }
-                    )
-                    description.set(project.description)
-                    url.set("https://docs.atalaprism.io/")
-
-                    organization {
-                        name.set("Hyperledger")
-                        url.set("https://www.hyperledger.org/")
-                    }
-
-                    licenses {
-                        license {
-                            name.set("The Apache License, Version 2.0")
-                            url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
-                        }
-                    }
-
-                    developers {
-                        developer {
-                            id.set("hamada147")
-                            name.set("Ahmed Moussa")
-                            email.set("ahmed.moussa@iohk.io")
-                            organization.set("IOG")
-                            roles.add("developer")
-                        }
-                        developer {
-                            id.set("amagyar-iohk")
-                            name.set("Allain Magyar")
-                            email.set("allain.magyar@iohk.io")
-                            organization.set("IOG")
-                            roles.add("qc")
-                        }
-                        developer {
-                            id.set("antonbaliasnikov")
-                            name.set("Anton Baliasnikov")
-                            email.set("anton.baliasnikov@iohk.io")
-                            organization.set("IOG")
-                            roles.add("qc")
-                        }
-                        developer {
-                            id.set("elribonazo")
-                            name.set("Javier Ribó")
-                            email.set("javier.ribo@iohk.io")
-                            organization.set("IOG")
-                            roles.add("developer")
-                        }
-                        developer {
-                            id.set("goncalo-frade-iohk")
-                            name.set("Gonçalo Frade")
-                            email.set("goncalo.frade@iohk.io")
-                            organization.set("IOG")
-                            roles.add("developer")
-                        }
-                        developer {
-                            id.set("curtis-h")
-                            name.set("Curtis Harding")
-                            email.set("curtis.harding@iohk.io")
-                            organization.set("IOG")
-                            roles.add("developer")
-                        }
-                        developer {
-                            id.set("cristianIOHK")
-                            name.set("Cristian Gonzalez")
-                            email.set("cristian.castro@iohk.io")
-                            organization.set("IOG")
-                            roles.add("developer")
-                        }
-                        developer {
-                            id.set("yshyn-iohk")
-                            name.set("Yurii Shynbuiev")
-                            email.set("yurii.shynbuiev@iohk.io")
-                            organization.set("IOG")
-                            roles.add("developer")
-                        }
-                    }
-
-                    scm {
-                        connection.set("scm:git:git://git@github.com/hyperledger/identus-apollo.git")
-                        developerConnection.set("scm:git:ssh://git@github.com/hyperledger/identus-apollo.git")
-                        url.set("https://github.com/hyperledger/identus-apollo")
-                    }
-                }
-
-                signing {
-                    val signingKey =
+            pom {
+                name.set(
+                    "Identus " +
                         project
-                            .findProperty("signing.signingSecretKey") as String?
-                            ?: System.getenv("OSSRH_GPG_SECRET_KEY")
-                    val signingPassword =
-                        project
-                            .findProperty("signing.signingSecretKeyPassword") as String?
-                            ?: System.getenv("OSSRH_GPG_SECRET_KEY_PASSWORD")
-
-                    if (!signingKey.isNullOrEmpty() && !signingPassword.isNullOrEmpty()) {
-                        useInMemoryPgpKeys(signingKey, signingPassword)
-
-                        sign(
-                            publishing.publications.matching {
-                                gradle.startParameter.taskNames.none { it.contains("publishToMavenLocal") }
+                            .name
+                            .replaceFirstChar {
+                                if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
                             }
-                        )
-                    } else {
-                        println("Signing skipped: signing keys not configured.")
+                )
+                description.set(project.description)
+                url.set("https://docs.atalaprism.io/")
+
+                organization {
+                    name.set("Hyperledger")
+                    url.set("https://www.hyperledger.org/")
+                }
+
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
                     }
                 }
-            }
-            repositories {
-                mavenLocal()
-                maven {
-                    name = "Sonatype"
-                    url = uri("https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2")
-                    credentials {
-                        username = System.getenv("OSSRH_USERNAME")
-                        password = System.getenv("OSSRH_PASSWORD")
+
+                developers {
+                    developer {
+                        id.set("hamada147")
+                        name.set("Ahmed Moussa")
+                        email.set("ahmed.moussa@iohk.io")
+                        organization.set("IOG")
+                        roles.add("developer")
                     }
+                    developer {
+                        id.set("amagyar-iohk")
+                        name.set("Allain Magyar")
+                        email.set("allain.magyar@iohk.io")
+                        organization.set("IOG")
+                        roles.add("qc")
+                    }
+                    developer {
+                        id.set("antonbaliasnikov")
+                        name.set("Anton Baliasnikov")
+                        email.set("anton.baliasnikov@iohk.io")
+                        organization.set("IOG")
+                        roles.add("qc")
+                    }
+                    developer {
+                        id.set("elribonazo")
+                        name.set("Javier Ribó")
+                        email.set("javier.ribo@iohk.io")
+                        organization.set("IOG")
+                        roles.add("developer")
+                    }
+                    developer {
+                        id.set("goncalo-frade-iohk")
+                        name.set("Gonçalo Frade")
+                        email.set("goncalo.frade@iohk.io")
+                        organization.set("IOG")
+                        roles.add("developer")
+                    }
+                    developer {
+                        id.set("curtis-h")
+                        name.set("Curtis Harding")
+                        email.set("curtis.harding@iohk.io")
+                        organization.set("IOG")
+                        roles.add("developer")
+                    }
+                    developer {
+                        id.set("cristianIOHK")
+                        name.set("Cristian Gonzalez")
+                        email.set("cristian.castro@iohk.io")
+                        organization.set("IOG")
+                        roles.add("developer")
+                    }
+                    developer {
+                        id.set("yshyn-iohk")
+                        name.set("Yurii Shynbuiev")
+                        email.set("yurii.shynbuiev@iohk.io")
+                        organization.set("IOG")
+                        roles.add("developer")
+                    }
+                }
+
+                scm {
+                    connection.set("scm:git:git://git@github.com/hyperledger/identus-apollo.git")
+                    developerConnection.set("scm:git:ssh://git@github.com/hyperledger/identus-apollo.git")
+                    url.set("https://github.com/hyperledger/identus-apollo")
                 }
             }
         }
@@ -242,7 +202,6 @@ listOf(
     ":apollo:signKotlinMultiplatformPublication",
     ":apollo:signJsPublication",
     ":apollo:signIosX64Publication",
-
 ).forEach {
     if (tasks.findByName(it) != null) {
         tasks.named(it).configure {

@@ -345,6 +345,11 @@ val tasksPublishingDisabled =
         "publishIosSimulatorArm64PublicationToSonatypeRepository",
         "publishMacosArm64PublicationToSonatypeRepository",
         "publishJsPublicationToSonatypeRepository",
+        "publishIosX64PublicationToMavenCentralRepository",
+        "publishIosArm64PublicationToMavenCentralRepository",
+        "publishIosSimulatorArm64PublicationToMavenCentralRepository",
+        "publishMacosArm64PublicationToMavenCentralRepository",
+        "publishJsPublicationToMavenCentralRepository",
         "publishIosX64PublicationToMavenLocalRepository",
         "publishIosArm64PublicationToMavenLocalRepository",
         "publishIosSimulatorArm64PublicationToMavenLocalRepository",
@@ -423,13 +428,6 @@ afterEvaluate {
 // Ensure copy tasks always include duplicates
 tasks.withType<Copy>().configureEach {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
-}
-
-tasks.withType<PublishToMavenRepository> {
-    dependsOn(tasks.withType<Sign>())
-}
-tasks.withType<PublishToMavenLocal> {
-    dependsOn(tasks.withType<Sign>())
 }
 
 // Configure Dokka tasks uniformly
