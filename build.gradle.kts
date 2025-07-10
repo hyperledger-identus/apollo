@@ -11,7 +11,7 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform) apply false
 }
 
-group = "io.github.goncalo-frade-iohk"
+group = "org.hyperledger.identus"
 
 allprojects {
     group = rootProject.group
