@@ -26,7 +26,7 @@ public class IOHKRSA: NSObject {
     
     @objc
     public class func generateKeyPair(keySize: RSAKeySize) -> KeyPair? {
-        let tag = "io.iohk.atala.prism.apollo.keys".data(using: .utf8)!
+        let tag = "org.hyperledger.identus.apollo.keys".data(using: .utf8)!
         let attributes: [String : Any] = [
             kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
             kSecAttrKeySizeInBits as String: keySize.rawValue as CFNumber,

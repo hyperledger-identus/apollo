@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
         IOHKCryptoKit contains Ed25519, X25519 CryptoKit functionalities.
     DESC
     
-    s.homepage         = 'https://github.com/input-output-hk/atala-prism-apollo'
+    s.homepage         = 'https://github.com/hyperledger-identus/apollo'
     s.author           = { 'Gonçalo Frade' => 'goncalo.frade@iohk.io' }
     s.source           = { :git => 'https://github.com/hyperledger/identus-apollo.git', :tag => s.version.to_s }
     s.swift_version = '5.9'

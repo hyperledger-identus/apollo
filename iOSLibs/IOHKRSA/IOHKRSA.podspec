@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
     DESC
 
     s.license          = 'MIT'
-    s.homepage         = 'https://github.com/input-output-hk/atala-prism-apollo'
+    s.homepage         = 'https://github.com/hyperledger-identus/apollo'
     s.author           = { 'Ahmed Moussa' => 'moussa.ahmed95@gmail.com' }
     s.source           = { :git => 'https://github.com/hyperledger/identus-apollo.git', :tag => s.version.to_s }
     s.swift_version = '5.7'

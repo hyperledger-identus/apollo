@@ -1,9 +1,8 @@
 pluginManagement {
     repositories {
-        gradlePluginPortal()
         google()
         mavenCentral()
-        maven("https://plugins.gradle.org/m2/")
+        gradlePluginPortal()
     }
 }
 
@@ -11,12 +10,6 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        gradlePluginPortal()
-    }
-    versionCatalogs {
-        create("libs") {
-//            from(files("gradle/libs.versions.toml"))
-        }
     }
 }
 

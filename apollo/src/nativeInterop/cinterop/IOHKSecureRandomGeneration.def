@@ -12,8 +12,8 @@ libraryPaths.macos_x64 = ../iOSLibs/IOHKSecureRandomGeneration/build/Release/
 libraryPaths.macos_arm64 = ../iOSLibs/IOHKSecureRandomGeneration/build/Release/
 
 linkerOpts = -L/usr/lib/swift
-linkerOpts.ios_x64 = -ld64 -ios_simulator_version_min 15.6.0 -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/
-linkerOpts.ios_arm64 = -ios_version_min 15.6.0 -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/
+linkerOpts.ios_x64 = -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/
+linkerOpts.ios_arm64 = -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/
 linkerOpts.ios_simulator_arm64 = -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/
-linkerOpts.macos_x64 = -macosx_version_min 13.5.0 -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/
-linkerOpts.macos_arm64 = -macosx_version_min 13.5.0 -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/
+linkerOpts.macos_x64 = -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/
+linkerOpts.macos_arm64 = -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/

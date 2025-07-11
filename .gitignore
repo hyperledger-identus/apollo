@@ -17,3 +17,5 @@ JSLibs/iohk-crypto/node_modules
 node_modules/
 /.kotlin
 /secp256k1-kmp/native/secp256k1
+.swiftpm
+.vscode
