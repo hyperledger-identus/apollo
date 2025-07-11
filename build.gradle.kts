@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.nexus.publish)
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.kotlin.multiplatform) apply false
+    signing
 }
 
 group = "org.hyperledger.identus"
