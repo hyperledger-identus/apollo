@@ -8,7 +8,7 @@ plugins {
     alias(libs.plugins.nexus.publish)
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.kotlin.multiplatform) apply false
-    signing
+    id("signing")
 }
 
 group = "org.hyperledger.identus"
@@ -164,8 +164,15 @@ subprojects {
     }
 
     afterEvaluate {
-        if (plugins.hasPlugin("maven-publish")) {
+        if (
+            plugins.hasPlugin("publishing") &&
+            findProperty("signing.key") != null &&
+            findProperty("signing.password") != null
+        ) {
+            println("🔐 Signing credentials found. Preparing to sign publications...")
+
             extensions.findByType<PublishingExtension>()?.publications?.withType<MavenPublication>()?.configureEach {
+                println("✅ Signing publication: ${this.name}")
                 extensions.configure<SigningExtension> {
                     useInMemoryPgpKeys(
                         findProperty("signing.keyId") as String?,
@@ -175,6 +182,8 @@ subprojects {
                     sign(this@configureEach)
                 }
             }
+        } else {
+            println("⚠️ Skipping signing: missing signing.key or signing.password")
         }
     }
 }
