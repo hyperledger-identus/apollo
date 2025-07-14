@@ -162,6 +162,21 @@ subprojects {
             }
         }
     }
+
+    afterEvaluate {
+        if (plugins.hasPlugin("maven-publish")) {
+            extensions.findByType<PublishingExtension>()?.publications?.withType<MavenPublication>()?.configureEach {
+                extensions.configure<SigningExtension> {
+                    useInMemoryPgpKeys(
+                        findProperty("signing.keyId") as String?,
+                        findProperty("signing.key") as String?,
+                        findProperty("signing.password") as String?
+                    )
+                    sign(this@configureEach)
+                }
+            }
+        }
+    }
 }
 
 /**

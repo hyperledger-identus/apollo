@@ -97,7 +97,7 @@ jobs:
           echo "mavenCentralUsername=${MAVEN_CENTRAL_USERNAME}" >> gradle.properties
           echo "mavenCentralPassword=${MAVEN_CENTRAL_PASSWORD}" >> gradle.properties
           echo "signing.password=${SIGNING_KEY_PASSWORD}" >> gradle.properties
-          echo "signing.secretKeyRingFile=${HOME}/secring.gpg" >> gradle.properties
+          echo "signing.secretKeyRingFile=${SIGNING_KEY}" >> gradle.properties
           echo "=== gradle.properties content ==="
           cat gradle.properties
 
