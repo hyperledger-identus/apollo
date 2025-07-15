@@ -48,7 +48,7 @@ jobs:
 
       - name: Set cache hash
         id: cache-hash
-        run: echo "value=$(sha256sum .github/workflows/release.yml | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+        run: echo "value=$(shasum -a 256 .github/workflows/release.yml | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
 
       - name: Cache Homebrew setup
         uses: actions/cache@v4
