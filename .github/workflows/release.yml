@@ -46,6 +46,10 @@ jobs:
           java-version: '17'
           distribution: zulu
 
+      - name: Set cache hash
+        id: cache-hash
+        run: echo "value=$(sha256sum .github/workflows/release.yml | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+
       - name: Cache Homebrew setup
         uses: actions/cache@v4
         id: brew-cache
@@ -53,7 +57,7 @@ jobs:
           path: |
             /usr/local/Homebrew
             /opt/homebrew
-          key: brew-${{ runner.os }}-${{ formatDate('YYYY-MM') }}
+          key: brew-${{ runner.os }}-${{ steps.cache-hash.outputs.value }}
           restore-keys: |
             brew-${{ runner.os }}-
 
@@ -76,7 +80,7 @@ jobs:
           path: |
             ~/.rustup
             ~/.cargo
-          key: rust-targets-${{ runner.os }}-${{ formatDate('YYYY-MM') }}
+          key: rust-targets-${{ runner.os }}-${{ steps.cache-hash.outputs.value }}
           restore-keys: |
             rust-targets-${{ runner.os }}-
 
