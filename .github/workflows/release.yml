@@ -46,7 +46,19 @@ jobs:
           java-version: '17'
           distribution: zulu
 
+      - name: Cache Homebrew setup
+        uses: actions/cache@v4
+        id: brew-cache
+        with:
+          path: |
+            /usr/local/Homebrew
+            /opt/homebrew
+          key: brew-${{ runner.os }}-${{ formatDate('YYYY-MM') }}
+          restore-keys: |
+            brew-${{ runner.os }}-
+
       - name: Setup Homebrew & Dependencies
+        if: steps.brew-cache.outputs.cache-hit != 'true'
         run: |
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
           brew install autoconf automake libtool rustup gpg
@@ -57,7 +69,19 @@ jobs:
         run: |
           rm -f '/usr/local/bin/2to3' '/usr/local/bin/python3' '/usr/local/bin/python3-config'
 
-      - name: Install Rust Targets
+      - name: Cache Rust targets
+        uses: actions/cache@v4
+        id: rust-targets-cache
+        with:
+          path: |
+            ~/.rustup
+            ~/.cargo
+          key: rust-targets-${{ runner.os }}-${{ formatDate('YYYY-MM') }}
+          restore-keys: |
+            rust-targets-${{ runner.os }}-
+
+      - name: Install Rust Targets and wasm-pack
+        if: steps.rust-targets-cache.outputs.cache-hit != 'true'
         run: |
           rustup target add armv7-linux-androideabi \
             i686-linux-android \
@@ -67,14 +91,12 @@ jobs:
             x86_64-apple-darwin \
             aarch64-unknown-linux-gnu \
             x86_64-unknown-linux-gnu
+          cargo install wasm-pack
 
       - name: Setup Xcode
         uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: '16.2'
-
-      - name: Install wasm-pack
-        run: cargo install wasm-pack
 
       - name: Update gradle.properties with new version
         run: |
@@ -84,43 +106,29 @@ jobs:
         run: |
           ./gradlew kotlinUpgradeYarnLock
 
-      - name: Import GPG key and extract key ID
-        id: extract-gpg-key-id
-        env:
-          HYP_BOT_GPG_PRIVATE: ${{ secrets.HYP_BOT_GPG_PRIVATE }}
-          HYP_BOT_GPG_PASSWORD: ${{ secrets.HYP_BOT_GPG_PASSWORD }}
-        run: |
-          mkdir -p ~/.gnupg
-          chmod 700 ~/.gnupg
-          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
-          echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
-      
-          echo "$HYP_BOT_GPG_PRIVATE" | \
-            gpg --batch --yes --passphrase "$HYP_BOT_GPG_PASSWORD" --pinentry-mode loopback --import
-          
-          KEY_ID=$(gpg --with-colons --list-secret-keys | awk -F: '/^sec:/ { print substr($5, length($5)-7, 8) }')
-          echo "Extracted GPG key ID: $KEY_ID"
-      
-          # Make it available to next steps
-          echo "SIGNING_KEY_ID=$KEY_ID" >> "$GITHUB_ENV"
-
       - name: Configure Gradle and GPG for Publishing
         if: ${{ inputs.release_maven }}
         env:
           SIGNING_KEY: ${{ secrets.HYP_BOT_GPG_PRIVATE }}
           MAVEN_CENTRAL_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_CENTRAL_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-          SIGNING_KEY_ID: ${{ env.SIGNING_KEY_ID }}
           SIGNING_KEY_PASSWORD: ${{ secrets.HYP_BOT_GPG_PASSWORD }}
         run: |
           export GNUPGHOME=$(mktemp -d)
           chmod 700 "$GNUPGHOME"
           echo "allow-loopback-pinentry" >> "$GNUPGHOME/gpg-agent.conf"
+          echo "pinentry-mode loopback" >> "$GNUPGHOME/gpg.conf"
+
           echo "$SIGNING_KEY" | gpg --batch --yes --passphrase "$SIGNING_KEY_PASSWORD" --pinentry-mode loopback --import
+
+          KEY_ID=$(gpg --with-colons --list-secret-keys | awk -F: '/^sec:/ { print substr($5, length($5)-7, 8) }')
+          echo "Extracted GPG key ID: $KEY_ID"
+
           gpg --batch --yes --pinentry-mode loopback --passphrase "$SIGNING_KEY_PASSWORD" --export-secret-keys > ${HOME}/secring.gpg
+
           echo "mavenCentralUsername=${MAVEN_CENTRAL_USERNAME}" >> gradle.properties
           echo "mavenCentralPassword=${MAVEN_CENTRAL_PASSWORD}" >> gradle.properties
-          echo "signing.keyId=${SIGNING_KEY_ID}" >> gradle.properties
+          echo "signing.keyId=${KEY_ID}" >> gradle.properties
           echo "signing.password=${SIGNING_KEY_PASSWORD}" >> gradle.properties
           echo "signing.secretKeyRingFile=${HOME}/secring.gpg" >> gradle.properties
           echo "=== gradle.properties content ==="
