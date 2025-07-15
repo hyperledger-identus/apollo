@@ -32,7 +32,7 @@ subprojects {
         apply(plugin = "com.vanniktech.maven.publish")
 
         mavenPublishing {
-            publishToMavenCentral()
+            publishToMavenCentral(automaticRelease = true)
             signAllPublications()
 
             val effectiveDescription =
