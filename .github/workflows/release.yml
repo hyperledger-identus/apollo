@@ -84,6 +84,26 @@ jobs:
         run: |
           ./gradlew kotlinUpgradeYarnLock
 
+      - name: Import GPG key and extract key ID
+        id: extract-gpg-key-id
+        env:
+          HYP_BOT_GPG_PRIVATE: ${{ secrets.HYP_BOT_GPG_PRIVATE }}
+          HYP_BOT_GPG_PASSWORD: ${{ secrets.HYP_BOT_GPG_PASSWORD }}
+        run: |
+          mkdir -p ~/.gnupg
+          chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
+      
+          echo "$HYP_BOT_GPG_PRIVATE" | \
+            gpg --batch --yes --passphrase "$HYP_BOT_GPG_PASSWORD" --pinentry-mode loopback --import
+      
+          KEY_ID=$(gpg --with-colons --list-secret-keys | awk -F: '/^sec:/ { print $5 }')
+          echo "Extracted GPG key ID: $KEY_ID"
+      
+          # Make it available to next steps
+          echo "SIGNING_KEY_ID=$KEY_ID" >> "$GITHUB_ENV"
+
       - name: Configure Gradle and GPG for Publishing
         if: ${{ inputs.release_maven }}
         env:
@@ -109,12 +129,6 @@ jobs:
 
       - name: Build Kotlin Multiplatform Maven Artifacts
         if: ${{ inputs.release_maven }}
-        env:
-          SIGNING_KEY: ${{ secrets.HYP_BOT_GPG_PRIVATE }}
-          MAVEN_CENTRAL_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_CENTRAL_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-          SIGNING_KEY_ID: ${{ secrets.HYP_BOT_GPG_KEY_ID }}
-          SIGNING_KEY_PASSWORD: ${{ secrets.HYP_BOT_GPG_PASSWORD }}
         run: |
           ./gradlew publishToMavenLocal
 
@@ -135,21 +149,11 @@ jobs:
             -e "s|download/.*/Apollo.xcframework.zip|download/v${{ github.event.inputs.version }}/Apollo.xcframework.zip|" \
             Package.swift
 
-      - name: Debug signing input presence
-        run: |
-          echo "SIGNING_KEY_ID is ${SIGNING_KEY_ID:+set}"
-          echo "SIGNING_KEY is ${SIGNING_KEY:+set}"
-          echo "SIGNING_PASSWORD is ${SIGNING_PASSWORD:+set}"
-          cat gradle.properties | grep signing
-
-      - name: Publish with debug to Maven Local
-        run: ./gradlew publishToMavenLocal --info --stacktrace
-
-      - name: Check for signed artifacts
-        run: find . -name "*.asc"
-
       - name: Publish JVM & Android to Maven Central
         if: ${{ inputs.release_maven }}
+        env:
+          MAVEN_CENTRAL_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_CENTRAL_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
         run: |
           ./gradlew publishAllPublicationsToMavenCentralRepository -Pversion=${{ github.event.inputs.version }}
 
