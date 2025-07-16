@@ -199,7 +199,7 @@ kotlin {
 }
 
 android {
-    namespace = "org.hyperledger.identus.apollo"
+    namespace = "org.hyperledger.identus"
     compileSdk = 34
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
 

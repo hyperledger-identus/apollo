@@ -170,6 +170,11 @@ jobs:
         run: |
           ./gradlew publishAllPublicationsToMavenCentralRepository -Pversion=${{ github.event.inputs.version }}
 
+      - name: Diagnostic - List build directory contents
+        run: |
+          echo "=== Build directory structure ==="
+          find ./build -type f | sort
+
       - name: Publish TypeScript package to npm
         if: ${{ inputs.release_ts }}
         uses: actions/setup-node@v4
