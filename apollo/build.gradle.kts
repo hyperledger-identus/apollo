@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import java.io.ByteArrayOutputStream
 import java.net.URL
+import kotlin.io.resolve
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
@@ -201,19 +202,20 @@ kotlin {
 android {
     namespace = "org.hyperledger.identus.apollo"
     compileSdk = 34
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
 
     defaultConfig {
         minSdk = 21
     }
 
-    kotlin {
-        jvmToolchain(17)
-    }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    lint {
+        disable += "NewApi"
+        checkGeneratedSources = false
+        abortOnError = false
     }
 
     publishing {
@@ -329,13 +331,32 @@ val tasksRequiringRustLibs =
     listOf(
         "jvmProcessResources",
         "jsBrowserTest",
-        "jsNodeTest"
+        "jsNodeTest",
+        "packJsPackage"
     )
 
 tasksRequiringRustLibs.forEach {
     tasks.named(it).configure {
-        dependsOn(":bip32-ed25519:prepareRustLibs")
+        dependsOn(":bip32-ed25519:prepareRustLibs", "copyWasmOutput")
     }
+}
+
+tasks.register<Copy>("copyWasmOutput") {
+    group = "rust"
+    description = "Copies Rust-generated Wasm."
+    dependsOn(":bip32-ed25519:copyWasmOutput", ":apollo:jsProductionLibraryCompileSync")
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    from(rootProject
+        .layout
+        .buildDirectory
+        .dir("js/packages/Apollo/kotlin")
+    )
+    include("ed25519_bip32_wasm.js")
+    into(
+        layout
+            .buildDirectory
+            .dir("packages/js")
+    )
 }
 
 val tasksPublishingDisabled =
@@ -350,11 +371,11 @@ val tasksPublishingDisabled =
         "publishIosSimulatorArm64PublicationToMavenCentralRepository",
         "publishMacosArm64PublicationToMavenCentralRepository",
         "publishJsPublicationToMavenCentralRepository",
-        "publishIosX64PublicationToMavenLocalRepository",
-        "publishIosArm64PublicationToMavenLocalRepository",
-        "publishIosSimulatorArm64PublicationToMavenLocalRepository",
-        "publishMacosArm64PublicationToMavenLocalRepository",
-        "publishJsPublicationToMavenLocalRepository"
+        "publishIosX64PublicationToMavenLocal",
+        "publishIosArm64PublicationToMavenLocal",
+        "publishIosSimulatorArm64PublicationToMavenLocal",
+        "publishMacosArm64PublicationToMavenLocal",
+        "publishJsPublicationToMavenLocal"
     )
 tasksPublishingDisabled.forEach {
     if (tasks.findByName(it) != null) {
