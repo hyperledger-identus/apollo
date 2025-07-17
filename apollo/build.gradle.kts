@@ -332,7 +332,7 @@ val tasksRequiringRustLibs =
         "jvmProcessResources",
         "jsBrowserTest",
         "jsNodeTest",
-        "packJsPackage"
+        "publishJsPackageToNpmjsRegistry"
     )
 
 tasksRequiringRustLibs.forEach {
@@ -346,17 +346,19 @@ tasks.register<Copy>("copyWasmOutput") {
     description = "Copies Rust-generated Wasm."
     dependsOn(":bip32-ed25519:copyWasmOutput", ":apollo:jsProductionLibraryCompileSync")
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    from(rootProject
-        .layout
-        .buildDirectory
-        .dir("js/packages/Apollo/kotlin")
-    )
+    val wasmSourceDir = rootProject.layout.buildDirectory.dir("js/packages/Apollo/kotlin")
+    from(wasmSourceDir)
     include("ed25519_bip32_wasm.js")
-    into(
-        layout
-            .buildDirectory
-            .dir("packages/js")
-    )
+
+    val destinationDir = layout.buildDirectory.dir("packages/js")
+    into(destinationDir)
+
+    doLast {
+        val targetFile = destinationDir.get().file("ed25519_bip32_wasm.js").asFile
+        if (!targetFile.exists()) {
+            throw GradleException("Copy failed: ed25519_bip32_wasm.js not found in ${targetFile.absolutePath}")
+        }
+    }
 }
 
 val tasksPublishingDisabled =
