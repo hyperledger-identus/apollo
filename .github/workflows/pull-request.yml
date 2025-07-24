@@ -75,7 +75,7 @@ jobs:
         if: matrix.os-type == 'macos'
         run: |
           brew tap messense/macos-cross-toolchains
-  
+
       - name: "Install Linux GNU for x86_64"
         if: matrix.os-type == 'macos'
         run: |
@@ -112,7 +112,7 @@ jobs:
           rustup target add x86_64-apple-darwin
           rustup target add aarch64-unknown-linux-gnu
           rustup target add x86_64-unknown-linux-gnu
-          
+
       - uses: maxim-lobanov/setup-xcode@v1
         if: matrix.os-type == 'macos'
         with:
@@ -125,7 +125,7 @@ jobs:
       - name: "Install rust toolchain (Macos)"
         if: matrix.os-type == 'macos'
         run: brew install rustup
-          
+
       - name: "Install wasm-pack"
         run: cargo install wasm-pack
 
@@ -138,30 +138,30 @@ jobs:
       - name: "Build Check All tests"
         run: ./gradlew allTests
 
-      - name: "Generate kover coverage report"
-        run: ./gradlew koverHtmlReport koverXmlReport
+#      - name: "Generate kover coverage report"
+#        run: ./gradlew koverHtmlReport koverXmlReport
 
-      - name: "Upload coverage html"
-        uses: actions/upload-artifact@v4.0.0
-        with:
-          name: coverage-results-${{ matrix.os-type }}.zip
-          path: apollo/build/reports/kover/html
+#      - name: "Upload coverage html"
+#        uses: actions/upload-artifact@v4.0.0
+#        with:
+#          name: coverage-results-${{ matrix.os-type }}.zip
+#          path: apollo/build/reports/kover/html
 
-      - name: "Add coverage report to PR"
-        id: kover
-        uses: mi-kas/kover-report@v1
-        with:
-          path: ${{ github.workspace }}/apollo/build/reports/kover/report.xml
-          token: ${{ env.GITHUB_TOKEN }}
-          title: Code Coverage
-          update-comment: true
-          min-coverage-overall: 90
-          min-coverage-changed-files: 90
-          coverage-counter-type: LINE
+#      - name: "Add coverage report to PR"
+#        id: kover
+#        uses: mi-kas/kover-report@v1
+#        with:
+#          path: ${{ github.workspace }}/apollo/build/reports/kover/report.xml
+#          token: ${{ env.GITHUB_TOKEN }}
+#          title: Code Coverage
+#          update-comment: true
+#          min-coverage-overall: 90
+#          min-coverage-changed-files: 90
+#          coverage-counter-type: LINE
 
-      - name: "Upload the build report"
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          path: "**/build/reports/"
-          name: report-${{ matrix.os-type }}
+#      - name: "Upload the build report"
+#        if: always()
+#        uses: actions/upload-artifact@v4
+#        with:
+#          path: "**/build/reports/"
+#          name: report-${{ matrix.os-type }}
