@@ -7,7 +7,7 @@ plugins {
     alias(libs.plugins.ktlint)
 }
 
-group = "dev.allain"
+group = "org.hyperledger.identus"
 
 subprojects {
     group = rootProject.group

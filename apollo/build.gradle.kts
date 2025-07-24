@@ -25,7 +25,7 @@ kotlin {
     }
     jvm()
     androidLibrary {
-        namespace = "dev.allain"
+        namespace = "org.hyperledger.identus.apollo"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
     }
@@ -422,13 +422,13 @@ mavenPublishing {
 }
 
 npmPublish {
-    organization.set("amagyar-iohk")
+    organization.set("hyperledger")
     version.set(rootProject.version.toString())
     access.set(NpmAccess.PUBLIC)
     packages {
         access.set(NpmAccess.PUBLIC)
         named("js") {
-            scope.set("amagyar-iohk")
+            scope.set("hyperledger")
             packageName.set("identus-apollo")
             readme.set(rootProject.layout.projectDirectory.file("README.md"))
             packageJson {
