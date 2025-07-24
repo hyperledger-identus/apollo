@@ -68,10 +68,10 @@ jobs:
             aarch64-unknown-linux-gnu \
             x86_64-unknown-linux-gnu
 
-      # - name: Setup Xcode
-      #   uses: maxim-lobanov/setup-xcode@v1
-      #   with:
-      #     xcode-version: '16.2'
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '16.2'
 
       - name: Install wasm-pack
         run: cargo install wasm-pack
