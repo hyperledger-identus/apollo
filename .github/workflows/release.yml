@@ -42,6 +42,8 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
+          ref: ${{ github.event.inputs.branch }}
+          token: ${{ secrets.IDENTUS_CI }}
 
       - name: Validate Gradle Wrapper
         uses: gradle/actions/wrapper-validation@v4
