@@ -25,6 +25,7 @@ on:
 permissions:
   contents: write
   packages: write
+  id-token: write  # Required for OIDC
 
 jobs:
   unified_release:
@@ -85,6 +86,10 @@ jobs:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
 
+      # anchor to the smallest npm version supporting trusted publishing
+      - name: Update npm
+        run: npm install -g npm@11.5.1
+
       - name: Update gradle.properties with new version
         run: |
           sed -i '' 's/^version = *.*.*/version = ${{ github.event.inputs.version }}/' gradle.properties
@@ -133,8 +138,6 @@ jobs:
       - name: NPM publish
         if: ${{ inputs.release_ts }}
         run: ./gradlew :apollo:publishJsPackageToNpmjsRegistry
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - uses: crazy-max/ghaction-import-gpg@v6
         id: import-gpg
