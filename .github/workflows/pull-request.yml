@@ -16,6 +16,9 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 on:
+  push:
+    branches:
+      - "main"
   pull_request:
   workflow_dispatch:
 
@@ -138,30 +141,14 @@ jobs:
       - name: "Build Check All tests"
         run: ./gradlew allTests
 
-#      - name: "Generate kover coverage report"
-#        run: ./gradlew koverHtmlReport koverXmlReport
+      - name: "Generate kover coverage report"
+        run: ./gradlew koverHtmlReport koverXmlReport
 
-#      - name: "Upload coverage html"
-#        uses: actions/upload-artifact@v4.0.0
-#        with:
-#          name: coverage-results-${{ matrix.os-type }}.zip
-#          path: apollo/build/reports/kover/html
-
-#      - name: "Add coverage report to PR"
-#        id: kover
-#        uses: mi-kas/kover-report@v1
-#        with:
-#          path: ${{ github.workspace }}/apollo/build/reports/kover/report.xml
-#          token: ${{ env.GITHUB_TOKEN }}
-#          title: Code Coverage
-#          update-comment: true
-#          min-coverage-overall: 90
-#          min-coverage-changed-files: 90
-#          coverage-counter-type: LINE
-
-#      - name: "Upload the build report"
-#        if: always()
-#        uses: actions/upload-artifact@v4
-#        with:
-#          path: "**/build/reports/"
-#          name: report-${{ matrix.os-type }}
+      - name: Coveralls
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e # v2.3.7
+        with:
+          files:
+            - "apollo/build/reports/kover/report.xml"
+            - "bip32-ed25519/build/reports/kover/report.xml"

@@ -11,7 +11,7 @@ plugins {
     alias(libs.plugins.maven.publish)
     alias(libs.plugins.npm.publish)
     alias(libs.plugins.swiftpackage)
-    alias(libs.plugins.kover) apply false // https://github.com/Kotlin/kotlinx-kover/issues/747
+    alias(libs.plugins.kover)
 }
 
 val appleBinaryName = "ApolloLibrary"
