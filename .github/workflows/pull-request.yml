@@ -149,6 +149,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e # v2.3.7
         with:
-          files:
-            - "apollo/build/reports/kover/report.xml"
-            - "bip32-ed25519/build/reports/kover/report.xml"
+          files: apollo/build/reports/kover/report.xml bip32-ed25519/build/reports/kover/report.xml
