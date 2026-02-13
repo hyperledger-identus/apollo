@@ -18,6 +18,16 @@ val appleBinaryName = "ApolloLibrary"
 val minimumIosVersion = "15.0"
 val minimumMacOSVersion = "13.0"
 
+kover {
+    reports {
+        filters {
+            excludes {
+                classes("org.hyperledger.identus.apollo.utils.bip39.wordlists.*")
+            }
+        }
+    }
+}
+
 kotlin {
     applyDefaultHierarchyTemplate()
     compilerOptions {
