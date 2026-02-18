@@ -1,6 +1,13 @@
-![License](https://img.shields.io/badge/license-Apache%20License%202.0-blue?logo=apache)
-![Kotlin](https://img.shields.io/badge/kotlin-2.2.0-blue?logo=kotlin)
-![Gradle](https://img.shields.io/badge/gradle-8.13-blue?logo=gradle)
+<p align="center">
+    <a href="https://www.lfdecentralizedtrust.org/projects/identus">
+        <img src="https://raw.githubusercontent.com/hyperledger-identus/docs/refs/heads/main/static/img/graphics/identus-hero.svg" alt="identus-logo" height="99px" />
+    </a>
+</p>
+
+[![Coverage Status](https://coveralls.io/repos/github/hyperledger-identus/apollo/badge.svg?branch=main)](https://coveralls.io/github/hyperledger-identus/apollo?branch=main)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=hyperledger-identus_apollo&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=hyperledger-identus_apollo)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/11738/badge)](https://www.bestpractices.dev/projects/11738)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/hyperledger-identus/apollo/badge)](https://scorecard.dev/viewer/?uri=github.com/hyperledger-identus/apollo)
 
 # Apollo
 
