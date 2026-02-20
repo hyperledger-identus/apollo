@@ -9,6 +9,9 @@
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/11738/badge)](https://www.bestpractices.dev/projects/11738)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/hyperledger-identus/apollo/badge)](https://scorecard.dev/viewer/?uri=github.com/hyperledger-identus/apollo)
 
+[![GitHub release](https://img.shields.io/github/release/hyperledger-identus/apollo.svg)](https://github.com/hyperledger-identus/apollo/releases)
+[![Discord](https://img.shields.io/discord/905194001349627914?label=discord)](https://discord.com/channels/905194001349627914/1230596020790886490)
+
 # Apollo
 
 A cryptography lib built with Kotlin Multiplatform with support for the following targets:
