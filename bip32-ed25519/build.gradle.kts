@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.maven.publish)
-    alias(libs.plugins.kover) apply false // https://github.com/Kotlin/kotlinx-kover/issues/747
+    alias(libs.plugins.kover)
 }
 
 val appleBinaryName = "ApolloLibrary"
