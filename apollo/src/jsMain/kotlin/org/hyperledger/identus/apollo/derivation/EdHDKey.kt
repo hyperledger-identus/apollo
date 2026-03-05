@@ -72,7 +72,7 @@ actual class EdHDKey actual constructor(
          */
         actual fun initFromSeed(seed: ByteArray): EdHDKey {
             require(seed.size == 64) {
-                "Seed expected byte length to be ${ECConfig.PRIVATE_KEY_BYTE_SIZE}"
+                "Seed expected byte length to be ${ECConfig.SEED_BYTE_SIZE}"
             }
 
             val key = seed.sliceArray(0 until 32)

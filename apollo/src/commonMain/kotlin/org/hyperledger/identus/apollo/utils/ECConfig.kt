@@ -11,6 +11,7 @@ import kotlin.js.JsExport
 @JsExport
 object ECConfig {
     val PRIVATE_KEY_BYTE_SIZE: Int = 32
+    val SEED_BYTE_SIZE: Int = 64
     internal val PUBLIC_KEY_COORDINATE_BYTE_SIZE: Int = 32
     internal val PUBLIC_KEY_COMPRESSED_BYTE_SIZE: Int = PUBLIC_KEY_COORDINATE_BYTE_SIZE + 1
     val SIGNATURE_MAX_BYTE_SIZE: Int = 72
