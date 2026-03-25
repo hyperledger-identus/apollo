@@ -52,13 +52,6 @@ kotlin {
             baseName = appleBinaryName
         }
     }
-    iosX64 {
-        swiftCinterop("IOHKSecureRandomGeneration", name)
-        swiftCinterop("IOHKCryptoKit", name)
-        binaries.framework {
-            baseName = appleBinaryName
-        }
-    }
     iosSimulatorArm64 {
         swiftCinterop("IOHKSecureRandomGeneration", name)
         swiftCinterop("IOHKCryptoKit", name)

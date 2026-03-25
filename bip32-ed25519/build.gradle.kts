@@ -98,11 +98,6 @@ kotlin {
             baseName = appleBinaryName
         }
     }
-    iosX64 {
-        binaries.framework {
-            baseName = appleBinaryName
-        }
-    }
     iosSimulatorArm64 {
         binaries.framework {
             baseName = appleBinaryName
