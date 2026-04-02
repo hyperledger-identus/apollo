@@ -1,6 +1,8 @@
 package org.hyperledger.identus.apollo.utils
 
 import org.hyperledger.identus.apollo.derivation.Mnemonic
+import org.hyperledger.identus.apollo.secp256k1.Secp256k1Lib
+import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -19,5 +21,17 @@ class Secp256k1LibTestJS {
             verified,
             true
         )
+    }
+
+    @Test
+    fun derivePrivateKey_alwaysReturns32Bytes() {
+        val lib = Secp256k1Lib()
+        val rnd = Random(42)
+        repeat(2000) { i ->
+            val a = ByteArray(32) { rnd.nextInt(256).toByte() }
+            val b = ByteArray(32) { rnd.nextInt(256).toByte() }
+            val r = lib.derivePrivateKey(a, b)
+            assertEquals(32, r!!.size, "iteration $i")
+        }
     }
 }
