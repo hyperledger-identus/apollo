@@ -66,8 +66,30 @@ tasks.register<Copy>("copyNativeLibs") {
     }
 }
 
+tasks.register<Copy>("copyAndroidJniLibs") {
+    group = "rust"
+    description = "Copies native .so files into proper ABI-named jniLibs directories for Android AAR packaging."
+    dependsOn("buildRustWrapper")
+
+    into(layout.buildDirectory.dir("jniLibs"))
+
+    val abiMapping = mapOf(
+        "aarch64-linux-android"   to "arm64-v8a",
+        "armv7-linux-androideabi" to "armeabi-v7a",
+        "i686-linux-android"      to "x86",
+        "x86_64-linux-android"    to "x86_64"
+    )
+    abiMapping.forEach { (triple, abi) ->
+        from(wrapperDir.dir("target/$triple/release")) {
+            include("*.so")
+            into(abi)
+        }
+    }
+}
+
 val copyGeneratedKotlinProvider = tasks.named<Copy>("copyGeneratedKotlin")
 val copyNativeLibsProvider = tasks.named<Copy>("copyNativeLibs")
+val copyAndroidJniLibsProvider = tasks.named<Copy>("copyAndroidJniLibs")
 
 kotlin {
     jvm {
@@ -234,6 +256,60 @@ kotlin {
         }
     }
 }
+// Wire the Rust .so files into the Android AAR.
+// com.android.kotlin.multiplatform.library does not expose a standard android {} extension and
+// the Variant Sources API does not correctly wire task dependencies for this plugin, so we
+// use a post-bundle task that injects the .so files into the already-assembled AAR zip.
+afterEvaluate {
+    val bundleTask = tasks.named("bundleAndroidMainAar")
+
+    val injectJniLibsIntoAar by tasks.registering(Zip::class) {
+        group = "rust"
+        description = "Injects Rust .so files into the bip32-ed25519 AAR under jni/<abi>/."
+        dependsOn(bundleTask, copyAndroidJniLibsProvider)
+
+        val aarFile = bundleTask.map { task ->
+            task.outputs.files.singleFile
+        }
+
+        // Start from the existing AAR contents
+        from(zipTree(aarFile))
+
+        // Add the .so files under jni/ (AGP's expected layout inside an AAR)
+        from(copyAndroidJniLibsProvider.map { it.destinationDir }) {
+            into("jni")
+        }
+
+        destinationDirectory.set(layout.buildDirectory.dir("outputs/aar-with-jni"))
+        archiveFileName.set("bip32-ed25519.aar")
+    }
+
+    // Replace the original AAR with the enriched one
+    tasks.register<Copy>("replaceAarWithJni") {
+        group = "rust"
+        description = "Overwrites the original AAR with the .so-enriched version."
+        dependsOn(injectJniLibsIntoAar)
+        from(injectJniLibsIntoAar.map { it.destinationDirectory })
+        into(layout.buildDirectory.dir("outputs/aar"))
+    }
+
+    bundleTask.configure {
+        finalizedBy("replaceAarWithJni")
+    }
+
+    // Tell every Android publication task that reads the AAR to wait for the enriched version.
+    // Without this Gradle's validation detects an implicit dependency and fails.
+    val pubTaskPredicate = { t: Task ->
+        (t.name.startsWith("generateMetadataFileFor") ||
+            t.name.startsWith("generatePomFileFor") ||
+            t.name.startsWith("publish")) &&
+            t.name.contains("Android", ignoreCase = true)
+    }
+    tasks.matching(pubTaskPredicate).configureEach {
+        dependsOn("replaceAarWithJni")
+    }
+}
+
 
 // === Group: Rust tasks Tasks ===
 tasks.register<Exec>("buildRustWrapper") {
@@ -263,14 +339,19 @@ tasks.register("assembleRustLibs") {
         "buildRustWrapper",
         "buildRustWasm",
         "copyGeneratedKotlin",
-        "copyNativeLibs"
+        "copyNativeLibs",
+        "copyAndroidJniLibs"
     )
 }
 
 mavenPublishing {
     val shouldAutoRelease = project.findProperty("autoRelease")?.toString()?.toBoolean() ?: false
     publishToMavenCentral(automaticRelease = shouldAutoRelease)
-    signAllPublications()
+    val hasSigningCredentials = project.hasProperty("signing.keyId") ||
+        System.getenv("GPG_KEY_ID") != null
+    if (hasSigningCredentials) {
+        signAllPublications()
+    }
     coordinates(group.toString(), "bip32-ed25519", rootProject.version.toString())
     pom {
         name.set("Identus bip32-ed25519")
