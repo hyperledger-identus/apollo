@@ -348,6 +348,8 @@ mavenPublishing {
     val shouldAutoRelease = project.findProperty("autoRelease")?.toString()?.toBoolean() ?: false
     publishToMavenCentral(automaticRelease = shouldAutoRelease)
     val hasSigningCredentials = project.hasProperty("signing.keyId") ||
+        project.hasProperty("signingInMemoryKey") ||
+        System.getenv("ORG_GRADLE_PROJECT_signingInMemoryKey") != null ||
         System.getenv("GPG_KEY_ID") != null
     if (hasSigningCredentials) {
         signAllPublications()
