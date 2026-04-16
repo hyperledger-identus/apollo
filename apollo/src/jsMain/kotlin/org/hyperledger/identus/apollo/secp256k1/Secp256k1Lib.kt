@@ -40,7 +40,25 @@ actual class Secp256k1Lib actual constructor() {
         val privKey = BigInteger.parseString(privKeyString, 16)
         val derivedPrivKey = BigInteger.parseString(derivedPrivKeyString, 16)
         val added = (privKey + derivedPrivKey) % ECConfig.n
-        return added.toByteArray()
+        // ionspin BigInteger.toByteArray() is minimal-length big-endian; secp256k1 secrets must be 32 bytes (left-pad zeros).
+        return normalizeSecp256k1ScalarBytes(added.toByteArray())
+    }
+
+    private fun normalizeSecp256k1ScalarBytes(bytes: ByteArray): ByteArray {
+        val n = ECConfig.PRIVATE_KEY_BYTE_SIZE
+        var b = bytes
+        while (b.size > n && b[0] == 0.toByte()) {
+            b = b.copyOfRange(1, b.size)
+        }
+        require(b.size <= n) {
+            "Secp256k1 private scalar exceeds $n bytes after normalization (${b.size})"
+        }
+        if (b.size == n) {
+            return b
+        }
+        return ByteArray(n).also { out ->
+            b.copyInto(out, destinationOffset = n - b.size)
+        }
     }
 
     /**
