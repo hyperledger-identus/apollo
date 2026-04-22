@@ -213,7 +213,7 @@ kotlin {
             kotlin.srcDir(layout.buildDirectory.dir("generated/androidMain/kotlin"))
             resources.srcDir(copyGeneratedKotlinProvider.map { it.destinationDir.resolve("androidMain/baselineProfiles") })
             dependencies {
-                implementation("net.java.dev.jna:jna:5.13.0")
+                implementation("net.java.dev.jna:jna:5.16.0@aar")
             }
         }
         nativeMain {

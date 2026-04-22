@@ -123,21 +123,15 @@ kotlin {
             implementation(libs.secp256k1.kmp.android)
             implementation(libs.guava)
             implementation(libs.bouncycastle)
-            implementation("org.bitcoinj:bitcoinj-core:${libs.versions.bitcoinj.get()}") {
-                exclude(group = "net.jcip", module = "jcip-annotations")
-            }
-            implementation(libs.jcip.annotations.apache)
-            implementation(libs.jna.android)
+            implementation(libs.bitcoinjcore)
+            implementation("net.java.dev.jna:jna:5.16.0@aar")
         }
         jvmMain.dependencies {
             api(libs.secp256k1.kmp)
             implementation(libs.secp256k1.kmp.jvm)
             implementation(libs.guava)
             implementation(libs.bouncycastle)
-            implementation("org.bitcoinj:bitcoinj-core:${libs.versions.bitcoinj.get()}") {
-                exclude(group = "net.jcip", module = "jcip-annotations")
-            }
-            implementation(libs.jcip.annotations.apache)
+            implementation(libs.bitcoinjcore)
             implementation(libs.jna)
         }
         jvmTest.dependencies {
