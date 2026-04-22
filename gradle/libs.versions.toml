@@ -8,6 +8,7 @@ vanniktech-maven-publish = "0.33.0"
 npm-publish = "3.5.3"
 swiftpackage = "2.2.4"
 secp256k1-kmp = "0.16.0"
+secp256k1-kmp-android = "0.19.0"
 android-minSdk = "24"
 android-compileSdk = "34"
 
@@ -26,9 +27,9 @@ junit = { module = "junit:junit", version = "4.13.2" }
 secp256k1-kmp = { module = "fr.acinq.secp256k1:secp256k1-kmp", version.ref = "secp256k1-kmp"}
 secp256k1-kmp-jvm = { module = "fr.acinq.secp256k1:secp256k1-kmp-jni-jvm", version.ref = "secp256k1-kmp"}
 guava = { module = "com.google.guava:guava", version = "30.1-jre" }
-jna = { module = "net.java.dev.jna:jna", version = "5.13.0"}
-jna-android = { module = "net.java.dev.jna:jna", version = "5.13.0"}
-secp256k1-kmp-android = { module = "fr.acinq.secp256k1:secp256k1-kmp-jni-android", version.ref = "secp256k1-kmp"}
+jna = { module = "net.java.dev.jna:jna", version = "5.16.0"}
+jna-android = { module = "net.java.dev.jna:jna", version = "5.16.0"}
+secp256k1-kmp-android = { module = "fr.acinq.secp256k1:secp256k1-kmp-jni-android", version.ref = "secp256k1-kmp-android"}
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 
 [plugins]

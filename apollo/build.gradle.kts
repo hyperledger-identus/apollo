@@ -117,7 +117,7 @@ kotlin {
             implementation(libs.guava)
             implementation(libs.bouncycastle)
             implementation(libs.bitcoinjcore)
-            implementation(libs.jna.android)
+            implementation("net.java.dev.jna:jna:5.16.0@aar")
         }
         jvmMain.dependencies {
             api(libs.secp256k1.kmp)

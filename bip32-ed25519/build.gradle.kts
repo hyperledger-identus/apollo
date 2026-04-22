@@ -208,7 +208,7 @@ kotlin {
             kotlin.srcDir(layout.buildDirectory.dir("generated/androidMain/kotlin"))
             resources.srcDir(copyGeneratedKotlinProvider.map { it.destinationDir.resolve("androidMain/baselineProfiles") })
             dependencies {
-                implementation("net.java.dev.jna:jna:5.13.0")
+                implementation("net.java.dev.jna:jna:5.16.0@aar")
             }
         }
         nativeMain {
@@ -348,6 +348,8 @@ mavenPublishing {
     val shouldAutoRelease = project.findProperty("autoRelease")?.toString()?.toBoolean() ?: false
     publishToMavenCentral(automaticRelease = shouldAutoRelease)
     val hasSigningCredentials = project.hasProperty("signing.keyId") ||
+        project.hasProperty("signingInMemoryKey") ||
+        System.getenv("ORG_GRADLE_PROJECT_signingInMemoryKey") != null ||
         System.getenv("GPG_KEY_ID") != null
     if (hasSigningCredentials) {
         signAllPublications()
