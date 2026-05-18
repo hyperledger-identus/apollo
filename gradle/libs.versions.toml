@@ -8,6 +8,7 @@ vanniktech-maven-publish = "0.33.0"
 npm-publish = "3.5.3"
 swiftpackage = "2.2.4"
 secp256k1-kmp = "0.16.0"
+bitcoinj = "0.17.1"
 android-minSdk = "24"
 android-compileSdk = "34"
 
@@ -19,7 +20,8 @@ atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version = "0.23.2" }
 macs-hmac-sha2 = { module = "org.kotlincrypto.macs:hmac-sha2", version = "0.3.0" }
 hash-hmac-sha2 = { module = "org.kotlincrypto.hash:sha2", version = "0.4.0" }
 bouncycastle = { module = "org.bouncycastle:bcprov-jdk18on", version = "1.80"}
-bitcoinjcore = { module = "org.bitcoinj:bitcoinj-core", version = "0.17" }
+bitcoinjcore = { module = "org.bitcoinj:bitcoinj-core", version.ref = "bitcoinj" }
+jcip-annotations-apache = { module = "com.github.stephenc.jcip:jcip-annotations", version = "1.0-1" }
 kotlin-web = { module = "org.jetbrains.kotlin-wrappers:kotlin-web", version = "1.0.0-pre.461"}
 kotlin-node = { module = "org.jetbrains.kotlin-wrappers:kotlin-node", version = "18.11.13-pre.461"}
 junit = { module = "junit:junit", version = "4.13.2" }
