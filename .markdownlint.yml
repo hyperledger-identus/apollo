@@ -1,0 +1,20 @@
+# markdownlint configuration
+# https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+
+default: true
+
+MD013: false
+MD025: false
+MD033: false
+MD024:
+  siblings_only: true
+MD041: false
+MD029:
+  style: "ordered"
+MD001: false
+MD036: false
+MD060: false
+MD040: false
+MD028: false
+MD042: false
+MD046: false
