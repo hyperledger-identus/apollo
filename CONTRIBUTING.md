@@ -9,7 +9,7 @@ and feel free to propose changes to this document in a pull request.
 ### Identus
 
 Identus platform is a self-sovereign identity (SSI) platform and service suite for verifiable data and digital identity.
-Built on a distributed ledger, it offers core infrastructure for issuing DIDs (Decentralized identifiers) and 
+Built on a distributed ledger, it offers core infrastructure for issuing DIDs (Decentralized identifiers) and
 verifiable credentials, alongside tools and frameworks to help expand your ecosystem.  
 The complete platform is separated in multiple repositories:
 
@@ -24,10 +24,10 @@ The complete platform is separated in multiple repositories:
 
 A cryptography lib built with Kotlin Multiplatform with support for the following targets:
 
-- JS
-- iOS
-- Android
-- JVM
+* JS
+* iOS
+* Android
+* JVM
 
 Future target might be supported in the future.
 
@@ -41,15 +41,15 @@ set up your environment.
 
 The getProcess described here has several goals:
 
-- Maintain the SDK quality
-- Fix problems that are important to users
-- Engage the community in working toward the best possible product
-- Enable a sustainable system for the SDK maintainers to review contributions
+* Maintain the SDK quality
+* Fix problems that are important to users
+* Engage the community in working toward the best possible product
+* Enable a sustainable system for the SDK maintainers to review contributions
 
 Please follow these steps to have your contribution considered by the maintainers:
 
 1. Follow all instructions in [the template]()
-2. Follow the [Styleguide](#Styleguide)
+2. Follow the [Styleguide](#styleguide)
 3. After you submit your pull request, verify that
    all [status checks](https://help.github.com/articles/about-status-checks/) are passing <details><summary>What if the
    status checks are failing?</summary>If a status check is failing, and you believe that the failure is unrelated to

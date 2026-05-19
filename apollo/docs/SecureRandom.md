@@ -10,7 +10,7 @@ Apollo Secure Random is Kotlin Multiplatform library to generate secure random b
 | iOS Arm 64                           | ✔         |
 | iOS Arm 32                           | ✔         |
 | iOS Simulator Arm 64 (Apple Silicon) | ✔         |
-| JVM                                  | ✔         | 
+| JVM                                  | ✔         |
 | Android                              | ✔         |
 | JS Browser                           | ✔         |
 | NodeJS Browser                       | ✔         |

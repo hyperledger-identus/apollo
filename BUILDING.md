@@ -43,28 +43,33 @@ In case of using macOS with M chip, make sure to install the arch64 version of J
 
 ### Install XCode (Mac Only)
 
-Install XCode from App Store. 
+Install XCode from App Store.
 
 Then approve xcodebuild license in your terminal. Like so:
+
 ```bash
-$ sudo xcodebuild -license
+sudo xcodebuild -license
 ```
 
 ### Install Android SDK
 
-Install Android SDK from SDK Manager (via Android Studio). 
+Install Android SDK from SDK Manager (via Android Studio).
 
 Then approve Android SDK license. Like so:
+
 ```bash
-$ cd /Users/{{YOUR USER}}/Library/Android/sdk
-$ tools/bin/sdkmanager --licenses
+cd /Users/{{YOUR USER}}/Library/Android/sdk
+tools/bin/sdkmanager --licenses
 ```
+
 While there are many ways to install Android SDK this has proven to be the most reliable way. Standard IntelliJ with Android plugin may work. However, we've had several issues. Your mileage may vary.
 
-For Ubuntu, 
+For Ubuntu,
+
 ```bash
 sudo apt update && sudo apt install android-sdk
 ```
+
 Leaving the SDK at `~/Android/Sdk`
 
 ### Create local.properties file
@@ -72,24 +77,28 @@ Leaving the SDK at `~/Android/Sdk`
 Create a file named `local.properties` in the root of Apollo.
 
 Add your android sdk path to `local.properties file`. Like so:
+
 ```properties
 sdk.dir = /Users/{{YOUR USER}}/Library/Android/sdk
 ```
+
 This will indicate to your IDE which android SDK to use.
 
 Alternatively, you can add the following environment variable into your shell profile file:
+
 ```bash
-$ export ANDROID_HOME='/Users/{{YOUR USER}}/Library/Android/sdk
+export ANDROID_HOME='/Users/{{YOUR USER}}/Library/Android/sdk
 ```
 
 ### Building the project
 
 Install Rust packages:
+
 ```bash
-$ ./scripts/install-rust-packages.sh
+./scripts/install-rust-packages.sh
 ```
 
-You should be able to import and build the project in IntelliJ IDEA now. 
+You should be able to import and build the project in IntelliJ IDEA now.
 
 #### Troubleshooting
 
@@ -106,6 +115,7 @@ If you already added the environment variable to your CMD profile and still not 
 ##### No binary for ChromeHeadless browser on your platform
 
 If you get error:
+
 ```log
 No binary for ChromeHeadless browser on your platform.
 Please, set "CHROME_BIN" env variable.
@@ -126,9 +136,11 @@ java.lang.IllegalStateException: Errors occurred during launch of browser for te
 ##### Could not find JNA native support
 
 if you get this error on macOS with M chip:
+
 ```log
 Could not find JNA native support
 ```
+
 **Solution**
 
 * Make sure that you are using Java version that is arch64.

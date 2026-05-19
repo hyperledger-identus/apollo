@@ -13,7 +13,7 @@ Apollo is the robust cryptographic engine driving the security and privacy of Id
 blockchain-powered solutions. This collection of cryptographic methods provides the solid foundation upon which Identus
 platform builds its diverse functionalities.
 
-### Key Features of Apollo:
+### Key Features of Apollo
 
 - **Hashing:** Cryptographically secure hashing functions, including the widely trusted SHA-2 family and PBKDF2SHA512,
   ensure data integrity and prevent tampering.
@@ -29,13 +29,13 @@ platform builds its diverse functionalities.
 - **Hierarchical Deterministic Key Management (HDKey):** This powerful system allows generating a vast number of child
   keys from a single master key, facilitating robust key management for diverse applications.
 
-## Security First:
+## Security First
 
 Apollo's commitment to security is paramount. It has undergone two independent security audits, further validating its
 reliability and trustworthiness. This meticulous attention to security ensures that Identus platform operates at the
 highest standards, safeguarding user data and privacy.
 
-## Empowering Secure Solutions:
+## Empowering Secure Solutions
 
 Through its robust cryptographic capabilities, Apollo empowers Identus platform to deliver a range of secure and
 privacy-preserving solutions across various industries. From identity management and document verification to supply
