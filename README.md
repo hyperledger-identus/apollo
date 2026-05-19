@@ -25,12 +25,15 @@ A cryptography lib built with Kotlin Multiplatform with support for the followin
 ## JVM Usage
 
 In `build.gradle.kts` files include the dependency
+
 ```kotlin
 repositories {
     mavenCentral()
 }
 ```
+
 For dependencies
+
 ```kotlin
 dependencies {
     implementation("org.hyperledger.identus:apollo:<latest version>")
@@ -42,6 +45,7 @@ dependencies {
 ### Using SPM
 
 Inside your `Package.swift` file, add the following
+
 ```swift
 dependencies: [
     .package(
@@ -50,9 +54,11 @@ dependencies: [
     )
 ]
 ```
+
 ### Using generated xcframework directly
 
 The following instruction using Xcode 15
+
 1. Go the [Release Page](https://github.com/hyperledger-identus/apollo/releases) and check the latest version and download the `ApolloBinary.xcframework.zip` file.
 2. Uncompress the downloaded file.
 3. Add the `ApolloBinary.xcframework` to your Xcode project.
@@ -80,6 +86,7 @@ Package(
 ## Node.js usage
 
 Inside the `package.json`
+
 ```json
 {
     "dependencies": {
@@ -93,6 +100,7 @@ Inside the `package.json`
 ### Using Groovy
 
 In the project `build.gradle`
+
 ```groovy
 allprojects {
     repositories {
@@ -101,7 +109,9 @@ allprojects {
     }
 }
 ```
+
 In the module `build.gradle`
+
 ```groovy
 kotlin {
     sourceSets {
@@ -118,6 +128,7 @@ kotlin {
 ### Using Kotlin DSL
 
 In the project `build.gradle.kts`
+
 ```kotlin
 allprojects {
     repositories {
@@ -126,6 +137,7 @@ allprojects {
     }
 }
 ```
+
 ```kotlin
 kotlin {
     sourceSets {
@@ -154,14 +166,15 @@ Please have a look at unit tests, more samples will be added soon.
 See [BUILDING.md](./BUILDING.md) for instructions on how to build Apollo from source.
 
 ## Contributing to Apollo
+
 See [CONTRIBUTING.md](./CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md) for instructions on how to contribute
 
 ## Cryptography Notice
 
-This distribution includes cryptographic software. The country in which you currently reside may 
-have restrictions on the import, possession, use, and/or re-export to another country, of encryption 
-software. BEFORE using any encryption software, please check your country's laws, regulations and policies 
-concerning the import, possession, or use, and re-export of encryption software, to see if this is permitted. 
+This distribution includes cryptographic software. The country in which you currently reside may
+have restrictions on the import, possession, use, and/or re-export to another country, of encryption
+software. BEFORE using any encryption software, please check your country's laws, regulations and policies
+concerning the import, possession, or use, and re-export of encryption software, to see if this is permitted.
 See [http://www.wassenaar.org/](http://www.wassenaar.org/) for more information.
 
 ## License
