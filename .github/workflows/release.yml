@@ -154,7 +154,7 @@ jobs:
 
       - name: NPM publish
         if: ${{ inputs.release_ts }}
-        run: ./gradlew :apollo:publishJsPackageToNpmjsRegistry
+        run: npm publish ./apollo/build/packages/js --access public
 
       - uses: crazy-max/ghaction-import-gpg@v6
         id: import-gpg
