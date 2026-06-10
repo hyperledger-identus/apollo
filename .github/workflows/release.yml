@@ -36,8 +36,6 @@ jobs:
       ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.HYP_BOT_GPG_PASSWORD }}
       ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.OSSRH_USERNAME }}
       ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.OSSRH_PASSWORD }}
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       NPM_CONFIG_PROVENANCE: true
 
     steps:
@@ -140,7 +138,7 @@ jobs:
 
       - name: NPM publish
         if: ${{ inputs.release_ts }}
-        run: ./gradlew :apollo:publishJsPackageToNpmjsRegistry
+        run: npm publish ./apollo/build/packages/js --access public
 
       - uses: crazy-max/ghaction-import-gpg@v6
         id: import-gpg

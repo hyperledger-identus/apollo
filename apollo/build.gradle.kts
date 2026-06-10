@@ -465,10 +465,10 @@ npmPublish {
         access.set(NpmAccess.PUBLIC)
         register("npmjs") {
             uri.set("https://registry.npmjs.org")
-            authToken.set(
-                providers.environmentVariable("NPM_TOKEN")
-                    .orElse(providers.environmentVariable("NODE_AUTH_TOKEN"))
-            )
+            val npmToken = System.getenv("NPM_TOKEN")
+            if (!npmToken.isNullOrBlank()) {
+                authToken.set(npmToken)
+            }
         }
     }
 }
