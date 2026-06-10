@@ -293,6 +293,14 @@ tasks.withType<NpmPublishTask>().configureEach {
     dependsOn("npmBip32Wasm")
 }
 
+// Make the wasm file part of the assembled package so the build dir is
+// complete regardless of whether npm publish is invoked via gradle or
+// the npm CLI. Restores the chain severed in 6c8640f (which broke the
+// 1.8.5 release by shipping a tarball missing ed25519_bip32_wasm.js).
+tasks.named("assembleJsPackage") {
+    dependsOn("npmBip32Wasm")
+}
+
 val swiftPackageUpdateMinOSVersion =
     tasks.register("updateMinOSVersion") {
         group = "multiplatform-swift-package"
