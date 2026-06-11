@@ -136,6 +136,22 @@ jobs:
           ORG_GRADLE_PROJECT_autoRelease: true
         run: ./gradlew publishToMavenCentral --no-configuration-cache
 
+      - name: NPM publish smoke test
+        if: ${{ inputs.release_ts }}
+        # Guard against a regression of 6c8640f: assert that
+        # ed25519_bip32_wasm.js is in the tarball before publishing,
+        # since a published version cannot be replaced on npm.
+        run: |
+          set -euo pipefail
+          STAGE_DIR=./apollo/build/packages/js
+          [ -d "$STAGE_DIR" ] || { echo "::error::$STAGE_DIR does not exist" >&2; exit 1; }
+          PACK_DIR=$(mktemp -d)
+          npm pack "$STAGE_DIR" --pack-destination "$PACK_DIR" >/dev/null
+          tar -tzf "$PACK_DIR"/*.tgz | grep -q '^package/ed25519_bip32_wasm\.js$' \
+            || { echo "::error::ed25519_bip32_wasm.js is missing from the npm tarball" >&2; tar -tzf "$PACK_DIR"/*.tgz >&2; exit 1; }
+          echo "smoke test ok: ed25519_bip32_wasm.js is in the tarball"
+          rm -rf "$PACK_DIR"
+
       - name: NPM publish
         if: ${{ inputs.release_ts }}
         run: npm publish ./apollo/build/packages/js --access public
