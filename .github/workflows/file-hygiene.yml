@@ -5,6 +5,51 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   lint:
-    uses: hyperledger-identus/.github/.github/workflows/lint-files.yml@f2c9e417fa46f69b015a9cdbaafdfb9e52e4ed60 # main
+    name: File Hygiene
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install hygiene tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+          go install github.com/editorconfig-checker/editorconfig-checker/v3/cmd/editorconfig-checker@latest
+          python3 -m pip install --user yamllint
+          npm install --global markdownlint-cli2
+
+      - name: EditorConfig Checker
+        run: ~/go/bin/ec
+
+      - name: ShellCheck
+        run: |
+          mapfile -t shell_files < <(git ls-files '*.sh')
+          if [ "${#shell_files[@]}" -gt 0 ]; then
+            shellcheck -S warning "${shell_files[@]}"
+          fi
+
+      - name: markdownlint
+        run: markdownlint-cli2 "**/*.md"
+
+      - name: yamllint
+        run: ~/.local/bin/yamllint .
