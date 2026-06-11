@@ -293,6 +293,11 @@ tasks.withType<NpmPublishTask>().configureEach {
     dependsOn("npmBip32Wasm")
 }
 
+// Make the staged npm package complete even when publishing via the npm CLI.
+tasks.named("assembleJsPackage") {
+    dependsOn("npmBip32Wasm")
+}
+
 val swiftPackageUpdateMinOSVersion =
     tasks.register("updateMinOSVersion") {
         group = "multiplatform-swift-package"
