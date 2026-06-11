@@ -281,21 +281,21 @@ tasks.named("jsNodeTest") {
 }
 
 // NPM Publication Wasm
-val npmBip32Wasm by tasks.registering(Copy::class) {
+val stageNpmBip32Wasm by tasks.registering(Copy::class) {
     group = "js-build"
     description = "Copy ed25519_bip32_wasm.js to npm publication directory."
     val buildRustWasmTaskProvider = project(":bip32-ed25519").tasks.named("buildRustWasm")
     dependsOn(buildRustWasmTaskProvider)
-    from(project(":bip32-ed25519").layout.projectDirectory.dir("rust-ed25519-bip32/wasm/build"))
+    from(project(":bip32-ed25519").layout.projectDirectory.file("rust-ed25519-bip32/wasm/build/ed25519_bip32_wasm.js"))
     into(layout.buildDirectory.dir("packages/js"))
 }
 tasks.withType<NpmPublishTask>().configureEach {
-    dependsOn("npmBip32Wasm")
+    finalizedBy(stageNpmBip32Wasm)
 }
 
 // Make the staged npm package complete even when publishing via the npm CLI.
 tasks.named("assembleJsPackage") {
-    dependsOn("npmBip32Wasm")
+    finalizedBy(stageNpmBip32Wasm)
 }
 
 val swiftPackageUpdateMinOSVersion =
