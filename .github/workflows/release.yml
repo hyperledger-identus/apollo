@@ -36,6 +36,7 @@ jobs:
       ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.HYP_BOT_GPG_PASSWORD }}
       ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.OSSRH_USERNAME }}
       ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.OSSRH_PASSWORD }}
+      NPM_CONFIG_PROVENANCE: true
 
     steps:
       - name: Checkout specified branch
@@ -135,9 +136,21 @@ jobs:
           ORG_GRADLE_PROJECT_autoRelease: true
         run: ./gradlew publishToMavenCentral --no-configuration-cache
 
+      - name: NPM publish smoke test
+        if: ${{ inputs.release_ts }}
+        run: |
+          set -euo pipefail
+          STAGE_DIR=./apollo/build/packages/js
+          [ -d "$STAGE_DIR" ] || { echo "::error::$STAGE_DIR does not exist" >&2; exit 1; }
+          PACK_DIR=$(mktemp -d)
+          npm pack "$STAGE_DIR" --pack-destination "$PACK_DIR" >/dev/null
+          tar -tzf "$PACK_DIR"/*.tgz | grep -q '^package/ed25519_bip32_wasm\.js$' \
+            || { echo "::error::ed25519_bip32_wasm.js is missing from the npm tarball" >&2; tar -tzf "$PACK_DIR"/*.tgz >&2; exit 1; }
+          rm -rf "$PACK_DIR"
+
       - name: NPM publish
         if: ${{ inputs.release_ts }}
-        run: ./gradlew :apollo:publishJsPackageToNpmjsRegistry
+        run: npm publish ./apollo/build/packages/js --access public
 
       - uses: crazy-max/ghaction-import-gpg@v6
         id: import-gpg

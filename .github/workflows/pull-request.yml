@@ -129,6 +129,11 @@ jobs:
         if: matrix.os-type == 'macos'
         run: brew install rustup
 
+      - name: "Setup node"
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: "Install wasm-pack"
         run: cargo install wasm-pack
 
@@ -140,6 +145,98 @@ jobs:
 
       - name: "Build Check All tests"
         run: ./gradlew allTests
+
+      - name: "Build package artifacts"
+        if: matrix.os-type == 'macos'
+        run: ./gradlew :apollo:assembleJsPackage :apollo:createSwiftPackage publishToMavenLocal --no-configuration-cache
+
+      - name: "Smoke test npm package"
+        if: matrix.os-type == 'macos'
+        run: |
+          set -euo pipefail
+          PACK_DIR=$(mktemp -d)
+          TEST_DIR=$(mktemp -d)
+          npm pack ./apollo/build/packages/js --pack-destination "$PACK_DIR" >/dev/null
+          pushd "$TEST_DIR" >/dev/null
+          npm init -y >/dev/null
+          npm install "$PACK_DIR"/*.tgz >/dev/null
+          node -e "require('@hyperledger/identus-apollo'); console.log('npm smoke ok');"
+          popd >/dev/null
+          rm -rf "$PACK_DIR" "$TEST_DIR"
+
+      - name: "Smoke test Maven packages"
+        if: matrix.os-type == 'macos'
+        run: |
+          set -euo pipefail
+          VERSION=$(sed -n 's/^version = *//p' gradle.properties | tr -d '[:space:]')
+          KOTLIN_VERSION=$(sed -n 's/^kotlin = "\(.*\)"/\1/p' gradle/libs.versions.toml | head -n1)
+          test -f "$HOME/.m2/repository/org/hyperledger/identus/apollo-jvm/$VERSION/apollo-jvm-$VERSION.jar"
+          test -f "$HOME/.m2/repository/org/hyperledger/identus/apollo-android/$VERSION/apollo-android-$VERSION.aar"
+          test -f "$HOME/.m2/repository/org/hyperledger/identus/apollo-iosarm64/$VERSION/apollo-iosarm64-$VERSION.klib"
+
+          TEST_DIR=$(mktemp -d)
+          cat <<'EOF' > "$TEST_DIR/settings.gradle.kts"
+          rootProject.name = "apollo-jvm-smoke"
+          EOF
+          cat <<EOF > "$TEST_DIR/build.gradle.kts"
+          plugins {
+              kotlin("jvm") version "$KOTLIN_VERSION"
+              application
+          }
+          repositories { mavenLocal(); mavenCentral() }
+          dependencies { implementation("org.hyperledger.identus:apollo-jvm:$VERSION") }
+          application { mainClass.set("MainKt") }
+          EOF
+          mkdir -p "$TEST_DIR/src/main/kotlin"
+          cat <<'EOF' > "$TEST_DIR/src/main/kotlin/Main.kt"
+          import org.hyperledger.identus.apollo.utils.KMMECSecp256k1PublicKey
+
+          fun main() {
+              val bytes = ByteArray(33) { 0 }
+              bytes[0] = 0x02
+              KMMECSecp256k1PublicKey(bytes)
+              println("maven smoke ok")
+          }
+          EOF
+          gradle -p "$TEST_DIR" run --no-daemon
+          rm -rf "$TEST_DIR"
+
+      - name: "Smoke test Swift package"
+        if: matrix.os-type == 'macos'
+        run: |
+          set -euo pipefail
+          TEST_DIR=$(mktemp -d)
+          ln -s "${GITHUB_WORKSPACE}/apollo/build/packages/ApolloSwift/ApolloLibrary.xcframework" "$TEST_DIR/ApolloLibrary.xcframework"
+          cat <<EOF > "$TEST_DIR/Package.swift"
+          // swift-tools-version: 5.9
+          import PackageDescription
+
+          let package = Package(
+              name: "ApolloSwiftSmoke",
+              platforms: [.iOS(.v13), .macOS(.v11)],
+              products: [
+                  .executable(name: "ApolloSwiftSmoke", targets: ["ApolloSwiftSmoke"])
+              ],
+              targets: [
+                  .binaryTarget(
+                      name: "ApolloLibrary",
+                      path: "ApolloLibrary.xcframework"
+                  ),
+                  .executableTarget(
+                      name: "ApolloSwiftSmoke",
+                      dependencies: ["ApolloLibrary"]
+                  )
+              ]
+          )
+          EOF
+          mkdir -p "$TEST_DIR/Sources/ApolloSwiftSmoke"
+          cat <<'EOF' > "$TEST_DIR/Sources/ApolloSwiftSmoke/main.swift"
+          import ApolloLibrary
+
+          print("swift smoke ok")
+          EOF
+          swift build --package-path "$TEST_DIR"
+          rm -rf "$TEST_DIR"
 
       - name: "Generate kover coverage report"
         run: ./gradlew koverHtmlReport koverXmlReport
