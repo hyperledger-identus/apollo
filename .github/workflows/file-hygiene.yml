@@ -9,38 +9,47 @@ permissions:
   contents: read
 
 jobs:
-  file-hygiene:
-    name: File Hygiene (editorconfig)
+  lint:
+    name: File Hygiene
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install hygiene tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+          go install github.com/editorconfig-checker/editorconfig-checker/v3/cmd/editorconfig-checker@latest
+          python3 -m pip install --user yamllint
+          npm install --global markdownlint-cli2
+
       - name: EditorConfig Checker
-        uses: editorconfig-checker/action-editorconfig-checker@d2ed4fd072ae6f887e9407c909af0f585d2ad9f4 # v2
+        run: ~/go/bin/ec
 
-  shell-lint:
-    name: Shell Scripts
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: ShellCheck
-        uses: ludeeus/action-shellcheck@00cae500b08a931fb5698e11e79bfbd38e612a38 # 2.0.0
-        with:
-          severity: warning
+        run: |
+          mapfile -t shell_files < <(git ls-files '*.sh')
+          if [ "${#shell_files[@]}" -gt 0 ]; then
+            shellcheck -S warning "${shell_files[@]}"
+          fi
 
-  markdown-lint:
-    name: Markdown
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: markdownlint
-        uses: DavidAnson/markdownlint-cli2-action@ce4853d43830c74c1753b39f3cf40f71c2031eb9 # v23
-        with:
-          globs: "**/*.md"
+        run: markdownlint-cli2 "**/*.md"
 
-  yaml-lint:
-    name: YAML
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: yamllint
-        uses: frenck/action-yamllint@e3e8cdef144eeb914883bd3c77f0333227140ffc # v1
+        run: ~/.local/bin/yamllint .
