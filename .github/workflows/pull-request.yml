@@ -78,7 +78,6 @@ jobs:
         if: matrix.os-type == 'macos'
         run: |
           brew tap messense/macos-cross-toolchains
-          brew trust messense/macos-cross-toolchains
 
       - name: "Install Linux GNU for x86_64"
         if: matrix.os-type == 'macos'
@@ -98,12 +97,12 @@ jobs:
           rm -f '/usr/local/bin/python3-config'
           rm -f '/usr/local/bin/python3.11-config'
           rm -f '/usr/local/bin/python3.12-config'
-          brew install --overwrite x86_64-unknown-linux-gnu
+          brew install --overwrite messense/macos-cross-toolchains/x86_64-unknown-linux-gnu
 
       - name: "Install Linux GNU for aarch64"
         if: matrix.os-type == 'macos'
         run: |
-          brew install --overwrite aarch64-unknown-linux-gnu
+          brew install --overwrite messense/macos-cross-toolchains/aarch64-unknown-linux-gnu
 
       - name: "Install Rust Targets"
         if: matrix.os-type == 'macos'
