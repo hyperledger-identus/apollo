@@ -244,7 +244,7 @@ fun KotlinNativeTarget.swiftCinterop(library: String, platform: String) {
             extraOpts =
                 buildList {
                     addAll(listOf("-compiler-option", "-DNS_FORMAT_ARGUMENT(A)="))
-                    if (platform == "iosX64") {
+                    if (platform.endsWith("X64")) {
                         addAll(listOf("-compiler-option", "-D_Float16=float"))
                     }
                 }
