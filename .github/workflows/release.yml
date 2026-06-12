@@ -6,6 +6,10 @@ on:
       version:
         description: 'Version to release (e.g., 1.2.3)'
         required: true
+      branch:
+        description: 'Branch or ref to release from'
+        required: false
+        default: 'release/1.8.7'
       release_swift:
         description: 'Release Swift package?'
         type: boolean
@@ -16,6 +20,23 @@ on:
         type: boolean
         required: false
         default: true
+      maven_local_task:
+        description: 'Gradle task used by the Maven local verification step'
+        type: choice
+        required: false
+        default: 'publishToMavenLocal'
+        options:
+          - 'publishToMavenLocal'
+          - ':secp256k1-kmp:publishToMavenLocal'
+      maven_publish_task:
+        description: 'Gradle task used by the Maven Central publish step'
+        type: choice
+        required: false
+        default: 'publishToMavenCentral'
+        options:
+          - 'publishToMavenCentral'
+          - ':secp256k1-kmp:publishToMavenCentral'
+          - ':secp256k1-kmp:publishAndReleaseToMavenCentral'
       release_ts:
         description: 'Release TypeScript package?'
         type: boolean
@@ -58,8 +79,9 @@ jobs:
 
       - name: Install Dependencies
         run: |
+          brew tap messense/macos-cross-toolchains
           brew install messense/macos-cross-toolchains/aarch64-unknown-linux-gnu
-          brew install autoconf automake x86_64-unknown-linux-gnu
+          brew install autoconf automake messense/macos-cross-toolchains/x86_64-unknown-linux-gnu
 
       - name: Install Rust Targets
         run: |
@@ -104,7 +126,7 @@ jobs:
 
       - name: Build Kotlin Multiplatform Maven Artifacts
         if: ${{ inputs.release_maven }}
-        run: ./gradlew publishToMavenLocal --no-configuration-cache
+        run: ./gradlew ${{ inputs.maven_local_task }} --no-configuration-cache
 
       - name: Build Kotlin Multiplatform NPM Artifacts
         if: ${{ inputs.release_ts }}
@@ -146,7 +168,7 @@ jobs:
         if: ${{ inputs.release_maven }}
         env:
           ORG_GRADLE_PROJECT_autoRelease: true
-        run: ./gradlew publishToMavenCentral --no-configuration-cache
+        run: ./gradlew ${{ inputs.maven_publish_task }} --no-configuration-cache
 
       - name: NPM publish
         if: ${{ inputs.release_ts }}

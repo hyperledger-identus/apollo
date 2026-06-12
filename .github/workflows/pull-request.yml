@@ -97,12 +97,12 @@ jobs:
           rm -f '/usr/local/bin/python3-config'
           rm -f '/usr/local/bin/python3.11-config'
           rm -f '/usr/local/bin/python3.12-config'
-          brew install --overwrite x86_64-unknown-linux-gnu
+          brew install --overwrite messense/macos-cross-toolchains/x86_64-unknown-linux-gnu
 
       - name: "Install Linux GNU for aarch64"
         if: matrix.os-type == 'macos'
         run: |
-          brew install --overwrite aarch64-unknown-linux-gnu
+          brew install --overwrite messense/macos-cross-toolchains/aarch64-unknown-linux-gnu
 
       - name: "Install Rust Targets"
         if: matrix.os-type == 'macos'
@@ -125,10 +125,6 @@ jobs:
         if: matrix.os-type == 'linux'
         run: sudo apt install rustc build-essential -y
 
-      - name: "Install rust toolchain (Macos)"
-        if: matrix.os-type == 'macos'
-        run: brew install rustup
-
       - name: "Install wasm-pack"
         run: cargo install wasm-pack
 
@@ -145,6 +141,7 @@ jobs:
         run: ./gradlew koverHtmlReport koverXmlReport
 
       - name: Coveralls
+        if: matrix.os-type == 'linux'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e # v2.3.7

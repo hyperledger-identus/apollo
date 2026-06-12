@@ -1,12 +1,13 @@
 import dev.petuska.npm.publish.extension.domain.NpmAccess
 import dev.petuska.npm.publish.task.NpmPublishTask
 import org.jetbrains.dokka.gradle.DokkaTask
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import java.net.URI
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.android.kotlin.multiplatform.library)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.dokka)
     alias(libs.plugins.maven.publish)
     alias(libs.plugins.npm.publish)
@@ -30,20 +31,13 @@ kover {
 
 kotlin {
     applyDefaultHierarchyTemplate()
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
     compilerOptions {
         freeCompilerArgs.addAll("-Xexpect-actual-classes")
     }
     jvm()
-    androidLibrary {
-        namespace = "org.hyperledger.identus.apollo"
-        compileSdk =
-            libs.versions.android.compileSdk
-                .get()
-                .toInt()
-        minSdk =
-            libs.versions.android.minSdk
-                .get()
-                .toInt()
+    androidTarget {
+        publishAllLibraryVariants()
     }
     iosArm64 {
         swiftCinterop("IOHKSecureRandomGeneration", name)
@@ -81,7 +75,7 @@ kotlin {
         }
     }
     js(IR) {
-        outputModuleName = "apollo"
+        moduleName = "apollo"
         binaries.library()
         useCommonJs()
         generateTypeScriptDefinitions()
@@ -174,6 +168,31 @@ kotlin {
     }
 }
 
+android {
+    namespace = "org.hyperledger.identus.apollo"
+    compileSdk =
+        libs.versions.android.compileSdk
+            .get()
+            .toInt()
+    defaultConfig {
+        minSdk =
+            libs.versions.android.minSdk
+                .get()
+                .toInt()
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    publishing {
+        multipleVariants {
+            withSourcesJar()
+            withJavadocJar()
+            allVariants()
+        }
+    }
+}
+
 tasks.withType<DokkaTask>().configureEach {
     moduleName.set("Apollo")
     moduleVersion.set(rootProject.version.toString())
@@ -181,7 +200,7 @@ tasks.withType<DokkaTask>().configureEach {
     dokkaSourceSets {
         configureEach {
             jdkVersion.set(17)
-            languageVersion.set("1.9.22")
+            languageVersion.set("1.9.25")
             apiVersion.set("2.0")
             includes.from(
                 "docs/Apollo.md",
@@ -222,7 +241,13 @@ tasks.withType<DokkaTask>().configureEach {
 fun KotlinNativeTarget.swiftCinterop(library: String, platform: String) {
     compilations.getByName("main") {
         cinterops.create(library) {
-            extraOpts = listOf("-compiler-option", "-DNS_FORMAT_ARGUMENT(A)=")
+            extraOpts =
+                buildList {
+                    addAll(listOf("-compiler-option", "-DNS_FORMAT_ARGUMENT(A)="))
+                    if (platform.endsWith("X64")) {
+                        addAll(listOf("-compiler-option", "-D_Float16=float"))
+                    }
+                }
             val iosLibsDir = rootProject.layout.projectDirectory.dir("iOSLibs")
 
             when (platform) {
