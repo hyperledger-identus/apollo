@@ -20,6 +20,14 @@ on:
         type: boolean
         required: false
         default: true
+      maven_publish_task:
+        description: 'Gradle task used by the Maven Central publish step'
+        type: choice
+        required: false
+        default: 'publishToMavenCentral'
+        options:
+          - 'publishToMavenCentral'
+          - ':secp256k1-kmp:publishToMavenCentral'
       release_ts:
         description: 'Release TypeScript package?'
         type: boolean
@@ -151,7 +159,7 @@ jobs:
         if: ${{ inputs.release_maven }}
         env:
           ORG_GRADLE_PROJECT_autoRelease: true
-        run: ./gradlew publishToMavenCentral --no-configuration-cache
+        run: ./gradlew ${{ inputs.maven_publish_task }} --no-configuration-cache
 
       - name: NPM publish
         if: ${{ inputs.release_ts }}
