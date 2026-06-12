@@ -20,6 +20,14 @@ on:
         type: boolean
         required: false
         default: true
+      maven_local_task:
+        description: 'Gradle task used by the Maven local verification step'
+        type: choice
+        required: false
+        default: 'publishToMavenLocal'
+        options:
+          - 'publishToMavenLocal'
+          - ':secp256k1-kmp:publishToMavenLocal'
       maven_publish_task:
         description: 'Gradle task used by the Maven Central publish step'
         type: choice
@@ -117,7 +125,7 @@ jobs:
 
       - name: Build Kotlin Multiplatform Maven Artifacts
         if: ${{ inputs.release_maven }}
-        run: ./gradlew publishToMavenLocal --no-configuration-cache
+        run: ./gradlew ${{ inputs.maven_local_task }} --no-configuration-cache
 
       - name: Build Kotlin Multiplatform NPM Artifacts
         if: ${{ inputs.release_ts }}
