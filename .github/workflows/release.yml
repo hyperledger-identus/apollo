@@ -36,6 +36,7 @@ on:
         options:
           - 'publishToMavenCentral'
           - ':secp256k1-kmp:publishToMavenCentral'
+          - ':secp256k1-kmp:publishAndReleaseToMavenCentral'
       release_ts:
         description: 'Release TypeScript package?'
         type: boolean
