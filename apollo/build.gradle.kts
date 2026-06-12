@@ -241,7 +241,13 @@ tasks.withType<DokkaTask>().configureEach {
 fun KotlinNativeTarget.swiftCinterop(library: String, platform: String) {
     compilations.getByName("main") {
         cinterops.create(library) {
-            extraOpts = listOf("-compiler-option", "-DNS_FORMAT_ARGUMENT(A)=")
+            extraOpts =
+                buildList {
+                    addAll(listOf("-compiler-option", "-DNS_FORMAT_ARGUMENT(A)="))
+                    if (platform == "iosX64") {
+                        addAll(listOf("-compiler-option", "-D_Float16=float"))
+                    }
+                }
             val iosLibsDir = rootProject.layout.projectDirectory.dir("iOSLibs")
 
             when (platform) {
