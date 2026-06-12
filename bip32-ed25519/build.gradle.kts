@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.android.kotlin.multiplatform.library)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.maven.publish)
     alias(libs.plugins.kover)
 }
@@ -23,7 +23,6 @@ tasks.register<Copy>("copyGeneratedKotlin") {
     description = "Copies Rust-generated Kotlin wrappers."
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
     dependsOn("buildRustWrapper")
-    dependsOn("prepareAndroidMainArtProfile")
     from(wrapperOutputDir)
     into(layout.buildDirectory.dir("generated"))
 }
@@ -110,10 +109,8 @@ kotlin {
             )
         }
     }
-    androidLibrary {
-        namespace = "org.hyperledger.identus.apollo.bip32ed25519"
-        compileSdk = libs.versions.android.compileSdk.get().toInt()
-        minSdk = libs.versions.android.minSdk.get().toInt()
+    androidTarget {
+        publishAllLibraryVariants()
     }
     iosArm64 {
         binaries.framework {
@@ -261,57 +258,39 @@ kotlin {
         }
     }
 }
-// Wire the Rust .so files into the Android AAR.
-// com.android.kotlin.multiplatform.library does not expose a standard android {} extension and
-// the Variant Sources API does not correctly wire task dependencies for this plugin, so we
-// use a post-bundle task that injects the .so files into the already-assembled AAR zip.
+
+android {
+    namespace = "org.hyperledger.identus.apollo.bip32ed25519"
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    sourceSets["main"].jniLibs.srcDir(copyAndroidJniLibsProvider.map { it.destinationDir })
+    defaultConfig {
+        minSdk = libs.versions.android.minSdk.get().toInt()
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    publishing {
+        multipleVariants {
+            withSourcesJar()
+            withJavadocJar()
+            allVariants()
+        }
+    }
+}
+
 afterEvaluate {
-    val bundleTask = tasks.named("bundleAndroidMainAar")
-
-    val injectJniLibsIntoAar by tasks.registering(Zip::class) {
-        group = "rust"
-        description = "Injects Rust .so files into the bip32-ed25519 AAR under jni/<abi>/."
-        dependsOn(bundleTask, copyAndroidJniLibsProvider)
-
-        val aarFile = bundleTask.map { task ->
-            task.outputs.files.singleFile
+    tasks.matching {
+        it.name.contains("Release") ||
+            it.name.contains("Debug") ||
+            it.name.contains("Android")
+    }.configureEach {
+        if (name != copyGeneratedKotlinProvider.name) {
+            dependsOn(copyGeneratedKotlinProvider)
         }
-
-        // Start from the existing AAR contents
-        from(zipTree(aarFile))
-
-        // Add the .so files under jni/ (AGP's expected layout inside an AAR)
-        from(copyAndroidJniLibsProvider.map { it.destinationDir }) {
-            into("jni")
-        }
-
-        destinationDirectory.set(layout.buildDirectory.dir("outputs/aar-with-jni"))
-        archiveFileName.set("bip32-ed25519.aar")
     }
-
-    // Replace the original AAR with the enriched one
-    tasks.register<Copy>("replaceAarWithJni") {
-        group = "rust"
-        description = "Overwrites the original AAR with the .so-enriched version."
-        dependsOn(injectJniLibsIntoAar)
-        from(injectJniLibsIntoAar.map { it.destinationDirectory })
-        into(layout.buildDirectory.dir("outputs/aar"))
-    }
-
-    bundleTask.configure {
-        finalizedBy("replaceAarWithJni")
-    }
-
-    // Tell every Android publication task that reads the AAR to wait for the enriched version.
-    // Without this Gradle's validation detects an implicit dependency and fails.
-    val pubTaskPredicate = { t: Task ->
-        (t.name.startsWith("generateMetadataFileFor") ||
-            t.name.startsWith("generatePomFileFor") ||
-            t.name.startsWith("publish")) &&
-            t.name.contains("Android", ignoreCase = true)
-    }
-    tasks.matching(pubTaskPredicate).configureEach {
-        dependsOn("replaceAarWithJni")
+    tasks.matching { it.name.startsWith("merge") && it.name.endsWith("JniLibFolders") }.configureEach {
+        dependsOn(copyAndroidJniLibsProvider)
     }
 }
 
