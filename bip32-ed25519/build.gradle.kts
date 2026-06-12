@@ -73,10 +73,10 @@ tasks.register<Copy>("copyAndroidJniLibs") {
     into(layout.buildDirectory.dir("jniLibs"))
 
     val abiMapping = mapOf(
-        "aarch64-linux-android"   to "arm64-v8a",
+        "aarch64-linux-android" to "arm64-v8a",
         "armv7-linux-androideabi" to "armeabi-v7a",
-        "i686-linux-android"      to "x86",
-        "x86_64-linux-android"    to "x86_64"
+        "i686-linux-android" to "x86",
+        "x86_64-linux-android" to "x86_64"
     )
     abiMapping.forEach { (triple, abi) ->
         from(wrapperDir.dir("target/$triple/release")) {
@@ -293,7 +293,6 @@ afterEvaluate {
         dependsOn(copyAndroidJniLibsProvider)
     }
 }
-
 
 // === Group: Rust tasks Tasks ===
 tasks.register<Exec>("buildRustWrapper") {

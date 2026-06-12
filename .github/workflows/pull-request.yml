@@ -78,6 +78,7 @@ jobs:
         if: matrix.os-type == 'macos'
         run: |
           brew tap messense/macos-cross-toolchains
+          brew trust messense/macos-cross-toolchains
 
       - name: "Install Linux GNU for x86_64"
         if: matrix.os-type == 'macos'
